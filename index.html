@@ -520,6 +520,7 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
   margin:0 18px 10px;
 }
 #agent-target-widget.show{display:flex;}
+body.is-admin #agent-target-widget{display:none !important;}
 .atw-goal-block{display:flex;flex-direction:column;align-items:center;min-width:52px;}
 .atw-goal-val{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1;}
 .atw-goal-lbl{font-size:0.48rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
@@ -1845,6 +1846,7 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
     </div>
 
   </div>
+  <div class="tab-page active" id="page-script">
     <div class="sub-tab-row">
       <div class="sub-tab-label">CALL FLOW</div>
       <button class="sub-tab st-ok active" id="stab-intro" onclick="loadScript('intro')">&#128222; Step 1 &middot; Introduction</button>
