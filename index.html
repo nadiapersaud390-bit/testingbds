@@ -461,6 +461,115 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
 .tab-span-2{grid-column:span 2!important;}
 .tab-span-3{grid-column:span 3!important;}
 .tab-span-6{grid-column:1/-1!important;}
+
+/* ══ DAILY TARGET BOARD ══ */
+#goal-popup-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.82);
+  z-index:10001;display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+#goal-popup-overlay.hidden{display:none;}
+#goal-popup-box{
+  background:#0d1424;border:1px solid #1e3a5a;border-radius:18px;
+  width:100%;max-width:380px;padding:28px 24px 22px;
+  box-shadow:0 0 60px rgba(96,165,250,0.15);
+  animation:goalPopIn 0.3s ease;
+}
+@keyframes goalPopIn{from{transform:scale(0.92);opacity:0;}to{transform:scale(1);opacity:1;}}
+#goal-popup-box .gp-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;
+  text-align:center;margin-bottom:4px;
+  background:linear-gradient(90deg,#60a5fa,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+#goal-popup-box .gp-sub{
+  font-size:0.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);text-align:center;margin-bottom:22px;
+}
+.gp-field-lbl{font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;display:block;}
+.gp-input{
+  width:100%;padding:13px 14px;background:#060b18;
+  border:1.5px solid #2a3a5a;border-radius:9px;
+  color:var(--text);font-family:'Barlow Condensed',sans-serif;
+  font-size:1.3rem;font-weight:700;letter-spacing:2px;
+  outline:none;margin-bottom:14px;text-align:center;
+  transition:border-color 0.15s;
+}
+.gp-input:focus{border-color:var(--accent2);}
+#gp-save-btn{
+  width:100%;padding:14px;border-radius:10px;border:none;
+  background:linear-gradient(90deg,#3b82f6,#34d399);
+  color:#000;font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;margin-top:2px;transition:filter 0.15s;
+}
+#gp-save-btn:hover{filter:brightness(1.1);}
+#gp-skip-btn{
+  display:block;width:100%;text-align:center;margin-top:10px;
+  font-size:0.65rem;color:var(--muted);cursor:pointer;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  background:none;border:none;
+}
+#gp-skip-btn:hover{color:var(--text);}
+#gp-err{font-size:0.72rem;color:var(--red);text-align:center;min-height:16px;margin-top:-8px;margin-bottom:6px;font-weight:700;}
+
+/* ── AGENT TARGET WIDGET (in rep-bar area) ── */
+#agent-target-widget{
+  background:#0a1020;border:1px solid #1e2d4a;border-radius:11px;
+  padding:9px 14px;display:none;gap:14px;align-items:center;flex-wrap:wrap;
+  margin:0 18px 10px;
+}
+#agent-target-widget.show{display:flex;}
+.atw-goal-block{display:flex;flex-direction:column;align-items:center;min-width:52px;}
+.atw-goal-val{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1;}
+.atw-goal-lbl{font-size:0.48rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
+.atw-progress{flex:1;min-width:140px;}
+.atw-bar-wrap{height:10px;background:#060b18;border-radius:20px;overflow:visible;position:relative;margin-bottom:4px;}
+.atw-bar-fill{height:100%;border-radius:20px;transition:width 0.5s ease;}
+.atw-marker{position:absolute;top:-3px;height:16px;width:2px;background:rgba(255,255,255,0.25);border-radius:2px;}
+.atw-status{font-size:0.68rem;color:var(--text);font-weight:700;}
+.atw-status.on-track{color:var(--green);}
+.atw-status.below{color:var(--gold);}
+.atw-edit-btn{
+  padding:5px 12px;border-radius:7px;border:1px solid #2a3a5a;
+  background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;
+  font-size:0.68rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.atw-edit-btn:hover{border-color:var(--accent);color:var(--accent);}
+.atw-hit-btn{
+  padding:5px 10px;border-radius:7px;border:1px solid rgba(52,211,153,0.3);
+  background:rgba(52,211,153,0.07);color:var(--green);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.68rem;font-weight:800;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.atw-hit-btn.hit{background:rgba(52,211,153,0.2);border-color:var(--green);}
+.atw-hit-btn.hit-high{border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.1);color:var(--accent);}
+.atw-hit-btn.hit-high.hit{background:rgba(96,165,250,0.2);border-color:var(--accent);}
+
+/* ── ADMIN TARGET BOARD TABLE ── */
+.tb-board-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.tb-board-table th{
+  padding:9px 12px;background:#060d1a;border-bottom:2px solid #1a2a45;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:left;white-space:nowrap;
+}
+.tb-board-table td{padding:10px 12px;border-bottom:1px solid #0f1e35;color:var(--text);}
+.tb-board-table tbody tr:nth-child(odd)  td{background:#070e1c;}
+.tb-board-table tbody tr:nth-child(even) td{background:#060b18;}
+.tb-board-table tbody tr:hover td{background:#0d1a30;}
+.tb-mini-bar{height:7px;background:#0d1424;border-radius:20px;overflow:hidden;min-width:60px;margin-top:4px;}
+.tb-mini-fill{height:100%;border-radius:20px;}
+.tb-pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:0.68rem;font-weight:800;}
+.tb-pill-hit{background:rgba(52,211,153,0.18);color:var(--green);border:1px solid rgba(52,211,153,0.4);}
+.tb-pill-both{background:rgba(96,165,250,0.18);color:var(--accent);border:1px solid rgba(96,165,250,0.4);}
+.tb-pill-miss{background:rgba(251,191,36,0.12);color:var(--gold);border:1px solid rgba(251,191,36,0.3);}
+.tb-pill-none{background:rgba(100,116,139,0.12);color:var(--muted);border:1px solid #2a3a5a;}
+.tb-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
+.tb-sum-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+.tb-sum-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;line-height:1;}
+.tb-sum-lbl{font-size:0.5rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
 </style>
 <body>
 
@@ -474,6 +583,21 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
       <button id="company-name-cancel" onclick="closeCompanyNameModal()">CANCEL</button>
       <button id="company-name-save" onclick="saveCompanyName()">💾 SAVE NAME</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ DAILY TARGET GOAL POPUP ══ -->
+<div id="goal-popup-overlay" class="hidden">
+  <div id="goal-popup-box">
+    <div class="gp-title">SET TODAY'S TARGETS</div>
+    <div class="gp-sub" id="gp-date-lbl">Loading date...</div>
+    <label class="gp-field-lbl" style="color:var(--green);">🟢 Low Target — Minimum you want to hit</label>
+    <input class="gp-input" id="gp-low" type="number" min="1" max="999" placeholder="e.g. 12" style="border-color:rgba(52,211,153,0.3);" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='rgba(52,211,153,0.3)'" onkeydown="if(event.key==='Enter')document.getElementById('gp-high').focus()">
+    <label class="gp-field-lbl" style="color:var(--accent);">🔵 High Target — Stretch goal</label>
+    <input class="gp-input" id="gp-high" type="number" min="1" max="999" placeholder="e.g. 20" style="border-color:rgba(96,165,250,0.3);" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(96,165,250,0.3)'" onkeydown="if(event.key==='Enter')saveGoalPopup()">
+    <div id="gp-err"></div>
+    <button id="gp-save-btn" onclick="saveGoalPopup()">💾 LOCK IN MY TARGETS</button>
+    <button id="gp-skip-btn" onclick="skipGoalPopup()">Skip for today</button>
   </div>
 </div>
 
@@ -504,6 +628,35 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
     <div id="admin-badge-wrap"></div>
     <button class="logout-btn" onclick="doLogout()">LOGOUT</button>
   </div>
+</div>
+
+<!-- ══ AGENT DAILY TARGET WIDGET ══ -->
+<div id="agent-target-widget">
+  <div class="atw-goal-block">
+    <div class="atw-goal-val" id="atw-low-val" style="color:var(--green);">—</div>
+    <div class="atw-goal-lbl">Low Target</div>
+  </div>
+  <div class="atw-goal-block">
+    <div class="atw-goal-val" id="atw-high-val" style="color:var(--accent);">—</div>
+    <div class="atw-goal-lbl">High Target</div>
+  </div>
+  <div class="atw-goal-block">
+    <div class="atw-goal-val" id="atw-actual-val" style="color:var(--text);">—</div>
+    <div class="atw-goal-lbl">Transfers</div>
+  </div>
+  <div class="atw-progress">
+    <div class="atw-bar-wrap">
+      <div class="atw-bar-fill" id="atw-bar" style="width:0%;background:var(--green);"></div>
+      <div class="atw-marker" id="atw-low-marker" style="left:0%;"></div>
+      <div class="atw-marker" id="atw-high-marker" style="left:0%;"></div>
+    </div>
+    <div class="atw-status" id="atw-status-txt">Set your targets for today</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:5px;">
+    <button class="atw-hit-btn" id="atw-btn-low" onclick="toggleHitTarget('low')">✓ Low Hit</button>
+    <button class="atw-hit-btn hit-high" id="atw-btn-high" onclick="toggleHitTarget('high')">✓ High Hit</button>
+  </div>
+  <button class="atw-edit-btn" onclick="openGoalPopup(true)">✏ Edit Goals</button>
 </div>
 
 <div class="hero">
@@ -1039,6 +1192,7 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
         <button class="adm-tab"        id="atab-monitoring"  onclick="switchAdminTab('monitoring',this)">🎧 Live Monitoring</button>
         <button class="adm-tab"        id="atab-rebuttal"    onclick="switchAdminTab('rebuttal',this)">🧠 Rebuttal Intel</button>
         <button class="adm-tab"        id="atab-weekperf"    onclick="switchAdminTab('weekperf',this)">🏆 Weekly Performance</button>
+        <button class="adm-tab"        id="atab-targetboard" onclick="switchAdminTab('targetboard',this)">🎯 Target Board</button>
       </div>
     </div>
 
@@ -1640,8 +1794,57 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
         </div>
       </div>
     </div>
+
+    <!-- ══ ADMIN TARGET BOARD ══ -->
+    <div id="admin-targetboard" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+          <div class="admin-card-title" style="margin-bottom:0;font-size:0.9rem;">🎯 DAILY TARGET BOARD — <span id="tb-date-lbl" style="color:var(--gold);"></span></div>
+          <button onclick="loadTargetBoard()" style="padding:7px 12px;border-radius:8px;border:none;background:#1a2a45;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1px;cursor:pointer;">🔄 REFRESH</button>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="tb-summary-grid" id="tb-summary-grid">
+          <div class="tb-sum-card"><div class="tb-sum-val" id="tb-s-set" style="color:var(--accent);">—</div><div class="tb-sum-lbl">Goals Set</div></div>
+          <div class="tb-sum-card"><div class="tb-sum-val" id="tb-s-hitlow" style="color:var(--green);">—</div><div class="tb-sum-lbl">Hit Low</div></div>
+          <div class="tb-sum-card"><div class="tb-sum-val" id="tb-s-hithigh" style="color:var(--accent);">—</div><div class="tb-sum-lbl">Hit High</div></div>
+          <div class="tb-sum-card"><div class="tb-sum-val" id="tb-s-none" style="color:var(--muted);">—</div><div class="tb-sum-lbl">No Goal Set</div></div>
+        </div>
+
+        <!-- Team filter -->
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <button id="tb-f-all" onclick="tbSetTeam('all',this)" style="flex:1;padding:10px;border-radius:9px;border:2px solid var(--accent);background:#0b1a38;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">ALL TEAMS</button>
+          <button id="tb-f-bb"  onclick="tbSetTeam('BB',this)"  style="flex:1;padding:10px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">🏠 BERBICE</button>
+          <button id="tb-f-pr"  onclick="tbSetTeam('PR',this)"  style="flex:1;padding:10px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">🌴 PROVIDENCE</button>
+        </div>
+
+        <!-- Board table -->
+        <div style="overflow-x:auto;">
+          <table class="tb-board-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Agent</th>
+                <th>Team</th>
+                <th>Low Target</th>
+                <th>High Target</th>
+                <th>Transfers</th>
+                <th>Low Progress</th>
+                <th>High Progress</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tb-tbody">
+              <tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;font-size:0.85rem;">Click 🎯 Target Board to load</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="font-size:0.62rem;color:var(--muted);text-align:center;margin-top:10px;">Targets set by agents each morning · Transfers pulled from uploaded CSV · Resets daily</div>
+      </div>
+    </div>
+
   </div>
-  <div class="tab-page active" id="page-script">
     <div class="sub-tab-row">
       <div class="sub-tab-label">CALL FLOW</div>
       <button class="sub-tab st-ok active" id="stab-intro" onclick="loadScript('intro')">&#128222; Step 1 &middot; Introduction</button>
@@ -7378,6 +7581,396 @@ function searchRebuttals(val){
     resultsEl.innerHTML='<div style="padding:6px 10px 3px;font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">POSSIBLE REBUTTALS:</div>'+
     matches.map(m=>`<div onclick="loadObjection('${m.key}');document.getElementById('rebuttal-search').value='';document.getElementById('search-results').style.display='none';" style="padding:10px 14px;font-size:0.88rem;color:var(--text);cursor:pointer;border-top:1px solid var(--border);font-weight:600;transition:background 0.1s;" onmouseover="this.style.background='#141e34'" onmouseout="this.style.background=''">${m.label}</div>`).join('');
   }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DAILY TARGET BOARD — Full Feature
+//  - Goal popup fires on agent login (once per day, skippable)
+//  - Agent target widget shows in rep-bar with live progress
+//  - Admin "Target Board" tab shows all agents with team filters
+//  - All data stored in Firestore: dailyTargets/{agentId}_{date}
+// ══════════════════════════════════════════════════════════════
+
+let tbCurrentTeam = 'all';
+
+// ── Patch switchAdminTab to include targetboard ──
+(function(){
+  const _orig = switchAdminTab;
+  switchAdminTab = function(tab, btn){
+    _orig(tab, btn);
+    // The original function only knows its own list — handle targetboard extra
+    const tbEl = document.getElementById('admin-targetboard');
+    if(!tbEl) return;
+    if(tab === 'targetboard'){
+      tbEl.style.display = '';
+      const b = document.getElementById('atab-targetboard');
+      if(b) b.classList.add('active');
+      loadTargetBoard();
+    } else {
+      tbEl.style.display = 'none';
+      const b = document.getElementById('atab-targetboard');
+      if(b) b.classList.remove('active');
+    }
+  };
+})();
+
+// ── Open goal popup (called on login for agents, or via Edit button) ──
+function openGoalPopup(isEdit){
+  if(!currentUser || currentUser.isAdmin) return;
+  const today = getTodayGY();
+  const lbl = document.getElementById('gp-date-lbl');
+  if(lbl) lbl.textContent = 'Today · ' + new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',timeZone:'America/Guyana'});
+  // Pre-fill if editing existing goals
+  if(isEdit){
+    const lo = document.getElementById('gp-low');
+    const hi = document.getElementById('gp-high');
+    if(lo && currentUser._goalLow)  lo.value = currentUser._goalLow;
+    if(hi && currentUser._goalHigh) hi.value = currentUser._goalHigh;
+  } else {
+    const lo = document.getElementById('gp-low');
+    const hi = document.getElementById('gp-high');
+    if(lo) lo.value = '';
+    if(hi) hi.value = '';
+  }
+  const errEl = document.getElementById('gp-err');
+  if(errEl) errEl.textContent = '';
+  const overlay = document.getElementById('goal-popup-overlay');
+  if(overlay) overlay.classList.remove('hidden');
+  setTimeout(()=>{ const lo=document.getElementById('gp-low'); if(lo) lo.focus(); }, 150);
+}
+
+async function saveGoalPopup(){
+  const loEl = document.getElementById('gp-low');
+  const hiEl = document.getElementById('gp-high');
+  const errEl = document.getElementById('gp-err');
+  const low  = parseInt(loEl ? loEl.value : '');
+  const high = parseInt(hiEl ? hiEl.value : '');
+  if(!low || low < 1)  { if(errEl) errEl.textContent = '⚠ Please enter a low target.'; return; }
+  if(!high || high < 1){ if(errEl) errEl.textContent = '⚠ Please enter a high target.'; return; }
+  if(high < low)       { if(errEl) errEl.textContent = '⚠ High target must be ≥ low target.'; return; }
+  if(errEl) errEl.textContent = '';
+
+  const btn = document.getElementById('gp-save-btn');
+  if(btn){ btn.textContent = 'SAVING...'; btn.disabled = true; }
+
+  const today = getTodayGY();
+  const docId = currentUser.id + '_' + today;
+  try{
+    await db.collection('dailyTargets').doc(docId).set({
+      agentId:   currentUser.id,
+      agentName: currentUser.name,
+      team:      currentUser.team || '',
+      date:      today,
+      low,
+      high,
+      hitLow:    false,
+      hitHigh:   false,
+      savedAt:   firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+    currentUser._goalLow  = low;
+    currentUser._goalHigh = high;
+    currentUser._goalDate = today;
+    // Persist in session
+    sessionStorage.setItem('bds_user_'+today, JSON.stringify(currentUser));
+  }catch(e){ console.warn('Goal save error:', e); }
+
+  if(btn){ btn.textContent = '💾 LOCK IN MY TARGETS'; btn.disabled = false; }
+  closeGoalPopup();
+  renderAgentTargetWidget();
+}
+
+function skipGoalPopup(){
+  // Remember skip for this session so we don't re-show
+  if(currentUser) currentUser._goalSkipped = true;
+  closeGoalPopup();
+}
+
+function closeGoalPopup(){
+  const overlay = document.getElementById('goal-popup-overlay');
+  if(overlay) overlay.classList.add('hidden');
+}
+
+// ── Check if popup should appear on login ──
+async function maybeShowGoalPopup(){
+  if(!currentUser || currentUser.isAdmin) return;
+  const today = getTodayGY();
+  // Already set today?
+  try{
+    const snap = await db.collection('dailyTargets').doc(currentUser.id+'_'+today).get();
+    if(snap.exists){
+      const d = snap.data();
+      currentUser._goalLow   = d.low;
+      currentUser._goalHigh  = d.high;
+      currentUser._goalHitLow  = d.hitLow  || false;
+      currentUser._goalHitHigh = d.hitHigh || false;
+      currentUser._goalDate  = today;
+      sessionStorage.setItem('bds_user_'+today, JSON.stringify(currentUser));
+      renderAgentTargetWidget();
+      return; // Already set — don't show popup
+    }
+  }catch(e){}
+  // Not set yet — show popup
+  openGoalPopup(false);
+}
+
+// ── Render the agent target widget in the rep-bar area ──
+function renderAgentTargetWidget(){
+  if(!currentUser || currentUser.isAdmin) return;
+  const widget = document.getElementById('agent-target-widget');
+  if(!widget) return;
+
+  const low    = currentUser._goalLow  || 0;
+  const high   = currentUser._goalHigh || 0;
+  const hitLow = currentUser._goalHitLow  || false;
+  const hitHigh= currentUser._goalHitHigh || false;
+
+  // Get actual transfers from statsData if available
+  let actual = 0;
+  if(typeof statsData !== 'undefined' && statsData.length){
+    const me = statsData.find(r =>
+      r.name && currentUser.name &&
+      (r.name.toLowerCase().trim() === currentUser.name.toLowerCase().trim() ||
+       r.name.toLowerCase().includes(currentUser.name.toLowerCase().split(' ')[0].toLowerCase()))
+    );
+    if(me) actual = me.xfer || 0;
+  }
+  currentUser._goalActual = actual;
+
+  if(!low && !high){
+    // No goals set yet
+    document.getElementById('atw-low-val').textContent  = '—';
+    document.getElementById('atw-high-val').textContent = '—';
+    document.getElementById('atw-actual-val').textContent = actual || '—';
+    document.getElementById('atw-status-txt').textContent = 'Tap ✏ Edit Goals to set your targets';
+    document.getElementById('atw-status-txt').className = 'atw-status';
+    document.getElementById('atw-bar').style.width = '0%';
+    document.getElementById('atw-low-marker').style.left  = '0%';
+    document.getElementById('atw-high-marker').style.left = '0%';
+    widget.classList.add('show');
+    return;
+  }
+
+  document.getElementById('atw-low-val').textContent  = low;
+  document.getElementById('atw-high-val').textContent = high;
+  document.getElementById('atw-actual-val').textContent = actual;
+
+  // Progress bar: scale 0→high*1.1
+  const maxVal = Math.max(high * 1.1, actual * 1.1, 1);
+  const barPct    = Math.min(100, Math.round(actual / maxVal * 100));
+  const lowPct    = Math.min(98, Math.round(low  / maxVal * 100));
+  const highPct   = Math.min(98, Math.round(high / maxVal * 100));
+
+  const bar = document.getElementById('atw-bar');
+  bar.style.width = barPct + '%';
+  if(actual >= high)      bar.style.background = 'var(--accent)';
+  else if(actual >= low)  bar.style.background = 'var(--green)';
+  else                    bar.style.background = 'var(--gold)';
+
+  document.getElementById('atw-low-marker').style.left  = lowPct  + '%';
+  document.getElementById('atw-high-marker').style.left = highPct + '%';
+
+  // Status text
+  const toLow  = Math.max(0, low  - actual);
+  const toHigh = Math.max(0, high - actual);
+  let statusTxt = '', statusClass = 'atw-status';
+  if(actual >= high){
+    statusTxt = '🔥 HIGH TARGET HIT! ' + actual + ' transfers';
+    statusClass += ' on-track';
+  } else if(actual >= low){
+    statusTxt = '✅ Low target hit! ' + toHigh + ' more for high target';
+    statusClass += ' on-track';
+  } else if(toLow <= 3 && toLow > 0){
+    statusTxt = '⚡ Almost there — ' + toLow + ' more for low target';
+    statusClass += ' below';
+  } else if(toLow > 0){
+    statusTxt = toLow + ' more to hit low · ' + toHigh + ' more for high';
+    statusClass += ' below';
+  } else {
+    statusTxt = actual + ' transfers today';
+  }
+  const stEl = document.getElementById('atw-status-txt');
+  stEl.textContent  = statusTxt;
+  stEl.className    = statusClass;
+
+  // Hit buttons
+  const btnL = document.getElementById('atw-btn-low');
+  const btnH = document.getElementById('atw-btn-high');
+  if(btnL){ btnL.classList.toggle('hit', hitLow);  btnL.textContent = hitLow  ? '✓ Low Hit!'  : '✓ Low Hit'; }
+  if(btnH){ btnH.classList.toggle('hit', hitHigh); btnH.textContent = hitHigh ? '✓ High Hit!' : '✓ High Hit'; }
+
+  widget.classList.add('show');
+}
+
+async function toggleHitTarget(type){
+  if(!currentUser || currentUser.isAdmin) return;
+  const today = getTodayGY();
+  const docId = currentUser.id + '_' + today;
+  if(type === 'low'){
+    currentUser._goalHitLow = !currentUser._goalHitLow;
+    try{ await db.collection('dailyTargets').doc(docId).set({hitLow: currentUser._goalHitLow},{merge:true}); }catch(e){}
+  } else {
+    currentUser._goalHitHigh = !currentUser._goalHitHigh;
+    try{ await db.collection('dailyTargets').doc(docId).set({hitHigh: currentUser._goalHitHigh},{merge:true}); }catch(e){}
+  }
+  sessionStorage.setItem('bds_user_'+today, JSON.stringify(currentUser));
+  renderAgentTargetWidget();
+}
+
+// ── Admin: load and render the Target Board ──
+async function loadTargetBoard(){
+  const tbody = document.getElementById('tb-tbody');
+  const dateLbl = document.getElementById('tb-date-lbl');
+  if(!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">⏳ Loading targets...</td></tr>';
+  const today = getTodayGY();
+  if(dateLbl) dateLbl.textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',timeZone:'America/Guyana'});
+
+  try{
+    const snap = await db.collection('dailyTargets').where('date','==',today).get();
+    const goals = {};
+    snap.forEach(doc=>{ const d=doc.data(); goals[d.agentId] = d; });
+
+    // Build roster list
+    const rosterArr = Object.values(ROSTER || {}).filter(a=>a && a.name);
+    renderTargetBoardTable(rosterArr, goals);
+  }catch(e){
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--red);padding:24px;">Error loading targets: ${e.message}</td></tr>`;
+  }
+}
+
+function renderTargetBoardTable(rosterArr, goals){
+  const tbody = document.getElementById('tb-tbody');
+  if(!tbody) return;
+
+  // Filter by team
+  let agents = rosterArr;
+  if(tbCurrentTeam !== 'all') agents = agents.filter(a => (a.team||'') === tbCurrentTeam);
+  agents = agents.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+
+  // Update summary counters
+  const allGoals = Object.values(goals);
+  const filtered = tbCurrentTeam === 'all' ? allGoals : allGoals.filter(g=>g.team===tbCurrentTeam);
+  const rosterFiltered = tbCurrentTeam==='all' ? rosterArr : rosterArr.filter(a=>a.team===tbCurrentTeam);
+  const goalsSet  = filtered.length;
+  const hitLow    = filtered.filter(g=>g.actual>=g.low||g.hitLow).length;
+  const hitHigh   = filtered.filter(g=>g.actual>=g.high||g.hitHigh).length;
+  const noGoal    = Math.max(0, rosterFiltered.length - goalsSet);
+  const s = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  s('tb-s-set',    goalsSet);
+  s('tb-s-hitlow', hitLow);
+  s('tb-s-hithigh',hitHigh);
+  s('tb-s-none',   noGoal);
+
+  if(!agents.length){
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px;">No agents found for this team.</td></tr>';
+    return;
+  }
+
+  let rows = '';
+  agents.forEach((agent, idx)=>{
+    const uid  = String(agent.userId || '');
+    const goal = goals[uid] || null;
+    const low    = goal ? (goal.low  || 0) : 0;
+    const high   = goal ? (goal.high || 0) : 0;
+    const hitLowF  = goal ? (goal.hitLow  || false) : false;
+    const hitHighF = goal ? (goal.hitHigh || false) : false;
+    const teamLabel = agent.team==='BB' ? '🏠 BB' : agent.team==='PR' ? '🌴 PR' : (agent.team||'—');
+
+    // Get actual from statsData
+    let actual = 0;
+    if(typeof statsData !== 'undefined' && statsData.length){
+      const row = statsData.find(r=>
+        r.name && agent.name &&
+        (r.name.toLowerCase().trim()===agent.name.toLowerCase().trim() ||
+         r.name.toLowerCase().includes(agent.name.toLowerCase().split(' ')[0].toLowerCase()))
+      );
+      if(row) actual = row.xfer || 0;
+    }
+    if(goal) goal.actual = actual;
+
+    // Status pill
+    let statusHtml;
+    if(!low && !high){
+      statusHtml = `<span class="tb-pill tb-pill-none">No goal set</span>`;
+    } else if((actual>=high)||hitHighF){
+      statusHtml = `<span class="tb-pill tb-pill-both">Both Hit ✓</span>`;
+    } else if((actual>=low)||hitLowF){
+      statusHtml = `<span class="tb-pill tb-pill-hit">Low Hit ✓</span>`;
+    } else {
+      const toLow = low ? Math.max(0,low-actual) : '—';
+      statusHtml = `<span class="tb-pill tb-pill-miss">${toLow !== '—' ? '+'+toLow+' to low' : 'In progress'}</span>`;
+    }
+
+    // Progress bars
+    const maxVal = Math.max(high||1, actual, 1);
+    const lowFill  = low  ? Math.min(100,Math.round(Math.min(actual,low)/low*100))   : 0;
+    const highFill = high ? Math.min(100,Math.round(Math.min(actual,high)/high*100)) : 0;
+    const lowColor  = (actual>=low&&low)  ? 'var(--green)' : 'var(--gold)';
+    const highColor = (actual>=high&&high) ? 'var(--accent)': '#3b6fd4';
+
+    rows += `<tr>
+      <td style="color:var(--muted);font-size:0.75rem;">${idx+1}</td>
+      <td style="font-weight:700;">${agent.name||'Unknown'}</td>
+      <td style="font-size:0.75rem;">${teamLabel}</td>
+      <td>
+        ${low ? `<div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--green);">${low}</div>` : '<span style="color:var(--muted);">—</span>'}
+      </td>
+      <td>
+        ${high ? `<div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--accent);">${high}</div>` : '<span style="color:var(--muted);">—</span>'}
+      </td>
+      <td>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:${actual>0?'var(--text)':'var(--muted)'};">${actual}</div>
+      </td>
+      <td style="min-width:80px;">
+        ${low ? `<div class="tb-mini-bar"><div class="tb-mini-fill" style="width:${lowFill}%;background:${lowColor};"></div></div>
+        <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">${lowFill}%</div>` : '<span style="color:var(--muted);font-size:0.72rem;">—</span>'}
+      </td>
+      <td style="min-width:80px;">
+        ${high ? `<div class="tb-mini-bar"><div class="tb-mini-fill" style="width:${highFill}%;background:${highColor};"></div></div>
+        <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">${highFill}%</div>` : '<span style="color:var(--muted);font-size:0.72rem;">—</span>'}
+      </td>
+      <td>${statusHtml}</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = rows || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px;">No agents found.</td></tr>';
+}
+
+function tbSetTeam(team, btn){
+  tbCurrentTeam = team;
+  ['tb-f-all','tb-f-bb','tb-f-pr'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.style.border = '1px solid var(--border)';
+    el.style.background = 'transparent';
+    el.style.color = 'var(--muted)';
+  });
+  if(btn){
+    btn.style.border = '2px solid var(--accent)';
+    btn.style.background = '#0b1a38';
+    btn.style.color = 'var(--accent)';
+  }
+  loadTargetBoard();
+}
+
+// ── Hook into showDashboard to trigger goal popup for agents ──
+const _origShowDashboard = showDashboard;
+showDashboard = function(){
+  _origShowDashboard();
+  if(currentUser && !currentUser.isAdmin){
+    // Small delay so dashboard fully renders first
+    setTimeout(maybeShowGoalPopup, 600);
+  }
+};
+
+// ── Hook into renderStatsTable so widget updates when CSV is uploaded ──
+const _origRenderStatsTable = typeof renderStatsTable === 'function' ? renderStatsTable : null;
+if(_origRenderStatsTable){
+  renderStatsTable = function(){
+    _origRenderStatsTable();
+    // Refresh agent widget with new actual data
+    if(currentUser && !currentUser.isAdmin) renderAgentTargetWidget();
+  };
 }
 </script>
 <input type="file" id="stats-csv-upload" accept=".csv" style="display:none;" onchange="handleStatsCSV(this)">
