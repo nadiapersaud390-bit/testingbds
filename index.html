@@ -744,8 +744,126 @@ body.is-admin #agent-target-widget{display:none !important;}
 .tb-sum-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
 .tb-sum-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;line-height:1;}
 .tb-sum-lbl{font-size:0.5rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+/* ══ GOOD JOB BANNER ══ */
+#goodjob-banner{
+  position:fixed;top:0;left:0;right:0;z-index:99999;
+  transform:translateY(-100%);
+  transition:transform 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none;
+}
+#goodjob-banner.show{
+  transform:translateY(0);
+  pointer-events:auto;
+}
+#goodjob-inner{
+  background:linear-gradient(135deg,#0a0520 0%,#0d1a10 40%,#08150a 100%);
+  border-bottom:2px solid transparent;
+  border-image:linear-gradient(90deg,#7b61ff,#34d399,#fbbf24,#34d399,#7b61ff) 1;
+  padding:16px 24px 14px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.7),0 0 60px rgba(52,211,153,0.15);
+  position:relative;
+  overflow:hidden;
+}
+#goodjob-inner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -20%,rgba(52,211,153,0.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+#goodjob-close{
+  position:absolute;top:10px;right:14px;
+  background:none;border:none;color:rgba(255,255,255,0.35);
+  font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:6px;
+  transition:color 0.15s;line-height:1;
+}
+#goodjob-close:hover{color:var(--red);}
+#goodjob-quote{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.1rem,3vw,1.9rem);
+  letter-spacing:3px;
+  text-align:center;
+  background:linear-gradient(90deg,#34d399,#60a5fa,#fbbf24,#34d399);
+  background-size:300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gjshine 3s linear infinite;
+  margin-bottom:10px;
+  line-height:1.1;
+}
+@keyframes gjshine{0%{background-position:0%}100%{background-position:300%}}
+#goodjob-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(52,211,153,0.7);text-align:center;margin-bottom:10px;
+}
+#goodjob-agents{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-bottom:6px;
+}
+.gj-agent-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(52,211,153,0.1);
+  border:1px solid rgba(52,211,153,0.35);
+  font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:800;
+  letter-spacing:1px;color:var(--green);white-space:nowrap;
+}
+.gj-agent-chip .gj-count{
+  background:rgba(52,211,153,0.2);border-radius:10px;
+  padding:1px 7px;font-size:0.72rem;color:#fff;
+}
+#goodjob-timer{
+  text-align:center;font-size:0.55rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:4px;
+}
+#goodjob-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  background:linear-gradient(90deg,#34d399,#60a5fa,#fbbf24);
+  transition:width 1s linear;
+  border-radius:0 2px 2px 0;
+}
+/* Tab pulse animation when banner fires */
+@keyframes tabFlash{0%,100%{box-shadow:0 0 14px rgba(52,211,153,0.25);}50%{box-shadow:0 0 28px rgba(52,211,153,0.7),0 0 60px rgba(52,211,153,0.3);}}
+.tab-leads-flash{animation:tabFlash 0.6s ease-in-out 4 !important;}
+
+/* ── ADMIN DAILY LEADS PANEL ── */
+.dl-input-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center;}
+.dl-agent-input,.dl-count-input{
+  padding:8px 12px;background:#060b18;border:1.5px solid #2a3a5a;
+  border-radius:8px;color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:0.82rem;outline:none;width:100%;transition:border-color 0.15s;
+}
+.dl-agent-input:focus,.dl-count-input:focus{border-color:var(--green);}
+.dl-remove-btn{background:none;border:1px solid rgba(248,113,113,0.3);color:var(--red);
+  border-radius:7px;padding:7px 10px;cursor:pointer;font-size:0.8rem;transition:all 0.15s;}
+.dl-remove-btn:hover{background:rgba(248,113,113,0.1);}
+.dl-add-row-btn{padding:8px 16px;border-radius:8px;border:1.5px dashed rgba(52,211,153,0.4);
+  background:transparent;color:var(--green);font-family:'Barlow Condensed',sans-serif;
+  font-size:0.82rem;font-weight:800;letter-spacing:1px;cursor:pointer;transition:all 0.15s;width:100%;margin-top:4px;}
+.dl-add-row-btn:hover{background:rgba(52,211,153,0.08);border-color:var(--green);}
+.dl-push-btn{padding:12px 28px;border-radius:10px;border:none;
+  background:linear-gradient(90deg,#34d399,#60a5fa);
+  color:#000;font-family:'Barlow Condensed',sans-serif;
+  font-size:1rem;font-weight:900;letter-spacing:2px;
+  cursor:pointer;transition:filter 0.15s;width:100%;margin-top:10px;}
+.dl-push-btn:hover{filter:brightness(1.1);}
+.dl-push-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.dl-history-item{background:var(--surface);border:1px solid var(--border);border-radius:9px;
+  padding:10px 14px;margin-bottom:7px;font-size:0.78rem;}
+.dl-history-time{font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.dl-history-agents{display:flex;flex-wrap:wrap;gap:5px;}
 </style>
 <body>
+
+<!-- ══ GOOD JOB BANNER ══ -->
+<div id="goodjob-banner">
+  <div id="goodjob-inner">
+    <button id="goodjob-close" onclick="closeGoodJobBanner()">✕</button>
+    <div id="goodjob-quote">AMAZING WORK, TEAM!</div>
+    <div id="goodjob-sub">🎯 NEW LEADS ASSIGNED FOR TODAY</div>
+    <div id="goodjob-agents"></div>
+    <div id="goodjob-timer">Auto-closes in <span id="gj-countdown">2:00</span></div>
+    <div id="goodjob-progress" style="width:100%;"></div>
+  </div>
+</div>
 
 <!-- ── COMPANY NAME EDIT MODAL (Admin only) ── -->
 <div id="company-name-modal">
@@ -1369,6 +1487,7 @@ body.is-admin #agent-target-widget{display:none !important;}
         <button class="adm-tab"        id="atab-rebuttal"    onclick="switchAdminTab('rebuttal',this)">🧠 Rebuttal Intel</button>
         <button class="adm-tab"        id="atab-weekperf"    onclick="switchAdminTab('weekperf',this)">🏆 Weekly Performance</button>
         <button class="adm-tab"        id="atab-targetboard" onclick="switchAdminTab('targetboard',this)">🎯 Target Board</button>
+        <button class="adm-tab"        id="atab-dailyleads"  onclick="switchAdminTab('dailyleads',this)">📋 Daily Leads</button>
       </div>
     </div>
 
@@ -2021,6 +2140,39 @@ body.is-admin #agent-target-widget{display:none !important;}
     </div>
 
   </div>
+  <!-- ══ ADMIN DAILY LEADS ══ -->
+  <div id="admin-dailyleads" class="admin-section" style="display:none;">
+    <div class="admin-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+        <div class="admin-card-title" style="margin-bottom:0;font-size:0.9rem;">📋 DAILY LEADS — Push to All Agents</div>
+        <button onclick="dlLoadHistory()" style="padding:7px 12px;border-radius:8px;border:none;background:#1a2a45;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1px;cursor:pointer;">🔄 REFRESH HISTORY</button>
+      </div>
+      <div style="font-size:0.62rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">Enter agent names and lead counts below. When you click <strong style="color:var(--green);">PUSH LEADS</strong>, a celebratory banner will drop on every agent's screen for 2 minutes showing who got leads and how many.</div>
+
+      <!-- Header row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:6px;padding:0 2px;">
+        <div style="font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Agent Name</div>
+        <div style="font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Leads Count</div>
+        <div></div>
+      </div>
+
+      <!-- Dynamic rows -->
+      <div id="dl-rows"></div>
+      <button class="dl-add-row-btn" onclick="dlAddRow()">＋ ADD ANOTHER AGENT</button>
+
+      <button class="dl-push-btn" id="dl-push-btn" onclick="dlPushLeads()">🚀 PUSH LEADS TO ALL AGENTS</button>
+      <div id="dl-push-status" style="text-align:center;font-size:0.72rem;margin-top:8px;color:var(--green);display:none;"></div>
+    </div>
+
+    <!-- History -->
+    <div class="admin-card">
+      <div class="admin-card-title">📜 PUSH HISTORY — TODAY</div>
+      <div id="dl-history">
+        <div style="color:var(--muted);font-size:0.78rem;text-align:center;padding:16px;">Loading...</div>
+      </div>
+    </div>
+  </div>
+
   <div class="tab-page active" id="page-script">
     <div class="sub-tab-row">
       <div class="sub-tab-label">CALL FLOW</div>
@@ -8930,6 +9082,340 @@ let ltInited = false;
 // ── Admin cannot see leads tab (leads is agent-only — hide from admin) ──
 // The tab button is always visible but the page is empty for admin (who has no personal leads)
 // We already gate ltInit with !currentUser.isAdmin
+
+// ══════════════════════════════════════════════════════════
+// ══ GOOD JOB BANNER + ADMIN DAILY LEADS FEATURE ══════════
+// ══════════════════════════════════════════════════════════
+
+const GJ_QUOTES = [
+  "AMAZING WORK, TEAM!", "YOU'RE ON FIRE TODAY!", "CRUSHING IT!", "LEGENDS IN THE MAKING!",
+  "THAT'S HOW IT'S DONE!", "UNSTOPPABLE FORCE!", "WINNERS SHOW UP!", "EXCELLENCE EVERY DAY!",
+  "BUILT DIFFERENT!", "THE GRIND PAYS OFF!", "CHAMPIONS AT WORK!", "NEXT LEVEL PERFORMANCE!",
+  "NOTHING CAN STOP THIS TEAM!", "GREATNESS IS SHOWING UP DAILY!", "LET'S GET IT!",
+  "THAT'S THE SPIRIT!", "KEEP THAT ENERGY!", "OUTSTANDING!", "TOP TIER TALENT!",
+  "MAKING MOVES!", "THIS TEAM IS ELITE!", "LOCKED IN AND LOCKED OUT!", "PURE EXCELLENCE!",
+  "THE BEST JUST GOT BETTER!", "BRING THAT ENERGY!", "WE RUN THIS!", "ABSOLUTELY CRUSHING IT!",
+  "THE HUSTLE IS REAL!", "FOCUSED AND FEARLESS!", "WINNING MENTALITY!", "NO DAYS OFF!",
+  "BUILT FOR THIS!", "MISSION: ACCOMPLISHED!", "THE COMEBACK IS ALWAYS STRONGER!",
+  "CONSISTENCY IS KEY — AND YOU HAVE IT!", "HARD WORK ALWAYS WINS!", "STAY HUNGRY!",
+  "DEDICATION LEVEL: ELITE!", "THE TEAM THAT WORKS TOGETHER WINS TOGETHER!", "KEEP CLIMBING!",
+  "EVERY LEAD IS A NEW OPPORTUNITY!", "TURN LEADS INTO LEGENDS!", "DIAL IN AND WIN!",
+  "MOMENTUM IS BUILDING!", "THE ENERGY IN HERE IS UNMATCHED!", "IMPACT PLAYERS ONLY!",
+  "RISING TO THE OCCASION!", "STARS ALIGNED TODAY!", "GAME ON!", "THIS IS YOUR MOMENT!",
+  "GO GET WHAT'S YOURS!", "MAXIMUM EFFORT, MAXIMUM RESULTS!", "ABSOLUTE FIRE TODAY!",
+  "THE BEST SHIFT STARTS NOW!", "LEAD THE WAY!", "BELIEVE AND ACHIEVE!", "THE WORK SPEAKS!",
+  "YOU'RE NOT JUST GOOD — YOU'RE GREAT!", "EACH CALL IS A CHANCE TO SHINE!", "BEAST MODE ACTIVATED!",
+  "PERFORMANCE UNLOCKED!", "YOU MAKE THIS TEAM GREAT!", "PRECISION AND PASSION!",
+  "THAT'S THE ENERGY WE NEEDED!", "SETTING THE STANDARD!", "EXCELLENCE IS THE HABIT!",
+  "CLEAR EYES, FULL HEARTS, CAN'T LOSE!", "THE GRIND NEVER STOPS!", "THIS IS WHY WE DO IT!",
+  "ALL DAY EVERY DAY!", "POWER THROUGH!", "ZERO LIMITS TODAY!", "WE CAME TO WIN!",
+  "THE BEST VERSION OF THIS TEAM — RIGHT NOW!", "FUELED BY PURPOSE!", "RELENTLESS!",
+  "SOMETHING SPECIAL HAPPENING HERE!", "BELIEVE IN THE PROCESS!", "OUTWORK. OUTPERFORM.",
+  "STEP UP AND SHOW OUT!", "THE DIFFERENCE BETWEEN GOOD AND GREAT IS YOU!", "LET'S DOMINATE!",
+  "EVERY LEAD COUNTS!", "YOU'VE EARNED THIS!", "THE STANDARD IS THE STANDARD!",
+  "NOTHING CAN HOLD US BACK!", "INCREDIBLE EFFORT!", "THIS TEAM DELIVERS!", "KEEP PUSHING!",
+  "STRONGER TOGETHER!", "OWN EVERY CONVERSATION!", "HUNGRY, HUMBLE, HARDWORKING!",
+  "THE MOMENTUM IS YOURS — KEEP IT!", "THIS IS PEAK PERFORMANCE!", "YOUR BEST SHIFT YET!",
+  "RISE AND GRIND!", "THE RESULT OF HARD WORK IS SHOWING!", "FORWARD — ALWAYS FORWARD!",
+  "THIS IS WHAT GREATNESS LOOKS LIKE!", "EFFORT + ATTITUDE = RESULTS!", "WE MOVE AS ONE!",
+  "TAKING THE DAY BY STORM!", "BORN TO WIN!", "TODAY'S A NEW CHANCE TO BE GREAT!",
+  "SHOW THEM HOW IT'S DONE!", "THE GRIT IS REAL!", "RELENTLESS PURSUIT OF EXCELLENCE!",
+  "DIALED IN!", "EVERY REP IS A CHAMPION!", "THE WINNING CULTURE IS ALIVE!", "IMPACT. EVERY. CALL.",
+  "WALK IN LIKE YOU OWN IT!", "THIS IS A WINNING TEAM!", "DELIVERING GREATNESS DAILY!",
+  "TOP OF THE LEADERBOARD IS EARNED — AND YOU'RE EARNING IT!", "FIRE ON ALL CYLINDERS!",
+  "SMOOTH AND CONFIDENT — THAT'S THIS TEAM!", "DRIVE. DETERMINATION. DOMINATION.",
+  "GREAT DAYS ARE MADE OF GREAT CHOICES!", "THE GRIND IS THE GLORY!", "UNSTOPPABLE MINDSET!",
+  "MAKING THE MOST OF EVERY LEAD!", "THE DREAM TEAM IS AT WORK!", "ABSOLUTE UNITS!",
+  "LOCKED AND LOADED!", "TAKING IT TO THE NEXT LEVEL!", "CHAMPIONS DON'T STOP!", "WOW — JUST WOW!",
+  "MAKING IT LOOK EASY!", "THE ENERGY IS CONTAGIOUS!", "EXCELLENCE IS YOUR STANDARD!",
+  "WE SET THE TONE!", "LOOK AT THIS TEAM GO!", "DELIVERING ON EVERY PROMISE!",
+  "PURE GOLD TODAY!", "TODAY WE SHINE!", "THIS IS WHAT CONSISTENCY LOOKS LIKE!",
+  "THE MACHINE IS RUNNING!", "FIRST CLASS EFFORT!", "TURNING LEADS INTO WINS!",
+  "THE NUMBERS DON'T LIE — YOU'RE GREAT!", "PERFORMANCE THAT INSPIRES!", "FULL SEND!",
+  "SHOW UP. STAND OUT. WIN.", "THIS IS IT — YOUR MOMENT!", "EVERY DIAL IS A DESTINY!",
+  "THE BEST TEAM IN THE BUILDING!", "CONFIDENCE IS KEY — AND YOU HAVE IT!", "LEGENDARY STATUS!",
+  "THE WORK IS BEING RECOGNIZED!", "GO, TEAM, GO!", "ALL ENGINES ON!", "FUELED BY PASSION!",
+  "THE RESULTS ARE SPEAKING FOR THEMSELVES!", "A+ PERFORMANCE TODAY!", "WE DON'T JUST SHOW UP — WE SHOW OUT!",
+  "MOMENTUM IS A BEAUTIFUL THING!", "THE HUSTLE NEVER SLEEPS!", "FIRE IN THE BELLY TODAY!",
+  "GREAT ATTITUDE = GREAT RESULTS!", "WINNING ISN'T A GOAL — IT'S A HABIT!", "TOTAL DOMINATION!",
+  "REAL ONES DO THE WORK!", "THE EFFORT IS THROUGH THE ROOF!", "SUCCESS LOOKS GOOD ON YOU!",
+  "POWERED BY PURPOSE!", "DIALING WITH DESTINY!", "EVERY OPPORTUNITY SEIZED!",
+  "NO SHORTCUTS — JUST RESULTS!", "THE ELITE SHOW UP WHEN IT MATTERS MOST!",
+  "TEAM EFFORT. TEAM WIN.", "PASSION MEETS PERFORMANCE!", "THE BEST IS YET TO COME — BUT TODAY IS GREAT!",
+  "WE LIVE FOR THESE MOMENTS!", "FULL THROTTLE!", "TALENT MEETS HUSTLE!", "RESULTS ARE IN — YOU'RE WINNING!",
+  "THE BLUEPRINT FOR SUCCESS IS BEING WRITTEN TODAY!", "STEADY. FOCUSED. WINNING.",
+  "DON'T JUST MEET EXPECTATIONS — EXCEED THEM!", "CRUSHING EVERY OBSTACLE!", "BUILT TOUGH, BUILT TO WIN!",
+  "THE MISSION IS CLEAR — DELIVER!", "RISING STARS ON THE FLOOR TODAY!", "GO BEYOND GOOD!",
+  "OUTPERFORM. EVERY. TIME.", "LOCK IN!", "THIS TEAM KNOWS HOW TO WIN!", "ELITE EXECUTION!",
+  "IT'S A GREAT DAY TO BE GREAT!", "THE GOAL IS IN SIGHT — PUSH FOR IT!", "REMARKABLE EFFORT!",
+  "THE CEILING IS NOT THE LIMIT!", "EACH ONE. REACH ONE. WIN.", "DREAM BIG, WORK BIGGER!",
+  "CONFIDENCE + CONSISTENCY = CHAMPION!", "EVERY AGENT IS A STAR TODAY!", "LEAD THE CHARGE!",
+  "TURNING EFFORT INTO EXCELLENCE!", "THE REWARD IS COMING — KEEP WORKING!", "HEART OF A CHAMPION!",
+  "PUSH THROUGH AND PREVAIL!", "THIS IS THE WINNING FORMULA!", "WE TAKE PRIDE IN THE PROCESS!",
+  "DIGGING DEEP AND DELIVERING!", "TEAM BDS: NEVER SETTLE!", "PRODUCTION MODE: MAXIMUM!",
+  "STACKING WINS ONE LEAD AT A TIME!", "THE ONLY WAY IS UP!", "SHOWING UP AND SHOWING OUT!",
+  "THE ENERGY YOU BRING DEFINES THE RESULT!", "KEEP STACKING THOSE W'S!", "WE EAT WHEN WE WORK!",
+  "PRECISION. PERSISTENCE. PERFORMANCE.", "THE FLOOR IS ELECTRIC TODAY!", "ZERO EXCUSES. ALL RESULTS.",
+  "GOOD VIBES AND GREAT NUMBERS!", "THE TEAM THAT GRINDS TOGETHER SHINES TOGETHER!",
+  "GAME RECOGNIZES GAME — AND THIS IS THE REAL DEAL!", "ON A MISSION AND WINNING!"
+];
+
+let gjBannerTimer    = null;
+let gjCountdownTimer = null;
+let gjSecondsLeft    = 120;
+let gjDailyLeadsListener = null;
+let gjLastNotifId    = null;
+
+// ── Start listening for daily lead notifications (agent-side) ──
+function startDailyLeadsListener(){
+  if(gjDailyLeadsListener) gjDailyLeadsListener();
+  const todayStr = getTodayGY();
+  gjDailyLeadsListener = db.collection('dailyLeadNotifs').doc(todayStr)
+    .onSnapshot(snap => {
+      if(!snap.exists) return;
+      const d = snap.data();
+      if(!d || !d.pushedAt) return;
+      // Use pushedAt timestamp as unique ID to detect new pushes
+      const notifId = d.pushedAt.toMillis ? String(d.pushedAt.toMillis()) : String(d.pushedAt);
+      if(notifId === gjLastNotifId) return; // same push, ignore
+      gjLastNotifId = notifId;
+      // Show banner — on ALL sessions including admin so admin can preview it
+      showGoodJobBanner(d.agents || []);
+    }, e => { console.warn('Daily leads listener error:', e); });
+}
+
+function showGoodJobBanner(agents){
+  // Pick a random quote
+  const quote = GJ_QUOTES[Math.floor(Math.random() * GJ_QUOTES.length)];
+  document.getElementById('goodjob-quote').textContent = quote;
+
+  // Build agent chips
+  const agentsEl = document.getElementById('goodjob-agents');
+  if(agents.length){
+    agentsEl.innerHTML = agents.map(a =>
+      `<div class="gj-agent-chip">👤 ${a.name} <span class="gj-count">${a.count} lead${a.count !== 1 ? 's' : ''}</span></div>`
+    ).join('');
+  } else {
+    agentsEl.innerHTML = '';
+  }
+
+  // Flash the leads tab button to attract attention
+  const leadsTabBtn = document.getElementById('tab-leads');
+  if(leadsTabBtn){
+    leadsTabBtn.classList.remove('tab-leads-flash');
+    void leadsTabBtn.offsetWidth; // reflow
+    leadsTabBtn.classList.add('tab-leads-flash');
+    setTimeout(() => leadsTabBtn.classList.remove('tab-leads-flash'), 2500);
+  }
+
+  // Show banner
+  const banner = document.getElementById('goodjob-banner');
+  banner.classList.add('show');
+
+  // Clear any existing timers
+  if(gjBannerTimer)    clearTimeout(gjBannerTimer);
+  if(gjCountdownTimer) clearInterval(gjCountdownTimer);
+
+  // Countdown
+  gjSecondsLeft = 120;
+  updateGjProgress();
+  gjCountdownTimer = setInterval(() => {
+    gjSecondsLeft--;
+    updateGjProgress();
+    if(gjSecondsLeft <= 0){
+      clearInterval(gjCountdownTimer);
+      closeGoodJobBanner();
+    }
+  }, 1000);
+
+  // Auto close after 2 min
+  gjBannerTimer = setTimeout(() => closeGoodJobBanner(), 120000);
+}
+
+function updateGjProgress(){
+  const pct = (gjSecondsLeft / 120) * 100;
+  const bar  = document.getElementById('goodjob-progress');
+  if(bar) bar.style.width = pct + '%';
+  const cd = document.getElementById('gj-countdown');
+  if(cd){
+    const m = Math.floor(gjSecondsLeft / 60);
+    const s = gjSecondsLeft % 60;
+    cd.textContent = m + ':' + String(s).padStart(2,'0');
+  }
+}
+
+function closeGoodJobBanner(){
+  document.getElementById('goodjob-banner').classList.remove('show');
+  if(gjBannerTimer)    clearTimeout(gjBannerTimer);
+  if(gjCountdownTimer) clearInterval(gjCountdownTimer);
+}
+
+// Hook into init — start listener once user is logged in
+(function(){
+  const _origInit = window.init || function(){};
+  const _patchInit = function(){
+    _origInit.call(this);
+  };
+  // We hook into showDashboard which is called after login
+  const _origShowDashboard = window.showDashboard;
+  if(_origShowDashboard){
+    window.showDashboard = function(){
+      _origShowDashboard.apply(this, arguments);
+      // Small delay so currentUser is set
+      setTimeout(() => startDailyLeadsListener(), 500);
+    };
+  }
+})();
+
+// Also patch checkSession for reload case
+(function(){
+  const _origCheck = window.checkSession;
+  if(!_origCheck) return;
+  window.checkSession = async function(){
+    await _origCheck.apply(this, arguments);
+    // After session is validated, start listener
+    setTimeout(() => { if(currentUser) startDailyLeadsListener(); }, 800);
+  };
+})();
+
+// ══ ADMIN DAILY LEADS PANEL ══
+let dlRowCount = 0;
+
+function dlAddRow(name='', count=''){
+  dlRowCount++;
+  const id = 'dlrow-' + dlRowCount;
+  const container = document.getElementById('dl-rows');
+  const div = document.createElement('div');
+  div.className = 'dl-input-row';
+  div.id = id;
+  div.innerHTML = `
+    <input class="dl-agent-input" type="text" placeholder="Agent name..." value="${name}" list="dl-agent-suggestions">
+    <input class="dl-count-input" type="number" placeholder="# leads" min="1" max="20" value="${count}">
+    <button class="dl-remove-btn" onclick="document.getElementById('${id}').remove()">✕</button>
+  `;
+  container.appendChild(div);
+
+  // Build datalist from ROSTER if not already present
+  if(!document.getElementById('dl-agent-suggestions')){
+    const dl = document.createElement('datalist');
+    dl.id = 'dl-agent-suggestions';
+    if(typeof ROSTER !== 'undefined'){
+      Object.values(ROSTER).forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.name;
+        dl.appendChild(opt);
+      });
+    }
+    document.body.appendChild(dl);
+  }
+}
+
+function dlInitPanel(){
+  const container = document.getElementById('dl-rows');
+  if(!container) return;
+  container.innerHTML = '';
+  dlRowCount = 0;
+  // Start with 3 blank rows
+  dlAddRow(); dlAddRow(); dlAddRow();
+  dlLoadHistory();
+}
+
+async function dlPushLeads(){
+  const rows = document.querySelectorAll('#dl-rows .dl-input-row');
+  const agents = [];
+  rows.forEach(row => {
+    const nameEl  = row.querySelector('.dl-agent-input');
+    const countEl = row.querySelector('.dl-count-input');
+    const name  = (nameEl  ? nameEl.value.trim()  : '');
+    const count = parseInt(countEl ? countEl.value : '0') || 0;
+    if(name && count > 0) agents.push({ name, count });
+  });
+
+  if(!agents.length){
+    const s = document.getElementById('dl-push-status');
+    s.style.display = ''; s.style.color = 'var(--red)';
+    s.textContent = '⚠ Add at least one agent with a lead count.';
+    setTimeout(() => s.style.display = 'none', 3000);
+    return;
+  }
+
+  const btn = document.getElementById('dl-push-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Pushing...';
+
+  try{
+    const todayStr = getTodayGY();
+    // Write to Firestore — this triggers onSnapshot for ALL sessions
+    await db.collection('dailyLeadNotifs').doc(todayStr).set({
+      agents,
+      pushedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      pushedBy: (currentUser && currentUser.name) ? currentUser.name : 'Admin',
+      date: todayStr
+    });
+
+    const s = document.getElementById('dl-push-status');
+    s.style.display = ''; s.style.color = 'var(--green)';
+    s.textContent = '✅ Leads pushed! Banner is showing on all agent screens.';
+    setTimeout(() => s.style.display = 'none', 5000);
+
+    dlLoadHistory();
+  } catch(e){
+    console.error('dlPushLeads error:', e);
+    const s = document.getElementById('dl-push-status');
+    s.style.display = ''; s.style.color = 'var(--red)';
+    s.textContent = '⚠ Failed to push. Check console.';
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🚀 PUSH LEADS TO ALL AGENTS';
+}
+
+async function dlLoadHistory(){
+  const el = document.getElementById('dl-history');
+  if(!el) return;
+  try{
+    const todayStr = getTodayGY();
+    const snap = await db.collection('dailyLeadNotifs').doc(todayStr).get();
+    if(!snap.exists || !snap.data().pushedAt){
+      el.innerHTML = '<div style="color:var(--muted);font-size:0.78rem;text-align:center;padding:16px;">No leads pushed today yet.</div>';
+      return;
+    }
+    const d = snap.data();
+    const time = d.pushedAt && d.pushedAt.toDate ? d.pushedAt.toDate().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : '—';
+    el.innerHTML = `
+      <div class="dl-history-item">
+        <div class="dl-history-time">🕐 Pushed at ${time} by ${d.pushedBy||'Admin'}</div>
+        <div class="dl-history-agents">
+          ${(d.agents||[]).map(a=>`<div class="gj-agent-chip">👤 ${a.name} <span class="gj-count">${a.count}</span></div>`).join('')}
+        </div>
+      </div>`;
+  } catch(e){
+    el.innerHTML = '<div style="color:var(--red);font-size:0.78rem;text-align:center;padding:16px;">Error loading history.</div>';
+  }
+}
+
+// ── Patch switchAdminTab to handle dailyleads ──
+(function(){
+  const _origAdminSwitch = window.switchAdminTab || function(){};
+  window.switchAdminTab = function(tab, btn){
+    _origAdminSwitch.apply(this, arguments);
+    const dlEl = document.getElementById('admin-dailyleads');
+    if(!dlEl) return;
+    if(tab === 'dailyleads'){
+      // Hide all other admin sections
+      document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+      dlEl.style.display = '';
+      // Update active tab button
+      document.querySelectorAll('.adm-tab').forEach(b => b.classList.remove('active'));
+      const dlBtn = document.getElementById('atab-dailyleads');
+      if(dlBtn) dlBtn.classList.add('active');
+      // Init panel
+      dlInitPanel();
+    } else {
+      dlEl.style.display = 'none';
+    }
+  };
+})();
 </script>
 <input type="file" id="stats-csv-upload" accept=".csv" style="display:none;" onchange="handleStatsCSV(this)">
 </body>
