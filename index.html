@@ -571,6 +571,53 @@ body.is-admin #agent-target-widget{display:none !important;}
 .tb-sum-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
 .tb-sum-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;line-height:1;}
 .tb-sum-lbl{font-size:0.5rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+/* ── LEADERBOARD TAB ── */
+.tab-btn.t-leaderboard{background:linear-gradient(135deg,rgba(251,191,36,0.06),rgba(251,146,60,0.04));border-color:rgba(251,191,36,0.3);color:#b8960c;}
+.tab-btn.t-leaderboard:hover{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.5);color:var(--gold);}
+.tab-btn.t-leaderboard.active{background:rgba(251,191,36,0.15);border-color:var(--gold);color:var(--gold);box-shadow:0 0 18px rgba(251,191,36,0.3);}
+
+/* Leaderboard board */
+.lb-board{padding:14px 16px;}
+.lb-header{background:linear-gradient(135deg,#0d1a2e,#0a1424);border:1px solid #1e3050;border-radius:16px;padding:18px 22px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.lb-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;background:linear-gradient(90deg,#fbbf24,#fb923c,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:titleshine 3s linear infinite;}
+.lb-date{font-size:0.6rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:0.8;}
+.lb-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px;}
+.lb-sum-card{background:#0a1020;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+.lb-sum-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;line-height:1;}
+.lb-sum-lbl{font-size:0.45rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.lb-refresh-btn{padding:8px 16px;border-radius:8px;border:1px solid rgba(251,191,36,0.4);background:rgba(251,191,36,0.08);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.15s;}
+.lb-refresh-btn:hover{background:rgba(251,191,36,0.15);border-color:var(--gold);}
+.lb-team-filter{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.lb-team-btn{flex:1;padding:9px 10px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.15s;}
+.lb-team-btn.active{border-color:var(--gold);background:rgba(251,191,36,0.1);color:var(--gold);}
+.lb-entry{background:#090f1e;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:12px;transition:all 0.15s;}
+.lb-entry:hover{background:#0d1424;border-color:#2a3a5a;}
+.lb-entry.rank-1{border-color:rgba(251,191,36,0.6);box-shadow:0 0 20px rgba(251,191,36,0.15);}
+.lb-entry.rank-2{border-color:rgba(203,213,225,0.4);box-shadow:0 0 12px rgba(203,213,225,0.08);}
+.lb-entry.rank-3{border-color:rgba(251,146,60,0.4);box-shadow:0 0 12px rgba(251,146,60,0.08);}
+.lb-rank{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;text-align:center;line-height:1;}
+.lb-agent-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);letter-spacing:0.5px;}
+.lb-agent-meta{font-size:0.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.lb-xfer-count{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;line-height:1;color:var(--green);text-align:right;}
+.lb-xfer-lbl{font-size:0.45rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:right;}
+.lb-bar-wrap{grid-column:1/-1;height:5px;background:#0a1020;border-radius:20px;overflow:hidden;margin-top:-4px;}
+.lb-bar-fill{height:100%;border-radius:20px;transition:width 0.6s ease;}
+.lb-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:0.85rem;}
+.lb-no-data{background:rgba(251,191,36,0.06);border:1px dashed rgba(251,191,36,0.3);border-radius:12px;padding:28px;text-align:center;}
+.lb-status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.58rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-left:6px;}
+.lb-status-elite{background:rgba(251,191,36,0.2);color:var(--gold);border:1px solid rgba(251,191,36,0.5);}
+.lb-status-pro{background:rgba(96,165,250,0.15);color:var(--accent);border:1px solid rgba(96,165,250,0.4);}
+.lb-status-rookie{background:rgba(100,116,139,0.12);color:var(--muted);border:1px solid #2a3a5a;}
+.lb-team-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.55rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+.lb-team-bb{background:rgba(96,165,250,0.15);color:var(--accent);border:1px solid rgba(96,165,250,0.4);}
+.lb-team-pr{background:rgba(167,139,250,0.15);color:var(--purple);border:1px solid rgba(167,139,250,0.4);}
+.lb-team-rm{background:rgba(34,211,238,0.15);color:var(--cyan);border:1px solid rgba(34,211,238,0.4);}
+
+/* goal popup quote */
+.gp-quote{margin-top:14px;padding:12px 14px;background:linear-gradient(135deg,rgba(96,165,250,0.08),rgba(52,211,153,0.05));border:1px solid rgba(96,165,250,0.2);border-radius:10px;text-align:center;}
+.gp-quote-text{font-size:0.78rem;color:#94a3b8;line-height:1.7;font-style:italic;letter-spacing:0.3px;}
+.gp-quote-text strong{color:var(--accent2);font-style:normal;}
 </style>
 <body>
 
@@ -592,13 +639,16 @@ body.is-admin #agent-target-widget{display:none !important;}
   <div id="goal-popup-box">
     <div class="gp-title">SET TODAY'S TARGETS</div>
     <div class="gp-sub" id="gp-date-lbl">Loading date...</div>
-    <label class="gp-field-lbl" style="color:var(--green);">🟢 Low Target — Minimum you want to hit</label>
+    <label class="gp-field-lbl" style="color:var(--green);">🟢 Low Aim — Minimum you want to hit</label>
     <input class="gp-input" id="gp-low" type="number" min="1" max="999" placeholder="e.g. 12" style="border-color:rgba(52,211,153,0.3);" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='rgba(52,211,153,0.3)'" onkeydown="if(event.key==='Enter')document.getElementById('gp-high').focus()">
-    <label class="gp-field-lbl" style="color:var(--accent);">🔵 High Target — Stretch goal</label>
+    <label class="gp-field-lbl" style="color:var(--accent);">🔵 High Aim — Stretch goal</label>
     <input class="gp-input" id="gp-high" type="number" min="1" max="999" placeholder="e.g. 20" style="border-color:rgba(96,165,250,0.3);" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(96,165,250,0.3)'" onkeydown="if(event.key==='Enter')saveGoalPopup()">
     <div id="gp-err"></div>
     <button id="gp-save-btn" onclick="saveGoalPopup()">💾 LOCK IN MY TARGETS</button>
     <button id="gp-skip-btn" onclick="skipGoalPopup()">Skip for today</button>
+    <div class="gp-quote">
+      <div class="gp-quote-text">Enter your number — <strong>see it</strong>, vision it, embrace it,<br>and <strong>let it come to life</strong>. 🔥</div>
+    </div>
   </div>
 </div>
 
@@ -725,7 +775,8 @@ body.is-admin #agent-target-widget{display:none !important;}
   <button class="tab-btn t-asep   tab-span-2"         id="tab-asep"       onclick="switchTab('asep')">&#9881;&#65039; A.S.E.P</button>
   <button class="tab-btn t-sunday tab-span-3 sunday-glow" id="tab-sunday" onclick="switchTab('sunday')">&#128197; SUNDAY PROTOCOL</button>
   <button class="tab-btn t-dispo  tab-span-3"         id="tab-dispo"      onclick="switchTab('dispo')">&#9989; DISPO</button>
-  <button class="tab-btn t-lenders tab-span-6"        id="tab-lenders"    onclick="switchTab('lenders')">&#129309; LENDERS &amp; BENEFITS OF A PERSONAL LOAN</button>
+  <button class="tab-btn t-lenders tab-span-3"        id="tab-lenders"    onclick="switchTab('lenders')">&#129309; LENDERS &amp; BENEFITS</button>
+  <button class="tab-btn t-leaderboard tab-span-3"   id="tab-leaderboard" onclick="switchTab('leaderboard')">&#127942; LIVE RANKINGS</button>
   <button class="admin-tab-btn tab-span-6 admin-only" id="tab-admin"      onclick="switchAdminTab('profiles')">&#9889; ADMIN PANEL</button>
 </div>
 </div>
@@ -1846,6 +1897,40 @@ body.is-admin #agent-target-widget{display:none !important;}
     </div>
 
   </div>
+
+  <!-- ══ LEADERBOARD PAGE ══ -->
+  <div class="tab-page" id="page-leaderboard">
+    <div class="lb-board">
+      <div class="lb-header">
+        <div>
+          <div class="lb-title">🏆 LIVE RANKINGS</div>
+          <div class="lb-date" id="lb-date-lbl">Today's Performance</div>
+        </div>
+        <button class="lb-refresh-btn" onclick="loadLeaderboard()">🔄 REFRESH</button>
+      </div>
+
+      <!-- Summary row -->
+      <div class="lb-summary" id="lb-summary"></div>
+
+      <!-- Team filter -->
+      <div class="lb-team-filter">
+        <button class="lb-team-btn active" id="lb-f-all" onclick="lbSetTeam('all',this)">ALL TEAMS</button>
+        <button class="lb-team-btn" id="lb-f-bb" onclick="lbSetTeam('BB',this)">🏠 BERBICE</button>
+        <button class="lb-team-btn" id="lb-f-pr" onclick="lbSetTeam('PR',this)">🌴 PROVIDENCE</button>
+        <button class="lb-team-btn" id="lb-f-rm" onclick="lbSetTeam('RM',this)">🖥 REMOTE</button>
+      </div>
+
+      <!-- Board -->
+      <div id="lb-board-content">
+        <div class="lb-no-data">
+          <div style="font-size:2rem;margin-bottom:10px;">🏆</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:1px;margin-bottom:6px;">RANKINGS LOADING...</div>
+          <div style="font-size:0.75rem;color:var(--muted);">Live data updates automatically when admin uploads today's CSV</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="tab-page active" id="page-script">
     <div class="sub-tab-row">
       <div class="sub-tab-label">CALL FLOW</div>
@@ -7972,8 +8057,159 @@ if(_origRenderStatsTable){
     _origRenderStatsTable();
     // Refresh agent widget with new actual data
     if(currentUser && !currentUser.isAdmin) renderAgentTargetWidget();
+    // Refresh leaderboard if it's open
+    const lbPage = document.getElementById('page-leaderboard');
+    if(lbPage && lbPage.classList.contains('active')) loadLeaderboard();
   };
 }
+
+// ══════════════════════════════════════════════════════════════
+//  LEADERBOARD — Live Rankings (visible to all users)
+//  Reads from today's report in Firebase (same data as Agent Stats)
+// ══════════════════════════════════════════════════════════════
+
+let lbTeamFilter = 'all';
+let lbData = []; // cached leaderboard data
+
+async function loadLeaderboard(){
+  const content = document.getElementById('lb-board-content');
+  const summary = document.getElementById('lb-summary');
+  const dateLbl = document.getElementById('lb-date-lbl');
+  if(!content) return;
+
+  const today = getTodayGY();
+  if(dateLbl) dateLbl.textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',timeZone:'America/Guyana'}) + ' PERFORMANCE';
+
+  // Use already-loaded statsData first (admin has it loaded)
+  let data = [];
+  if(typeof statsData !== 'undefined' && statsData.length && typeof statsDataDate !== 'undefined' && statsDataDate === today){
+    data = statsData;
+  } else {
+    // Load from Firebase for agents (they don't have statsData)
+    content.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted);font-size:0.85rem;">⏳ Loading rankings...</div>';
+    try{
+      const snap = await db.collection('reports').doc(today).get();
+      if(snap.exists && snap.data().statsJSON){
+        data = JSON.parse(snap.data().statsJSON);
+      }
+    }catch(e){
+      console.warn('Leaderboard load failed:', e);
+    }
+  }
+
+  lbData = data;
+  renderLeaderboard();
+}
+
+function renderLeaderboard(){
+  const content = document.getElementById('lb-board-content');
+  const summary = document.getElementById('lb-summary');
+  if(!content) return;
+
+  if(!lbData || !lbData.length){
+    content.innerHTML = `
+      <div class="lb-no-data">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🏆</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text);letter-spacing:1.5px;margin-bottom:8px;">NO DATA YET TODAY</div>
+        <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;">Rankings will appear once the admin uploads today's CSV report.<br>Check back during the shift for live standings!</div>
+      </div>`;
+    if(summary) summary.innerHTML = '';
+    return;
+  }
+
+  // Filter by team
+  let agents = [...lbData].filter(r => r.xfer > 0 || r.calls > 0);
+  if(lbTeamFilter !== 'all') agents = agents.filter(a => (a.team||'') === lbTeamFilter);
+
+  // Sort by transfers descending
+  agents.sort((a,b) => b.xfer - a.xfer);
+
+  // Summary cards
+  const allAgents = lbData.filter(r => r.xfer > 0 || r.calls > 0);
+  const totalXfer  = allAgents.reduce((s,a) => s+a.xfer, 0);
+  const totalCalls = allAgents.reduce((s,a) => s+a.calls, 0);
+  const bbXfer = allAgents.filter(a=>a.team==='BB').reduce((s,a)=>s+a.xfer,0);
+  const prXfer = allAgents.filter(a=>a.team==='PR').reduce((s,a)=>s+a.xfer,0);
+  const rmXfer = allAgents.filter(a=>a.team==='RM'||(!a.team||a.team==='BB'||a.team==='PR'?false:true)).reduce((s,a)=>s+a.xfer,0);
+  const activeReps = allAgents.filter(a => a.xfer > 0).length;
+
+  if(summary){
+    summary.innerHTML = [
+      {label:'FLOOR TOTAL',    val: totalXfer,              color:'var(--green)'},
+      {label:'ACTIVE REPS',    val: activeReps,             color:'var(--cyan)'},
+      {label:'🏠 BERBICE',     val: bbXfer,                 color:'var(--accent)'},
+      {label:'🌴 PROVIDENCE',  val: prXfer,                 color:'var(--purple)'},
+    ].map(s => `<div class="lb-sum-card">
+      <div class="lb-sum-val" style="color:${s.color};">${s.val}</div>
+      <div class="lb-sum-lbl">${s.label}</div>
+    </div>`).join('');
+  }
+
+  if(!agents.length){
+    content.innerHTML = '<div class="lb-empty">No agents found for this team filter.</div>';
+    return;
+  }
+
+  const maxXfer = agents[0].xfer || 1;
+  let html = '';
+
+  agents.forEach((a, idx) => {
+    const rank  = idx + 1;
+    const medal = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'';
+    const rankClass = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'';
+    const rankColor = rank===1?'var(--gold)':rank===2?'#cbd5e1':rank===3?'var(--orange)':'var(--muted)';
+    const barPct  = Math.round((a.xfer / maxXfer) * 100);
+    const teamLabel = a.team==='BB'?'BB':a.team==='PR'?'PR':a.team||'RM';
+    const teamBadgeClass = a.team==='BB'?'lb-team-bb':a.team==='PR'?'lb-team-pr':'lb-team-rm';
+
+    // Status label based on xfer count
+    let statusLabel = '', statusClass = '';
+    if(a.xfer >= 10){ statusLabel = 'ELITE STATUS'; statusClass = 'lb-status-elite'; }
+    else if(a.xfer >= 5){ statusLabel = 'PRO STATUS'; statusClass = 'lb-status-pro'; }
+    else{ statusLabel = 'ROOKIE STATUS'; statusClass = 'lb-status-rookie'; }
+
+    const barColor = a.team==='BB' ? 'var(--accent)' : a.team==='PR' ? 'var(--purple)' : 'var(--cyan)';
+
+    html += `
+    <div class="lb-entry ${rankClass}">
+      <div class="lb-rank" style="color:${rankColor};">${medal || ('<span style="font-size:0.9rem;color:var(--muted);">'+String(rank).padStart(2,'0')+'</span>')}</div>
+      <div>
+        <div class="lb-agent-name">${a.name}</div>
+        <div class="lb-agent-meta" style="color:${rankColor==='.var(--muted)'?'var(--muted)':rankColor};">
+          <span class="lb-status-badge ${statusClass}">${statusLabel}</span>
+          <span class="lb-team-badge ${teamBadgeClass}" style="margin-left:5px;">${teamLabel}</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb-xfer-count">${a.xfer}</div>
+        <div class="lb-xfer-lbl">TRANSFERS</div>
+      </div>
+      <div class="lb-bar-wrap">
+        <div class="lb-bar-fill" style="width:${barPct}%;background:linear-gradient(90deg,${barColor},var(--green));"></div>
+      </div>
+    </div>`;
+  });
+
+  content.innerHTML = html;
+}
+
+function lbSetTeam(team, btn){
+  lbTeamFilter = team;
+  document.querySelectorAll('.lb-team-btn').forEach(b => {
+    b.classList.remove('active');
+  });
+  if(btn) btn.classList.add('active');
+  renderLeaderboard();
+}
+
+// Hook into switchTab to load leaderboard when tab is opened
+const _origSwitchTab = switchTab;
+switchTab = function(tab){
+  _origSwitchTab(tab);
+  if(tab === 'leaderboard'){
+    loadLeaderboard();
+  }
+};
 </script>
 <input type="file" id="stats-csv-upload" accept=".csv" style="display:none;" onchange="handleStatsCSV(this)">
 </body>
