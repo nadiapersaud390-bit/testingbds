@@ -8324,8 +8324,9 @@ function renderLeaderboard(){
     if(podium) podium.style.display = 'none';
   }
 
-  // ── FULL LIST ──
+  // ── FULL LIST — 3 per row grid ──
   if(list){
+    list.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:7px;';
     list.innerHTML = data.map((agent, idx)=>{
       const rank = idx + 1;
       const isMe = myName && agent.name.toLowerCase().trim() === myName;
@@ -8344,21 +8345,23 @@ function renderLeaderboard(){
         if(rAgent) agentStatus = rAgent.status || '';
       }
 
-      return `<div class="lb-card${isMe?' lb-me':''}">
-        <div class="lb-rank ${rankClass}">${rank<=3 ? (rank===1?'🥇':rank===2?'🥈':'🥉') : String(rank).padStart(2,'0')}</div>
-        <div class="lb-name">
+      return `<div class="lb-card${isMe?' lb-me':''}" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;">
+          <div class="lb-rank ${rankClass}" style="font-size:1.2rem;min-width:auto;">${rank<=3 ? (rank===1?'🥇':rank===2?'🥈':'🥉') : String(rank).padStart(2,'0')}</div>
+          <span class="lb-team-badge ${teamBadgeClass}">${teamLabel}</span>
+        </div>
+        <div class="lb-name" style="font-size:1rem;">
           ${agent.name}${isMe?' <span style="color:var(--gold);font-size:0.62rem;">· YOU</span>':''}
           ${agentStatus ? `<span class="lb-status">${agentStatus}</span>` : ''}
         </div>
-        <span class="lb-team-badge ${teamBadgeClass}">${teamLabel}</span>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:80px;">
-          <div class="lb-bar-wrap">
+        <div style="width:100%;">
+          <div class="lb-bar-wrap" style="width:100%;margin-bottom:6px;">
             <div class="lb-bar-fill" style="width:${barPct}%;background:${barColor};"></div>
           </div>
-        </div>
-        <div class="lb-xfer" style="color:${xferColor};">
-          ${agent.xfer}
-          <span class="lb-xfer-lbl">XFERS</span>
+          <div class="lb-xfer" style="color:${xferColor};font-size:1.8rem;">
+            ${agent.xfer}
+            <span class="lb-xfer-lbl" style="font-size:0.5rem;">XFERS</span>
+          </div>
         </div>
       </div>`;
     }).join('');
@@ -8518,7 +8521,7 @@ let ltLeads           = {};   // { [leadId]: leadData }
 let ltSaveTimer       = null;
 let ltUnsubscribeLeads = null; // Firestore realtime listener unsubscribe
 
-const LT_STATUS_OPTIONS  = ['Open','Pending','Callback','Transferred','Closed - Won','Closed - Lost','No Contact'];
+const LT_STATUS_OPTIONS  = ['Open','Pending','Callback','Transferred','Closed - Won','Closed - Lost','No Contact','Custom...'];
 const LT_RESULT_OPTIONS  = ['—','Transferred','Not Interested','No Answer','Voicemail','Call Back','Wrong Number','Qualified','Declined'];
 
 // ── Called when Leads tab is opened ──
@@ -8787,9 +8790,11 @@ function ltRenderTable(){
   tbody.innerHTML = rows.map(lead => {
     const id = lead.id || lead.leadId;
     const statusClass = ltGetStatusClass(lead.openStatus);
+    const isCustomStatus = lead.openStatus && !LT_STATUS_OPTIONS.slice(0,-1).includes(lead.openStatus);
+    const selectVal = isCustomStatus ? 'Custom...' : (lead.openStatus || 'Open');
 
     const statusOptions = LT_STATUS_OPTIONS.map(s =>
-      `<option value="${s}"${lead.openStatus===s?' selected':''}>${s}</option>`
+      `<option value="${s}"${selectVal===s?' selected':''}>${s}</option>`
     ).join('');
 
     const resultOptions = LT_RESULT_OPTIONS.map(r =>
@@ -8809,9 +8814,14 @@ function ltRenderTable(){
         placeholder="(000) 000-0000"
         oninput="ltSaveField('${id}','teleNum',this.value)"></td>
       <td>
-        <select class="lt-cell-select" onchange="ltSaveField('${id}','openStatus',this.value);ltUpdateRowStatus(this,'${id}')">
+        <select class="lt-cell-select" onchange="ltStatusSelectChange(this,'${id}')">
           ${statusOptions}
         </select>
+        <input class="lt-cell-input" type="text" id="lt-custom-status-${id}"
+          placeholder="Type custom status..."
+          value="${isCustomStatus ? ltEsc(lead.openStatus) : ''}"
+          style="margin-top:4px;display:${isCustomStatus?'block':'none'};"
+          oninput="ltSaveField('${id}','openStatus',this.value)">
       </td>
       <td><textarea class="lt-cell-textarea" placeholder="Notes, callbacks, history..."
         oninput="ltSaveField('${id}','notes',this.value)">${ltEsc(lead.notes)}</textarea></td>
@@ -8862,6 +8872,22 @@ function ltRenderStats(rows){
       📅 Week: <strong style="color:var(--text);">${ltWeeks.find(w=>w.id===ltCurrentWeekId)?.label||'—'}</strong>
     </div>
   `;
+}
+
+// ── Handle status select change — show/hide custom input ──
+function ltStatusSelectChange(select, leadId){
+  const val = select.value;
+  const customInput = document.getElementById('lt-custom-status-' + leadId);
+  if(val === 'Custom...'){
+    if(customInput){
+      customInput.style.display = 'block';
+      customInput.focus();
+    }
+    // Don't save "Custom..." to Firebase — wait for text input
+  } else {
+    if(customInput) customInput.style.display = 'none';
+    ltSaveField(leadId, 'openStatus', val);
+  }
 }
 
 // ── Update row background/highlight based on status ──
