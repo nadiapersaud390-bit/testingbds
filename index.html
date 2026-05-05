@@ -197,6 +197,144 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tab-btn.t-lenders{background:#0d1a2e;border-color:#3b82f6;color:#60a5fa;}
 .tab-btn.t-leaderboard.active{background:#1a0f00;border-color:#fbbf24;color:#fbbf24;box-shadow:0 0 14px rgba(251,191,36,0.3);}
 .tab-btn.t-leaderboard{background:#0d1a2e;border-color:rgba(251,191,36,0.4);color:var(--gold);}
+.tab-btn.t-leads.active{background:#0a1a10;border-color:#34d399;color:#34d399;box-shadow:0 0 14px rgba(52,211,153,0.25);}
+.tab-btn.t-leads{background:#0d1a2e;border-color:rgba(52,211,153,0.3);color:var(--green);}
+
+/* ══ LEAD TRACKER STYLES ══ */
+#page-leads{flex-direction:column;}
+.lt-header{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  padding:14px 18px 10px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.lt-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;
+  background:linear-gradient(90deg,#34d399,#60a5fa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.lt-week-selector{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.lt-week-pill{
+  padding:6px 14px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--surface);
+  color:var(--muted);font-family:'Barlow Condensed',sans-serif;
+  font-size:0.78rem;font-weight:800;letter-spacing:1px;
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.lt-week-pill:hover{border-color:#3a4a6a;color:var(--text);}
+.lt-week-pill.active{
+  background:rgba(52,211,153,0.12);border-color:var(--green);color:var(--green);
+}
+.lt-week-pill.del-week{
+  border-color:rgba(248,113,113,0.3);color:var(--red);background:rgba(248,113,113,0.05);
+}
+.lt-week-pill.del-week:hover{border-color:var(--red);background:rgba(248,113,113,0.12);}
+.lt-new-week-btn{
+  padding:7px 16px;border-radius:9px;border:none;
+  background:linear-gradient(90deg,#34d399,#60a5fa);
+  color:#000;font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;font-weight:900;letter-spacing:1.5px;
+  cursor:pointer;transition:filter 0.15s;white-space:nowrap;
+}
+.lt-new-week-btn:hover{filter:brightness(1.1);}
+.lt-week-label{
+  font-size:0.6rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);padding:0 4px;
+}
+.lt-table-wrap{flex:1;overflow:auto;padding:10px 14px 14px;}
+.lt-table{
+  width:100%;border-collapse:collapse;font-size:0.78rem;
+  min-width:1000px;
+}
+.lt-table thead tr{background:#060d1a;position:sticky;top:0;z-index:5;}
+.lt-table th{
+  padding:9px 10px;text-align:left;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;
+  font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);border-bottom:2px solid #1a2a45;
+  white-space:nowrap;
+}
+.lt-table td{
+  padding:7px 8px;border-bottom:1px solid #0f1e35;
+  color:var(--text);vertical-align:middle;
+}
+.lt-table tbody tr:nth-child(odd) td{background:#070e1c;}
+.lt-table tbody tr:nth-child(even) td{background:#060b18;}
+.lt-table tbody tr:hover td{background:#0d1a2e;}
+.lt-cell-input{
+  width:100%;padding:5px 7px;
+  background:#060b18;border:1px solid #1a2a45;border-radius:6px;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:0.78rem;
+  outline:none;transition:border-color 0.15s;
+  min-width:80px;
+}
+.lt-cell-input:focus{border-color:var(--green);}
+.lt-cell-select{
+  width:100%;padding:5px 7px;
+  background:#060b18;border:1px solid #1a2a45;border-radius:6px;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:0.78rem;
+  outline:none;cursor:pointer;
+}
+.lt-cell-select:focus{border-color:var(--green);}
+.lt-cell-textarea{
+  width:100%;padding:5px 7px;
+  background:#060b18;border:1px solid #1a2a45;border-radius:6px;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:0.78rem;
+  outline:none;resize:vertical;min-height:40px;min-width:140px;
+  transition:border-color 0.15s;
+}
+.lt-cell-textarea:focus{border-color:var(--green);}
+.lt-status-pill{
+  display:inline-block;padding:2px 9px;border-radius:8px;
+  font-size:0.62rem;font-weight:800;letter-spacing:1px;white-space:nowrap;
+}
+.lt-status-open{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.4);}
+.lt-status-pending{background:rgba(251,191,36,0.15);color:var(--gold);border:1px solid rgba(251,191,36,0.4);}
+.lt-status-closed{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.4);}
+.lt-status-callback{background:rgba(167,139,250,0.15);color:var(--purple);border:1px solid rgba(167,139,250,0.4);}
+.lt-status-transferred{background:rgba(96,165,250,0.15);color:var(--accent);border:1px solid rgba(96,165,250,0.4);}
+.lt-del-btn{
+  padding:4px 8px;border-radius:6px;border:1px solid rgba(248,113,113,0.3);
+  background:rgba(248,113,113,0.05);color:var(--red);
+  font-size:0.68rem;font-weight:800;cursor:pointer;transition:all 0.15s;
+  font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;white-space:nowrap;
+}
+.lt-del-btn:hover{background:rgba(248,113,113,0.15);border-color:var(--red);}
+.lt-add-row-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:9px;border:1.5px dashed rgba(52,211,153,0.4);
+  background:rgba(52,211,153,0.04);color:var(--green);
+  font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:1.5px;
+  cursor:pointer;transition:all 0.15s;margin-top:10px;width:fit-content;
+}
+.lt-add-row-btn:hover{border-color:var(--green);background:rgba(52,211,153,0.08);}
+.lt-saving-indicator{
+  font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--green);opacity:0;transition:opacity 0.3s;
+  display:flex;align-items:center;gap:4px;
+}
+.lt-saving-indicator.show{opacity:1;}
+.lt-empty-state{
+  text-align:center;padding:40px 20px;color:var(--muted);
+}
+.lt-no-week{
+  text-align:center;padding:50px 20px;
+}
+.lt-week-stats{
+  display:flex;gap:10px;flex-wrap:wrap;
+  padding:8px 18px 4px;
+  flex-shrink:0;
+}
+.lt-stat-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:20px;
+  font-size:0.62rem;font-weight:800;letter-spacing:1px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--muted);
+}
 
 /* ── LEADERBOARD STYLES ── */
 .lb-card{
@@ -762,6 +900,7 @@ body.is-admin #agent-target-widget{display:none !important;}
   <button class="tab-btn t-dispo  tab-span-3"         id="tab-dispo"      onclick="switchTab('dispo')">&#9989; DISPO</button>
   <button class="tab-btn t-lenders tab-span-3"        id="tab-lenders"    onclick="switchTab('lenders')">&#129309; LENDERS &amp; BENEFITS OF A PERSONAL LOAN</button>
   <button class="tab-btn t-leaderboard tab-span-3"    id="tab-leaderboard" onclick="switchTab('leaderboard')">&#127942; LEADERBOARD</button>
+  <button class="tab-btn t-leads tab-span-6"          id="tab-leads"       onclick="switchTab('leads')">&#128196; MY LEAD TRACKER</button>
   <button class="admin-tab-btn tab-span-6 admin-only" id="tab-admin"      onclick="switchAdminTab('profiles')">&#9889; ADMIN PANEL</button>
 </div>
 </div>
@@ -2474,6 +2613,63 @@ body.is-admin #agent-target-widget{display:none !important;}
       <!-- Rankings list -->
       <div id="lb-list" style="display:flex;flex-direction:column;gap:7px;"></div>
     </div>
+  </div>
+
+  <!-- ══ MY LEAD TRACKER TAB ══ -->
+  <div class="tab-page" id="page-leads">
+
+    <!-- Header -->
+    <div class="lt-header">
+      <div>
+        <div class="lt-title">📋 MY LEAD TRACKER</div>
+        <div id="lt-agent-lbl" style="font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px;"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div id="lt-saving" class="lt-saving-indicator">✓ SAVED</div>
+        <button class="lt-new-week-btn" onclick="ltStartNewWeek()">＋ START NEW WEEK</button>
+      </div>
+    </div>
+
+    <!-- Week selector row -->
+    <div id="lt-week-selector" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 18px 4px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;">
+      <div class="lt-week-label">WEEKS:</div>
+      <div id="lt-week-pills" style="display:flex;gap:5px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="lt-week-stats" id="lt-stats-bar"></div>
+
+    <!-- Table area -->
+    <div class="lt-table-wrap" id="lt-table-wrap">
+      <div class="lt-no-week" id="lt-no-week-msg">
+        <div style="font-size:2rem;margin-bottom:10px;">📁</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:2px;color:var(--muted);">NO WEEKS YET</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:8px;">Click <strong style="color:var(--green);">+ START NEW WEEK</strong> to begin tracking your leads.</div>
+      </div>
+      <div id="lt-table-container" style="display:none;">
+        <div style="overflow-x:auto;">
+          <table class="lt-table" id="lt-table">
+            <thead>
+              <tr>
+                <th style="min-width:95px;">DATE</th>
+                <th style="min-width:140px;">CLIENT NAME</th>
+                <th style="min-width:90px;">FILE #</th>
+                <th style="min-width:110px;">TELE #</th>
+                <th style="min-width:110px;">OPEN STATUS</th>
+                <th style="min-width:180px;">HISTORY / NOTES</th>
+                <th style="min-width:85px;">DEBT</th>
+                <th style="min-width:120px;">ASSIGNED TO</th>
+                <th style="min-width:110px;">RESULT</th>
+                <th style="min-width:50px;text-align:center;">DEL</th>
+              </tr>
+            </thead>
+            <tbody id="lt-tbody"></tbody>
+          </table>
+        </div>
+        <button class="lt-add-row-btn" onclick="ltAddRow()">＋ ADD LEAD</button>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -8307,6 +8503,407 @@ openGoalPopup = function(isEdit){
     if(inp && currentUser && currentUser._quote) inp.value = currentUser._quote;
   }
 };
+
+// ════════════════════════════════════════════════════════════
+//  MY LEAD TRACKER
+//  Firebase path: leadTracker/{agentId}/weeks/{weekId}/leads/{leadId}
+//  Week doc: { weekId, label, startDate, agentId, agentName, createdAt }
+//  Lead doc: { leadId, weekId, agentId, date, clientName, fileNum, teleNum,
+//              openStatus, notes, debt, assignedTo, result, order, updatedAt }
+// ════════════════════════════════════════════════════════════
+
+let ltCurrentWeekId   = null;
+let ltWeeks           = [];   // array of week meta docs sorted by createdAt
+let ltLeads           = {};   // { [leadId]: leadData }
+let ltSaveTimer       = null;
+let ltUnsubscribeLeads = null; // Firestore realtime listener unsubscribe
+
+const LT_STATUS_OPTIONS  = ['Open','Pending','Callback','Transferred','Closed - Won','Closed - Lost','No Contact'];
+const LT_RESULT_OPTIONS  = ['—','Transferred','Not Interested','No Answer','Voicemail','Call Back','Wrong Number','Qualified','Declined'];
+
+// ── Called when Leads tab is opened ──
+async function ltInit(){
+  if(!currentUser || currentUser.isAdmin) return;
+
+  const lbl = document.getElementById('lt-agent-lbl');
+  if(lbl) lbl.textContent = currentUser.name + ' · ' + new Date().toLocaleDateString('en-US',{timeZone:'America/Guyana',weekday:'long',month:'long',day:'numeric'});
+
+  await ltLoadWeeks();
+}
+
+// ── Load all weeks for this agent ──
+async function ltLoadWeeks(){
+  if(!currentUser) return;
+  try{
+    const snap = await db.collection('leadTracker')
+      .doc(String(currentUser.id))
+      .collection('weeks')
+      .orderBy('createdAt','asc')
+      .get();
+
+    ltWeeks = [];
+    snap.forEach(doc => ltWeeks.push({id: doc.id, ...doc.data()}));
+
+    ltRenderWeekPills();
+
+    if(ltWeeks.length){
+      // Auto-select the latest week
+      const latest = ltWeeks[ltWeeks.length - 1];
+      ltSelectWeek(latest.id);
+    } else {
+      ltShowNoWeek();
+    }
+  }catch(e){
+    console.warn('LT: could not load weeks', e);
+    ltShowNoWeek();
+  }
+}
+
+// ── Render week pills ──
+function ltRenderWeekPills(){
+  const container = document.getElementById('lt-week-pills');
+  if(!container) return;
+
+  container.innerHTML = ltWeeks.map((w, idx) => {
+    const isActive = w.id === ltCurrentWeekId;
+    return `<div style="display:flex;align-items:center;gap:3px;">
+      <button class="lt-week-pill${isActive?' active':''}" onclick="ltSelectWeek('${w.id}')" id="lt-pill-${w.id}">
+        ${w.label || ('Week '+(idx+1))}
+      </button>
+      <button class="lt-week-pill del-week" onclick="ltDeleteWeek('${w.id}','${(w.label||'Week '+(idx+1)).replace(/'/g,'')}')" title="Delete this week">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ── Select a week and load its leads ──
+function ltSelectWeek(weekId){
+  ltCurrentWeekId = weekId;
+
+  // Update pill highlights
+  document.querySelectorAll('.lt-week-pill').forEach(p => {
+    p.classList.remove('active');
+  });
+  const activePill = document.getElementById('lt-pill-'+weekId);
+  if(activePill) activePill.classList.add('active');
+
+  // Detach previous listener
+  if(ltUnsubscribeLeads){
+    ltUnsubscribeLeads();
+    ltUnsubscribeLeads = null;
+  }
+
+  ltLeads = {};
+  document.getElementById('lt-no-week-msg').style.display = 'none';
+  document.getElementById('lt-table-container').style.display = 'block';
+
+  // Real-time listener for leads
+  try{
+    ltUnsubscribeLeads = db.collection('leadTracker')
+      .doc(String(currentUser.id))
+      .collection('weeks')
+      .doc(weekId)
+      .collection('leads')
+      .orderBy('order','asc')
+      .onSnapshot(snap => {
+        ltLeads = {};
+        snap.forEach(doc => { ltLeads[doc.id] = {id: doc.id, ...doc.data()}; });
+        ltRenderTable();
+      }, e => console.warn('LT leads listener error', e));
+  }catch(e){
+    console.warn('LT: listener setup error', e);
+    ltRenderTable();
+  }
+}
+
+// ── Show no-week state ──
+function ltShowNoWeek(){
+  document.getElementById('lt-no-week-msg').style.display = 'block';
+  document.getElementById('lt-table-container').style.display = 'none';
+  document.getElementById('lt-stats-bar').innerHTML = '';
+}
+
+// ── Start a new week ──
+async function ltStartNewWeek(){
+  if(!currentUser || currentUser.isAdmin) return;
+
+  const weekNum = ltWeeks.length + 1;
+  const now     = new Date();
+  const dateStr = now.toLocaleDateString('en-US',{timeZone:'America/Guyana',month:'short',day:'numeric'});
+  const label   = 'Week ' + weekNum + ' · ' + dateStr;
+
+  const weekRef = db.collection('leadTracker')
+    .doc(String(currentUser.id))
+    .collection('weeks')
+    .doc(); // auto-ID
+
+  try{
+    await weekRef.set({
+      weekId:    weekRef.id,
+      label,
+      weekNum,
+      startDate: getTodayGY(),
+      agentId:   String(currentUser.id),
+      agentName: currentUser.name || '',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    ltWeeks.push({id: weekRef.id, label, weekNum, startDate: getTodayGY()});
+    ltRenderWeekPills();
+    ltSelectWeek(weekRef.id);
+  }catch(e){
+    alert('Could not create new week: ' + e.message);
+  }
+}
+
+// ── Delete a week (with confirm) ──
+async function ltDeleteWeek(weekId, label){
+  if(!currentUser) return;
+  if(!confirm(`Delete "${label}" and ALL its leads? This cannot be undone.`)) return;
+
+  try{
+    // Delete all leads in the week first
+    const leadsSnap = await db.collection('leadTracker')
+      .doc(String(currentUser.id)).collection('weeks')
+      .doc(weekId).collection('leads').get();
+    const batch = db.batch();
+    leadsSnap.forEach(d => batch.delete(d.ref));
+    // Delete the week doc itself
+    batch.delete(db.collection('leadTracker').doc(String(currentUser.id)).collection('weeks').doc(weekId));
+    await batch.commit();
+
+    ltWeeks = ltWeeks.filter(w => w.id !== weekId);
+
+    if(ltCurrentWeekId === weekId){
+      if(ltUnsubscribeLeads){ ltUnsubscribeLeads(); ltUnsubscribeLeads = null; }
+      ltCurrentWeekId = null;
+      ltLeads = {};
+    }
+
+    ltRenderWeekPills();
+
+    if(ltWeeks.length){
+      const latest = ltWeeks[ltWeeks.length-1];
+      ltSelectWeek(latest.id);
+    } else {
+      ltShowNoWeek();
+    }
+  }catch(e){
+    alert('Could not delete week: ' + e.message);
+  }
+}
+
+// ── Add a new lead row ──
+async function ltAddRow(){
+  if(!currentUser || !ltCurrentWeekId) return;
+
+  const today   = getTodayGY();
+  const order   = Object.keys(ltLeads).length;
+  const leadRef = db.collection('leadTracker')
+    .doc(String(currentUser.id)).collection('weeks')
+    .doc(ltCurrentWeekId).collection('leads').doc();
+
+  const newLead = {
+    leadId:      leadRef.id,
+    weekId:      ltCurrentWeekId,
+    agentId:     String(currentUser.id),
+    date:        today,
+    clientName:  '',
+    fileNum:     '',
+    teleNum:     '',
+    openStatus:  'Open',
+    notes:       '',
+    debt:        '',
+    assignedTo:  '',
+    result:      '—',
+    order,
+    updatedAt:   firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  try{
+    await leadRef.set(newLead);
+    // Listener will pick this up and re-render
+  }catch(e){
+    alert('Could not add lead: ' + e.message);
+  }
+}
+
+// ── Delete a lead row ──
+async function ltDeleteRow(leadId){
+  if(!currentUser || !ltCurrentWeekId) return;
+  if(!confirm('Delete this lead? This cannot be undone.')) return;
+  try{
+    await db.collection('leadTracker')
+      .doc(String(currentUser.id)).collection('weeks')
+      .doc(ltCurrentWeekId).collection('leads').doc(leadId).delete();
+    // Listener handles re-render
+  }catch(e){
+    alert('Could not delete lead: ' + e.message);
+  }
+}
+
+// ── Save a field on a lead (debounced) ──
+function ltSaveField(leadId, field, value){
+  if(!currentUser || !ltCurrentWeekId) return;
+
+  // Update local cache immediately
+  if(ltLeads[leadId]) ltLeads[leadId][field] = value;
+
+  // Show saving indicator
+  const ind = document.getElementById('lt-saving');
+  if(ind){ ind.textContent = '⏳ SAVING...'; ind.classList.add('show'); }
+
+  clearTimeout(ltSaveTimer);
+  ltSaveTimer = setTimeout(async ()=>{
+    try{
+      await db.collection('leadTracker')
+        .doc(String(currentUser.id)).collection('weeks')
+        .doc(ltCurrentWeekId).collection('leads').doc(leadId)
+        .update({ [field]: value, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+      if(ind){ ind.textContent = '✓ SAVED'; setTimeout(()=>{ ind.classList.remove('show'); }, 2000); }
+    }catch(e){
+      console.warn('LT save error', e);
+      if(ind){ ind.textContent = '⚠ SAVE FAILED'; setTimeout(()=>{ ind.classList.remove('show'); }, 3000); }
+    }
+  }, 800);
+}
+
+// ── Render the leads table ──
+function ltRenderTable(){
+  const tbody = document.getElementById('lt-tbody');
+  if(!tbody) return;
+
+  const rows = Object.values(ltLeads).sort((a,b)=>(a.order||0)-(b.order||0));
+
+  if(!rows.length){
+    tbody.innerHTML = `<tr><td colspan="10" class="lt-empty-state">
+      <div style="font-size:1.2rem;margin-bottom:8px;">📭</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:1px;color:var(--muted);">NO LEADS YET</div>
+      <div style="font-size:0.72rem;margin-top:4px;">Click <strong style="color:var(--green);">+ ADD LEAD</strong> below the table.</div>
+    </td></tr>`;
+    ltRenderStats(rows);
+    return;
+  }
+
+  tbody.innerHTML = rows.map(lead => {
+    const id = lead.id || lead.leadId;
+    const statusClass = ltGetStatusClass(lead.openStatus);
+
+    const statusOptions = LT_STATUS_OPTIONS.map(s =>
+      `<option value="${s}"${lead.openStatus===s?' selected':''}>${s}</option>`
+    ).join('');
+
+    const resultOptions = LT_RESULT_OPTIONS.map(r =>
+      `<option value="${r}"${lead.result===r?' selected':''}>${r}</option>`
+    ).join('');
+
+    return `<tr id="lt-row-${id}">
+      <td><input class="lt-cell-input" type="date" value="${lead.date||''}"
+        onchange="ltSaveField('${id}','date',this.value)" style="min-width:110px;"></td>
+      <td><input class="lt-cell-input" type="text" value="${ltEsc(lead.clientName)}"
+        placeholder="Client name..."
+        oninput="ltSaveField('${id}','clientName',this.value)"></td>
+      <td><input class="lt-cell-input" type="text" value="${ltEsc(lead.fileNum)}"
+        placeholder="File #..."
+        oninput="ltSaveField('${id}','fileNum',this.value)"></td>
+      <td><input class="lt-cell-input" type="tel" value="${ltEsc(lead.teleNum)}"
+        placeholder="(000) 000-0000"
+        oninput="ltSaveField('${id}','teleNum',this.value)"></td>
+      <td>
+        <select class="lt-cell-select" onchange="ltSaveField('${id}','openStatus',this.value);ltUpdateRowStatus(this,'${id}')">
+          ${statusOptions}
+        </select>
+      </td>
+      <td><textarea class="lt-cell-textarea" placeholder="Notes, callbacks, history..."
+        oninput="ltSaveField('${id}','notes',this.value)">${ltEsc(lead.notes)}</textarea></td>
+      <td><input class="lt-cell-input" type="text" value="${ltEsc(lead.debt)}"
+        placeholder="$0"
+        oninput="ltSaveField('${id}','debt',this.value)" style="min-width:75px;"></td>
+      <td><input class="lt-cell-input" type="text" value="${ltEsc(lead.assignedTo)}"
+        placeholder="Assigned to..."
+        oninput="ltSaveField('${id}','assignedTo',this.value)"></td>
+      <td>
+        <select class="lt-cell-select" onchange="ltSaveField('${id}','result',this.value)">
+          ${resultOptions}
+        </select>
+      </td>
+      <td style="text-align:center;">
+        <button class="lt-del-btn" onclick="ltDeleteRow('${id}')">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  ltRenderStats(rows);
+}
+
+// ── Render stats bar ──
+function ltRenderStats(rows){
+  const bar = document.getElementById('lt-stats-bar');
+  if(!bar) return;
+
+  const total       = rows.length;
+  const transferred = rows.filter(r => (r.openStatus||'').toLowerCase().includes('transfer') || (r.result||'').toLowerCase().includes('transfer')).length;
+  const open        = rows.filter(r => r.openStatus === 'Open').length;
+  const closed      = rows.filter(r => (r.openStatus||'').toLowerCase().startsWith('closed')).length;
+
+  bar.innerHTML = `
+    <div class="lt-stat-chip" style="border-color:rgba(96,165,250,0.3);color:var(--accent);">
+      📋 <strong style="color:var(--text);">${total}</strong>&nbsp;Total Leads
+    </div>
+    <div class="lt-stat-chip" style="border-color:rgba(52,211,153,0.3);color:var(--green);">
+      ✅ <strong style="color:var(--text);">${transferred}</strong>&nbsp;Transferred
+    </div>
+    <div class="lt-stat-chip" style="border-color:rgba(251,191,36,0.3);color:var(--gold);">
+      🔓 <strong style="color:var(--text);">${open}</strong>&nbsp;Open
+    </div>
+    <div class="lt-stat-chip" style="border-color:rgba(248,113,113,0.3);color:var(--red);">
+      ✗ <strong style="color:var(--text);">${closed}</strong>&nbsp;Closed
+    </div>
+    <div class="lt-stat-chip" style="border-color:rgba(167,139,250,0.3);color:var(--purple);">
+      📅 Week: <strong style="color:var(--text);">${ltWeeks.find(w=>w.id===ltCurrentWeekId)?.label||'—'}</strong>
+    </div>
+  `;
+}
+
+// ── Update row background/highlight based on status ──
+function ltUpdateRowStatus(select, leadId){
+  // Optionally tint row in the future
+}
+
+// ── Get CSS class for status pill ──
+function ltGetStatusClass(status){
+  if(!status) return 'lt-status-open';
+  const s = status.toLowerCase();
+  if(s.includes('transfer')) return 'lt-status-transferred';
+  if(s.includes('callback'))  return 'lt-status-callback';
+  if(s.includes('pending'))   return 'lt-status-pending';
+  if(s.startsWith('closed'))  return 'lt-status-closed';
+  return 'lt-status-open';
+}
+
+// ── Escape HTML special chars for input values ──
+function ltEsc(str){
+  if(!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Hook into switchTab to init leads on first open ──
+let ltInited = false;
+(function(){
+  const _origSwitchForLeads = switchTab;
+  switchTab = function(tab){
+    _origSwitchForLeads(tab);
+    if(tab === 'leads'){
+      if(!ltInited){
+        ltInited = true;
+        ltInit();
+      }
+    }
+  };
+})();
+
+// ── Admin cannot see leads tab (leads is agent-only — hide from admin) ──
+// The tab button is always visible but the page is empty for admin (who has no personal leads)
+// We already gate ltInit with !currentUser.isAdmin
 </script>
 <input type="file" id="stats-csv-upload" accept=".csv" style="display:none;" onchange="handleStatsCSV(this)">
 </body>
