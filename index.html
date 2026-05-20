@@ -1737,38 +1737,6 @@ body.is-admin #agent-target-widget{display:none !important;}
           <div style="font-size:0.6rem;color:var(--muted);text-align:center;margin-top:8px;">
             Shift, Lunch &amp; Status → Google Sheet · Break → Firebase · Agent sees changes on next login
           </div>
-
-          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(248,113,113,0.2);">
-            <button onclick="confirmDeleteAgent()" id="pe-delete-btn"
-              style="width:100%;padding:11px;border-radius:9px;border:1.5px solid rgba(248,113,113,0.4);background:rgba(248,113,113,0.07);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;transition:all 0.15s;"
-              onmouseover="this.style.background='rgba(248,113,113,0.15)';this.style.borderColor='var(--red)'"
-              onmouseout="this.style.background='rgba(248,113,113,0.07)';this.style.borderColor='rgba(248,113,113,0.4)'">
-              🗑 DELETE AGENT FROM SYSTEM
-            </button>
-          </div>
-
-          <!-- ── DELETE CONFIRM POPUP ── -->
-          <div id="delete-agent-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:20000;align-items:center;justify-content:center;">
-            <div style="background:#0d1424;border:1.5px solid rgba(248,113,113,0.45);border-radius:16px;padding:28px 24px 22px;width:100%;max-width:400px;box-shadow:0 0 40px rgba(248,113,113,0.18);margin:16px;">
-              <div style="font-size:0.6rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:12px;">⚠️ CONFIRM DELETE</div>
-              <div id="delete-agent-modal-name" style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:8px;"></div>
-              <div style="font-size:0.78rem;color:#94a3b8;line-height:1.55;margin-bottom:20px;">This will permanently remove this agent from Firebase, the roster, and everywhere in the dashboard. This cannot be undone.</div>
-              <div style="display:flex;gap:8px;">
-                <button onclick="deleteAgent()" id="delete-agent-yes-btn" style="flex:1;padding:12px;border-radius:9px;border:none;background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;transition:all 0.15s;">✓ YES, DELETE</button>
-                <button onclick="cancelDeleteAgent()" style="padding:12px 18px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;transition:all 0.15s;">Cancel</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- ── DELETE RESULT POPUP ── -->
-          <div id="delete-agent-result-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:20001;align-items:center;justify-content:center;">
-            <div style="background:#0d1424;border:1.5px solid rgba(248,113,113,0.45);border-radius:16px;padding:28px 24px 22px;width:100%;max-width:400px;box-shadow:0 0 40px rgba(248,113,113,0.18);margin:16px;text-align:center;">
-              <div style="font-size:1.8rem;margin-bottom:10px;">❌</div>
-              <div style="font-size:0.6rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:10px;">UNABLE TO DELETE</div>
-              <div id="delete-agent-result-msg" style="font-size:0.8rem;color:#94a3b8;line-height:1.55;margin-bottom:20px;"></div>
-              <button onclick="document.getElementById('delete-agent-result-modal').style.display='none';" style="padding:11px 28px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;">Dismiss</button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -2626,6 +2594,11 @@ body.is-admin #agent-target-widget{display:none !important;}
           <div id="lb-date-lbl" style="font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px;"></div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <!-- Daily / Weekly mode toggle -->
+          <div style="display:flex;gap:4px;background:#080f1e;border:1px solid var(--border);border-radius:9px;padding:3px;">
+            <button onclick="lbSetMode('daily',this)" id="lb-m-daily" style="padding:5px 13px;border-radius:7px;border:none;background:var(--gold);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">📅 DAILY</button>
+            <button onclick="lbSetMode('weekly',this)" id="lb-m-weekly" style="padding:5px 13px;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">📆 WEEKLY</button>
+          </div>
           <button onclick="lbSetFilter('all',this)" id="lb-f-all" style="padding:6px 14px;border-radius:8px;border:2px solid var(--accent);background:#0b1a38;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;">ALL</button>
           <button onclick="lbSetFilter('BB',this)" id="lb-f-bb" style="padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;">🏠 BERB</button>
           <button onclick="lbSetFilter('PR',this)" id="lb-f-pr" style="padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;">🌴 PROV</button>
@@ -4359,63 +4332,6 @@ function selectProfile(userId){
 
   document.getElementById('profile-edit-panel').style.display='';
   document.getElementById('profile-edit-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-function confirmDeleteAgent(){
-  const agent = ROSTER[selectedProfileId];
-  const name = agent ? agent.name : 'this agent';
-  document.getElementById('delete-agent-modal-name').textContent = '🗑 Delete "' + name + '"?';
-  const modal = document.getElementById('delete-agent-modal');
-  modal.style.display = 'flex';
-  const yesBtn = document.getElementById('delete-agent-yes-btn');
-  if(yesBtn){ yesBtn.disabled=false; yesBtn.textContent='✓ YES, DELETE'; yesBtn.style.opacity='1'; }
-}
-function cancelDeleteAgent(){
-  document.getElementById('delete-agent-modal').style.display = 'none';
-}
-
-async function deleteAgent(){
-  if(!selectedProfileId) return;
-  const agent = ROSTER[selectedProfileId];
-  if(!agent){ document.getElementById('delete-agent-modal').style.display='none'; return; }
-  const uid = agent.userId || selectedProfileId;
-
-  const yesBtn = document.getElementById('delete-agent-yes-btn');
-  if(yesBtn){ yesBtn.disabled=true; yesBtn.textContent='⏳ DELETING...'; yesBtn.style.opacity='0.7'; }
-
-  const errors = [];
-
-  // 1. Delete from Firebase roster collection
-  try{
-    await db.collection('roster').doc(String(uid)).delete();
-  }catch(e){ errors.push('Firebase: '+e.message); }
-
-  // 2. Delete from Google Sheet via bridge (marks as Deleted / removes row)
-  try{
-    await callBridge({action:'deleteRep', userId:uid});
-  }catch(e){
-    try{ await callBridge({action:'updateRosterField', userId:uid, field:'status', value:'Deleted'}); }catch(e2){}
-  }
-
-  // Close confirm modal
-  document.getElementById('delete-agent-modal').style.display = 'none';
-
-  if(errors.length){
-    // Show error popup
-    document.getElementById('delete-agent-result-msg').textContent = errors.join(' · ') + '. Please try again or contact your administrator.';
-    document.getElementById('delete-agent-result-modal').style.display = 'flex';
-    if(yesBtn){ yesBtn.disabled=false; yesBtn.textContent='✓ YES, DELETE'; yesBtn.style.opacity='1'; }
-    return;
-  }
-
-  // 3. Remove from in-memory ROSTER
-  delete ROSTER[String(selectedProfileId)];
-  delete ROSTER[String(uid)];
-
-  // 4. Close panel and refresh list
-  selectedProfileId = null;
-  document.getElementById('profile-edit-panel').style.display = 'none';
-  renderProfileList();
 }
 
 function filterProfileList(){
@@ -8370,6 +8286,27 @@ if(_origRenderStatsTable){
 //  LEADERBOARD
 // ════════════════════════════════════════════
 let lbFilter = 'all';
+let lbMode   = 'daily'; // 'daily' | 'weekly'
+
+function lbSetMode(mode, btn){
+  lbMode = mode;
+  const daily  = document.getElementById('lb-m-daily');
+  const weekly = document.getElementById('lb-m-weekly');
+  if(daily && weekly){
+    if(mode === 'daily'){
+      daily.style.background  = 'var(--gold)';
+      daily.style.color       = '#000';
+      weekly.style.background = 'transparent';
+      weekly.style.color      = 'var(--muted)';
+    } else {
+      weekly.style.background = 'var(--purple)';
+      weekly.style.color      = '#fff';
+      daily.style.background  = 'transparent';
+      daily.style.color       = 'var(--muted)';
+    }
+  }
+  renderLeaderboard();
+}
 
 function lbSetFilter(f, btn){
   lbFilter = f;
@@ -8391,18 +8328,50 @@ function lbSetFilter(f, btn){
 function renderLeaderboard(){
   // Update date label
   const dateLbl = document.getElementById('lb-date-lbl');
+  const isWeekly = lbMode === 'weekly';
+
   if(dateLbl){
-    dateLbl.textContent = new Date().toLocaleDateString('en-US',{
-      weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Guyana'
-    }) + ' · Transfer Rankings';
+    if(isWeekly){
+      const nowGY = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+      const wkStart = getWeekStartGY(nowGY);
+      dateLbl.textContent = 'Week of ' + new Date(wkStart + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' · Weekly Transfer Rankings';
+    } else {
+      dateLbl.textContent = new Date().toLocaleDateString('en-US',{
+        weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Guyana'
+      }) + ' · Transfer Rankings';
+    }
   }
 
   const noData  = document.getElementById('lb-no-data');
   const podium  = document.getElementById('lb-podium');
   const list    = document.getElementById('lb-list');
 
-  // Try to pull data from statsData (set by admin CSV upload)
-  let data = typeof statsData !== 'undefined' ? [...statsData] : [];
+  let data = [];
+
+  if(isWeekly){
+    // Aggregate xfer per agent across all reports this week
+    const nowGY   = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+    const wkStart = getWeekStartGY(nowGY);
+    const history = typeof reportHistory !== 'undefined' ? reportHistory : [];
+    const weekReports = history.filter(r => r.date && r.date >= wkStart && r.statsJSON);
+    const agentMap = {};
+    weekReports.forEach(report => {
+      let rows = [];
+      try { rows = JSON.parse(report.statsJSON); } catch(e){}
+      rows.forEach(r => {
+        if(!r.name) return;
+        const key = r.name.toLowerCase().trim();
+        if(!agentMap[key]){
+          agentMap[key] = { name: r.name, team: r.team, xfer: 0 };
+        }
+        agentMap[key].xfer += (r.xfer || 0);
+      });
+    });
+    data = Object.values(agentMap);
+  } else {
+    // Try to pull data from statsData (set by admin CSV upload)
+    data = typeof statsData !== 'undefined' ? [...statsData] : [];
+  }
 
   // Filter by team
   if(lbFilter !== 'all') data = data.filter(r => r.team === lbFilter);
@@ -8411,7 +8380,13 @@ function renderLeaderboard(){
   data = data.sort((a,b) => b.xfer - a.xfer).filter(r => r.name);
 
   if(!data.length){
-    if(noData)  noData.style.display  = 'block';
+    if(noData){
+      noData.style.display  = 'block';
+      const noDataMsg = noData.querySelector('div:last-child');
+      if(noDataMsg) noDataMsg.textContent = isWeekly
+        ? 'No reports uploaded for this week yet. Admin uploads daily CSVs and they accumulate here.'
+        : 'Admin uploads the daily CSV and it will appear here automatically.';
+    }
     if(podium)  podium.style.display  = 'none';
     if(list)    list.innerHTML = '';
     return;
@@ -8486,7 +8461,7 @@ function renderLeaderboard(){
           </div>
           <div class="lb-xfer" style="color:${xferColor};font-size:1.8rem;">
             ${agent.xfer}
-            <span class="lb-xfer-lbl" style="font-size:0.5rem;">XFERS</span>
+            <span class="lb-xfer-lbl" style="font-size:0.5rem;">${isWeekly ? 'WEEK TOTAL' : 'XFERS'}</span>
           </div>
         </div>
       </div>`;
@@ -8510,6 +8485,13 @@ function renderLeaderboard(){
             statsData = JSON.parse(snap.data().statsJSON);
             renderLeaderboard();
           }
+        }).catch(()=>{});
+      }
+      // Also ensure reportHistory is loaded for weekly mode
+      if(typeof reportHistory !== 'undefined' && !reportHistory.length){
+        db.collection('reports').orderBy('date','desc').limit(7).get().then(snap=>{
+          snap.forEach(doc=>{ const d=doc.data(); if(d.statsJSON) reportHistory.push(d); });
+          if(lbMode === 'weekly') renderLeaderboard();
         }).catch(()=>{});
       }
     }
