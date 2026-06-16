@@ -22,6 +22,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db   = firebase.firestore();
 const auth = firebase.auth();
+
+// ── App version check ──────────────────────────────────────────
+// Update this string every time you deploy a new version.
+// The Firestore doc settings/app_version { v: "..." } must match.
+// When they differ, a reload banner appears for all logged-in users.
+const APP_VERSION = '2026-06-16-r1';
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -193,6 +199,42 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tab-btn.sunday-glow.active{animation:none;box-shadow:0 0 18px rgba(192,132,252,0.5);}
 @keyframes sundayPulse{0%,100%{box-shadow:0 0 8px rgba(192,132,252,0.15),inset 0 0 6px rgba(192,132,252,0.05);}50%{box-shadow:0 0 18px rgba(192,132,252,0.4),inset 0 0 10px rgba(192,132,252,0.12);}}
 @keyframes rh-fade-in{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── APP UPDATE NOTIFICATION BANNER ── */
+#app-update-banner{
+  position:fixed;bottom:20px;right:20px;z-index:999999;
+  max-width:340px;width:calc(100vw - 40px);
+  background:linear-gradient(135deg,#0d1a2e,#060b18);
+  border:1.5px solid rgba(96,165,250,0.6);
+  border-radius:14px;padding:16px 18px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.7),0 0 0 1px rgba(96,165,250,0.1);
+  transform:translateY(120px);opacity:0;pointer-events:none;
+  transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1),opacity 0.35s ease;
+}
+#app-update-banner.show{transform:translateY(0);opacity:1;pointer-events:all;}
+#app-update-banner .upd-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:800;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:5px;
+}
+#app-update-banner .upd-msg{
+  font-size:0.83rem;color:#cbd5e1;line-height:1.5;margin-bottom:12px;
+}
+#app-update-banner .upd-actions{display:flex;gap:8px;}
+#app-update-banner .upd-reload{
+  flex:1;padding:8px 0;border-radius:9px;border:none;cursor:pointer;
+  background:linear-gradient(90deg,var(--accent),#3b82f6);
+  color:#fff;font-family:'Barlow Condensed',sans-serif;
+  font-size:0.9rem;font-weight:900;letter-spacing:1.5px;
+  transition:filter 0.15s;
+}
+#app-update-banner .upd-reload:hover{filter:brightness(1.15);}
+#app-update-banner .upd-dismiss{
+  padding:8px 14px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--border);background:transparent;
+  color:var(--muted);font-family:'Barlow Condensed',sans-serif;
+  font-size:0.8rem;font-weight:800;letter-spacing:1px;transition:all 0.15s;
+}
+#app-update-banner .upd-dismiss:hover{border-color:var(--red);color:var(--red);}
 
 /* ── TRANSFER CELEBRATION BANNER ── */
 #xfer-banner{
@@ -9653,6 +9695,63 @@ let ltInited = false;
 // ── Admin cannot see leads tab (leads is agent-only — hide from admin) ──
 // The tab button is always visible but the page is empty for admin (who has no personal leads)
 // We already gate ltInit with !currentUser.isAdmin
+
+// ══════════════════════════════════════════════════════
+// APP VERSION LISTENER — real-time update notifier
+// When you deploy a new version:
+//   1. Change APP_VERSION constant at top of file (e.g. '2026-06-16-r2')
+//   2. In Firestore console → settings/app_version → set { v: '2026-06-16-r2' }
+//   3. All users see a reload banner automatically — no manual refresh needed
+// ══════════════════════════════════════════════════════
+let _versionListenerUnsub = null;
+
+function startVersionListener(){
+  if(_versionListenerUnsub) return; // already listening
+  _versionListenerUnsub = db.collection('settings').doc('app_version')
+    .onSnapshot(snap => {
+      if(!snap.exists) return;
+      const remoteVersion = snap.data().v || '';
+      if(remoteVersion && remoteVersion !== APP_VERSION){
+        showUpdateBanner(remoteVersion);
+      }
+    }, err => {
+      console.warn('Version listener error:', err);
+    });
+}
+
+function showUpdateBanner(){
+  let banner = document.getElementById('app-update-banner');
+  if(banner && banner.classList.contains('show')) return; // already showing
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id = 'app-update-banner';
+    banner.innerHTML = `
+      <div class="upd-title">🚀 Update Available</div>
+      <div class="upd-msg">A new version of the dashboard has been deployed. Reload to get the latest features and fixes.</div>
+      <div class="upd-actions">
+        <button class="upd-reload" onclick="window.location.reload(true)">↻ RELOAD NOW</button>
+        <button class="upd-dismiss" onclick="dismissUpdateBanner()">Later</button>
+      </div>`;
+    document.body.appendChild(banner);
+  }
+  requestAnimationFrame(() => banner.classList.add('show'));
+}
+
+function dismissUpdateBanner(){
+  const banner = document.getElementById('app-update-banner');
+  if(banner) banner.classList.remove('show');
+  // Re-show after 5 minutes if they haven't reloaded
+  setTimeout(showUpdateBanner, 5 * 60 * 1000);
+}
+
+// Start version listener once Firebase auth is ready (user logged in)
+auth.onAuthStateChanged(user => {
+  if(user){
+    startVersionListener();
+  } else {
+    if(_versionListenerUnsub){ _versionListenerUnsub(); _versionListenerUnsub = null; }
+  }
+});
 </script>
 <input type="file" id="stats-csv-upload" accept=".csv" style="display:none;" onchange="handleStatsCSV(this)">
 </body>
