@@ -193,6 +193,61 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tab-btn.sunday-glow.active{animation:none;box-shadow:0 0 18px rgba(192,132,252,0.5);}
 @keyframes sundayPulse{0%,100%{box-shadow:0 0 8px rgba(192,132,252,0.15),inset 0 0 6px rgba(192,132,252,0.05);}50%{box-shadow:0 0 18px rgba(192,132,252,0.4),inset 0 0 10px rgba(192,132,252,0.12);}}
 @keyframes rh-fade-in{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── TRANSFER CELEBRATION BANNER ── */
+#xfer-banner{
+  position:fixed;top:0;left:0;right:0;z-index:99999;
+  transform:translateY(-110%);
+  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none;
+}
+#xfer-banner.show{transform:translateY(0);pointer-events:all;}
+.xfer-banner-inner{
+  background:linear-gradient(135deg,#060b18 0%,#0d1a2e 50%,#080d1a 100%);
+  border-bottom:2px solid transparent;
+  border-image:linear-gradient(90deg,transparent 0%,#fbbf24 20%,#34d399 50%,#60a5fa 80%,transparent 100%) 1;
+  padding:14px 20px 12px;
+  display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;
+  box-shadow:0 4px 32px rgba(0,0,0,0.7);
+}
+.xfer-banner-icon{font-size:1.6rem;line-height:1;flex-shrink:0;margin-top:2px;}
+.xfer-banner-body{flex:1;min-width:200px;}
+.xfer-banner-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;
+  font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;
+}
+.xfer-banner-agents{
+  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;
+}
+.xfer-banner-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 12px;border-radius:20px;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1px;
+  border:1.5px solid rgba(52,211,153,0.5);
+  background:rgba(52,211,153,0.1);color:var(--green);
+  animation:chip-pop 0.3s ease both;
+}
+.xfer-banner-chip.top{border-color:rgba(251,191,36,0.6);background:rgba(251,191,36,0.12);color:var(--gold);}
+@keyframes chip-pop{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
+.xfer-banner-quote{
+  font-size:0.8rem;color:#94a3b8;font-style:italic;line-height:1.5;
+  border-left:2px solid rgba(251,191,36,0.4);padding-left:10px;
+  max-width:600px;
+}
+.xfer-banner-close{
+  flex-shrink:0;background:none;border:1px solid #1e2d4a;border-radius:8px;
+  color:var(--muted);cursor:pointer;padding:6px 10px;font-size:0.75rem;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:1px;
+  transition:all 0.15s;align-self:flex-start;
+}
+.xfer-banner-close:hover{border-color:var(--red);color:var(--red);}
+.xfer-banner-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--green),var(--accent));
+  animation:banner-countdown 8s linear forwards;
+}
+@keyframes banner-countdown{from{width:100%;}to{width:0%;}}
 .tab-btn.t-dbs.active{background:#0a1a10;border-color:#4ade80;color:#4ade80;box-shadow:0 0 14px rgba(74,222,128,0.25);}
 #tab-lenders.active,.tab-btn.t-lenders.active{background:#0a1224;border-color:#3b82f6;color:#60a5fa;box-shadow:0 0 14px rgba(59,130,246,0.25);}
 .tab-btn.t-lenders{background:#0d1a2e;border-color:#3b82f6;color:#60a5fa;}
@@ -747,6 +802,19 @@ body.is-admin #agent-target-widget{display:none !important;}
 .tb-sum-lbl{font-size:0.5rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
 </style>
 <body>
+<!-- ── TRANSFER CELEBRATION BANNER ── -->
+<div id="xfer-banner">
+  <div class="xfer-banner-inner" style="position:relative;">
+    <div class="xfer-banner-icon">🎉</div>
+    <div class="xfer-banner-body">
+      <div class="xfer-banner-title">🔥 Transfers on the board!</div>
+      <div class="xfer-banner-agents" id="xfer-banner-agents"></div>
+      <div class="xfer-banner-quote" id="xfer-banner-quote"></div>
+    </div>
+    <button class="xfer-banner-close" onclick="closeXferBanner()">✕ CLOSE</button>
+    <div class="xfer-banner-progress" id="xfer-banner-progress"></div>
+  </div>
+</div>
 
 <!-- ── COMPANY NAME EDIT MODAL (Admin only) ── -->
 <div id="company-name-modal">
@@ -1370,6 +1438,7 @@ body.is-admin #agent-target-widget{display:none !important;}
         <button class="adm-tab"        id="atab-rebuttal"    onclick="switchAdminTab('rebuttal',this)">🧠 Rebuttal Intel</button>
         <button class="adm-tab"        id="atab-weekperf"    onclick="switchAdminTab('weekperf',this)">🏆 Weekly Performance</button>
         <button class="adm-tab"        id="atab-targetboard" onclick="switchAdminTab('targetboard',this)">🎯 Target Board</button>
+        <button class="adm-tab"        id="atab-quotes"      onclick="switchAdminTab('quotes',this)">💬 Quotes</button>
       </div>
     </div>
 
@@ -2018,6 +2087,32 @@ body.is-admin #agent-target-widget{display:none !important;}
         </div>
 
         <div style="font-size:0.62rem;color:var(--muted);text-align:center;margin-top:10px;">Targets set by agents each morning · Transfers pulled from uploaded CSV · Resets daily</div>
+      </div>
+    </div>
+
+    <!-- ── ADMIN QUOTES ── -->
+    <div id="admin-quotes" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div class="admin-card-title" style="margin-bottom:0;font-size:0.9rem;">💬 MOTIVATIONAL QUOTES</div>
+          <span style="font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">One random quote shows in the banner on each CSV upload</span>
+        </div>
+        <!-- Add new quote -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+          <textarea id="new-quote-input" rows="2" placeholder="Type a motivational quote here..."
+            style="flex:1;min-width:220px;padding:10px 14px;background:#0d1424;border:1.5px solid #2a3a5a;border-radius:9px;
+            color:var(--text);font-family:'Nunito',sans-serif;font-size:0.85rem;outline:none;resize:none;line-height:1.5;transition:border-color 0.15s;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#2a3a5a'"></textarea>
+          <button onclick="addMotdQuote()" style="padding:10px 20px;border-radius:9px;border:none;
+            background:linear-gradient(90deg,var(--gold),var(--orange));color:#000;
+            font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:900;letter-spacing:1.5px;
+            cursor:pointer;align-self:flex-end;white-space:nowrap;transition:filter 0.15s;"
+            onmouseenter="this.style.filter='brightness(1.1)'" onmouseleave="this.style.filter=''">＋ ADD QUOTE</button>
+        </div>
+        <!-- Quote list -->
+        <div id="quotes-list" style="display:flex;flex-direction:column;gap:8px;">
+          <div style="text-align:center;color:var(--muted);padding:24px;font-size:0.82rem;">Loading quotes...</div>
+        </div>
       </div>
     </div>
 
@@ -5702,6 +5797,7 @@ async function confirmCSVUpload(){
 
   updateGoalBars();
   renderStatsTable();
+  showTransferBanner();
 
   // Reload report history so the new upload appears in the buttons immediately
   await loadReportHistory();
@@ -7964,21 +8060,152 @@ let tbCurrentTeam = 'all';
   const _orig = switchAdminTab;
   switchAdminTab = function(tab, btn){
     _orig(tab, btn);
-    // The original function only knows its own list — handle targetboard extra
+    // Handle targetboard
     const tbEl = document.getElementById('admin-targetboard');
-    if(!tbEl) return;
-    if(tab === 'targetboard'){
-      tbEl.style.display = '';
-      const b = document.getElementById('atab-targetboard');
-      if(b) b.classList.add('active');
-      loadTargetBoard();
-    } else {
-      tbEl.style.display = 'none';
-      const b = document.getElementById('atab-targetboard');
-      if(b) b.classList.remove('active');
+    if(tbEl){
+      if(tab === 'targetboard'){
+        tbEl.style.display = '';
+        const b = document.getElementById('atab-targetboard');
+        if(b) b.classList.add('active');
+        loadTargetBoard();
+      } else {
+        tbEl.style.display = 'none';
+        const b = document.getElementById('atab-targetboard');
+        if(b) b.classList.remove('active');
+      }
+    }
+    // Handle quotes
+    const qEl = document.getElementById('admin-quotes');
+    if(qEl){
+      if(tab === 'quotes'){
+        qEl.style.display = '';
+        const b = document.getElementById('atab-quotes');
+        if(b) b.classList.add('active');
+        loadMotdQuotes();
+      } else {
+        qEl.style.display = 'none';
+        const b = document.getElementById('atab-quotes');
+        if(b) b.classList.remove('active');
+      }
     }
   };
 })();
+
+// ══════════════════════════════════════════════
+//  MOTIVATIONAL QUOTES — Admin managed, Firestore
+//  Stored in settings/motd_quotes  { quotes: [...] }
+// ══════════════════════════════════════════════
+let _motdQuotes = [];
+
+async function loadMotdQuotes(){
+  try{
+    const snap = await db.collection('settings').doc('motd_quotes').get();
+    _motdQuotes = (snap.exists && snap.data().quotes) ? snap.data().quotes : [];
+  }catch(e){ _motdQuotes = []; }
+  renderQuotesList();
+}
+
+function renderQuotesList(){
+  const el = document.getElementById('quotes-list');
+  if(!el) return;
+  if(!_motdQuotes.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px;font-size:0.82rem;">No quotes yet — add one above to get started.</div>';
+    return;
+  }
+  el.innerHTML = _motdQuotes.map((q,i)=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+      background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.15);border-radius:10px;">
+      <span style="font-size:1rem;flex-shrink:0;margin-top:1px;">💬</span>
+      <div style="flex:1;font-size:0.84rem;color:#cbd5e1;font-style:italic;line-height:1.6;">"${escHtml(q)}"</div>
+      <button onclick="deleteMotdQuote(${i})" title="Delete"
+        style="flex-shrink:0;padding:4px 9px;border-radius:7px;border:1px solid rgba(248,113,113,0.3);
+        background:rgba(248,113,113,0.05);color:var(--red);font-size:0.72rem;font-weight:800;
+        font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;cursor:pointer;transition:all 0.15s;"
+        onmouseenter="this.style.background='rgba(248,113,113,0.15)'"
+        onmouseleave="this.style.background='rgba(248,113,113,0.05)'">🗑 DEL</button>
+    </div>`).join('');
+}
+
+async function addMotdQuote(){
+  const inp = document.getElementById('new-quote-input');
+  if(!inp) return;
+  const q = inp.value.trim();
+  if(!q){ inp.focus(); return; }
+  _motdQuotes.push(q);
+  inp.value = '';
+  await saveMotdQuotes();
+  renderQuotesList();
+}
+
+async function deleteMotdQuote(idx){
+  _motdQuotes.splice(idx,1);
+  await saveMotdQuotes();
+  renderQuotesList();
+}
+
+async function saveMotdQuotes(){
+  try{
+    await db.collection('settings').doc('motd_quotes').set({ quotes: _motdQuotes });
+  }catch(e){ console.error('saveMotdQuotes:', e); }
+}
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════════
+//  TRANSFER CELEBRATION BANNER
+// ══════════════════════════════════════════════
+let _xferBannerTimer = null;
+
+async function showTransferBanner(newStatsData){
+  // Build agent chips — only agents with xfer > 0, sorted desc
+  const agents = (newStatsData || statsData)
+    .filter(a => (a.xfer||0) > 0)
+    .sort((a,b) => (b.xfer||0) - (a.xfer||0));
+  if(!agents.length) return;
+
+  // Pick a random quote
+  let quote = '';
+  try{
+    const snap = await db.collection('settings').doc('motd_quotes').get();
+    const qs = (snap.exists && snap.data().quotes) ? snap.data().quotes : [];
+    if(qs.length) quote = qs[Math.floor(Math.random()*qs.length)];
+  }catch(e){}
+
+  // Build chips HTML
+  const chipsHtml = agents.map((a,i)=>{
+    const name = (a.name||a.nameRaw||'Agent').split(' ')[0];
+    const isTop = i === 0;
+    return `<span class="xfer-banner-chip${isTop?' top':''}" style="animation-delay:${i*0.07}s;">
+      ${isTop?'🥇':'🔥'} ${escHtml(name)} <strong style="font-size:1rem;">(${a.xfer})</strong>
+    </span>`;
+  }).join('');
+
+  const agentsEl = document.getElementById('xfer-banner-agents');
+  const quoteEl  = document.getElementById('xfer-banner-quote');
+  const banner   = document.getElementById('xfer-banner');
+  const progress = document.getElementById('xfer-banner-progress');
+  if(!banner) return;
+
+  if(agentsEl) agentsEl.innerHTML = chipsHtml;
+  if(quoteEl)  quoteEl.innerHTML  = quote ? `"${escHtml(quote)}"` : '';
+
+  // Reset progress bar animation
+  if(progress){ progress.style.animation='none'; void progress.offsetWidth; progress.style.animation=''; }
+
+  banner.classList.add('show');
+
+  // Auto-dismiss after 8s
+  clearTimeout(_xferBannerTimer);
+  _xferBannerTimer = setTimeout(closeXferBanner, 8000);
+}
+
+function closeXferBanner(){
+  clearTimeout(_xferBannerTimer);
+  const banner = document.getElementById('xfer-banner');
+  if(banner) banner.classList.remove('show');
+}
 
 // ── Open goal popup (called on login for agents, or via Edit button) ──
 function openGoalPopup(isEdit){
