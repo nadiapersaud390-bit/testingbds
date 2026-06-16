@@ -5381,15 +5381,30 @@ function renderReportHistory(){
           const baseBorder = isToday ? 'var(--green)' : 'var(--border)';
           const baseBg     = isToday ? 'rgba(52,211,153,0.1)' : 'transparent';
           const baseColor  = isToday ? 'var(--green)' : 'var(--muted)';
-          return `<button data-report-idx="${origIdx}" onclick="loadReportByIndex(${origIdx})"
-            style="margin:0 4px 4px 0;display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;
-            border:1.5px solid ${isActive?'var(--gold)':baseBorder};
+          const dateEsc    = r.date.replace(/'/g,"\\'");
+          return `<span style="display:inline-flex;align-items:center;margin:0 4px 4px 0;
+            border-radius:20px;border:1.5px solid ${isActive?'var(--gold)':baseBorder};
             background:${isActive?'rgba(251,191,36,0.12)':baseBg};
-            color:${isActive?'var(--gold)':baseColor};
-            font-family:Barlow Condensed,sans-serif;font-size:0.75rem;font-weight:800;cursor:pointer;
-            box-shadow:${isActive?'0 0 8px rgba(251,191,36,0.3)':'none'};">
-            ${isToday?'⚡ ':isActive?'▶ ':''} ${r.date} <span style="opacity:0.6;">(${r.agentCount||'?'} agents)</span>
-          </button>`;
+            box-shadow:${isActive?'0 0 8px rgba(251,191,36,0.3)':'none'};
+            overflow:hidden;transition:border-color 0.15s;"
+            onmouseenter="this.querySelector('.rh-del-btn').style.opacity='1';this.querySelector('.rh-del-btn').style.maxWidth='28px';"
+            onmouseleave="this.querySelector('.rh-del-btn').style.opacity='0';this.querySelector('.rh-del-btn').style.maxWidth='0';">
+            <button onclick="loadReportByIndex(${origIdx})"
+              style="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;
+              background:transparent;border:none;
+              color:${isActive?'var(--gold)':baseColor};
+              font-family:Barlow Condensed,sans-serif;font-size:0.75rem;font-weight:800;cursor:pointer;">
+              ${isToday?'⚡ ':isActive?'▶ ':''} ${r.date} <span style="opacity:0.6;">(${r.agentCount||'?'} agents)</span>
+            </button>
+            <button class="rh-del-btn" onclick="event.stopPropagation();deleteReportByDate('${dateEsc}',${origIdx})"
+              style="display:inline-flex;align-items:center;justify-content:center;
+              padding:0 6px;height:100%;background:rgba(248,113,113,0.15);
+              border:none;border-left:1px solid rgba(248,113,113,0.3);
+              color:var(--red);cursor:pointer;font-size:0.75rem;font-weight:900;
+              max-width:0;opacity:0;overflow:hidden;
+              transition:opacity 0.18s,max-width 0.18s;white-space:nowrap;"
+              title="Delete this report">🗑</button>
+          </span>`;
         }).join('')
       + `</div>`
     : '';
@@ -5407,6 +5422,27 @@ function renderReportHistory(){
       <span style="background:rgba(255,255,255,0.06);border-radius:20px;padding:1px 7px;font-size:0.55rem;">${sorted.length}</span>
     </div>
     ${pillsHtml}`;
+}
+
+async function deleteReportByDate(date, idx){
+  if(!confirm(`Delete the report for ${date}? This cannot be undone.`)) return;
+  try{
+    await db.collection('reports').doc(date).delete();
+    // Remove from local array (find by date in case indices shifted)
+    const pos = reportHistory.findIndex(r=>r.date===date);
+    if(pos>=0) reportHistory.splice(pos,1);
+    // If we deleted the currently-loaded report, clear the view
+    if(statsDataDate===date){
+      statsData=[]; statsDataDate='';
+      document.getElementById('csv-date-lbl').textContent='';
+      document.getElementById('csv-expiry-lbl').textContent='';
+      renderStatsTable();
+    }
+    renderReportHistory();
+  }catch(e){
+    alert('Failed to delete report: '+e.message);
+    console.error('deleteReportByDate:',e);
+  }
 }
 let compareData     = [];   // second dataset for comparison
 let compareDataDate = '';
