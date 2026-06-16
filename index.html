@@ -2712,6 +2712,22 @@ body.is-admin #agent-target-widget{display:none !important;}
         </div>
       </div>
 
+      <!-- Weekly sub-tabs (This Week / Prev Week) — only shown in weekly mode -->
+      <div id="lb-week-subtabs" style="display:none;margin-bottom:14px;">
+        <div style="display:flex;gap:5px;background:#060d1a;border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content;">
+          <button onclick="lbSetWeekView('current')" id="lb-wv-current"
+            style="padding:5px 16px;border-radius:7px;border:none;background:var(--purple);color:#fff;
+                   font-family:'Barlow Condensed',sans-serif;font-size:0.76rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">
+            ⚡ THIS WEEK
+          </button>
+          <button onclick="lbSetWeekView('prev')" id="lb-wv-prev"
+            style="padding:5px 16px;border-radius:7px;border:none;background:transparent;color:var(--muted);
+                   font-family:'Barlow Condensed',sans-serif;font-size:0.76rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">
+            📅 PREV WEEK
+          </button>
+        </div>
+      </div>
+
       <!-- No data notice -->
       <div id="lb-no-data" style="display:none;text-align:center;padding:40px 20px;color:var(--muted);">
         <div style="font-size:2rem;margin-bottom:10px;">📊</div>
@@ -8676,26 +8692,56 @@ if(_origRenderStatsTable){
 //  LEADERBOARD
 // ════════════════════════════════════════════
 let lbFilter = 'all';
-let lbMode   = 'daily'; // 'daily' | 'weekly'
+let lbMode     = 'daily';   // 'daily' | 'weekly'
+let lbWeekView = 'current'; // 'current' | 'prev'
 
 function lbSetMode(mode, btn){
   lbMode = mode;
-  const daily  = document.getElementById('lb-m-daily');
-  const weekly = document.getElementById('lb-m-weekly');
+  const daily    = document.getElementById('lb-m-daily');
+  const weekly   = document.getElementById('lb-m-weekly');
+  const subtabs  = document.getElementById('lb-week-subtabs');
   if(daily && weekly){
     if(mode === 'daily'){
       daily.style.background  = 'var(--gold)';
       daily.style.color       = '#000';
       weekly.style.background = 'transparent';
       weekly.style.color      = 'var(--muted)';
+      if(subtabs) subtabs.style.display = 'none';
     } else {
       weekly.style.background = 'var(--purple)';
       weekly.style.color      = '#fff';
       daily.style.background  = 'transparent';
       daily.style.color       = 'var(--muted)';
+      // Reset to current week view whenever switching to weekly
+      lbWeekView = 'current';
+      _lbSyncWeekSubtabs();
+      if(subtabs) subtabs.style.display = '';
     }
   }
   renderLeaderboard();
+}
+
+function lbSetWeekView(view){
+  lbWeekView = view;
+  _lbSyncWeekSubtabs();
+  renderLeaderboard();
+}
+
+function _lbSyncWeekSubtabs(){
+  const cur  = document.getElementById('lb-wv-current');
+  const prev = document.getElementById('lb-wv-prev');
+  if(!cur || !prev) return;
+  if(lbWeekView === 'current'){
+    cur.style.background  = 'var(--purple)';
+    cur.style.color       = '#fff';
+    prev.style.background = 'transparent';
+    prev.style.color      = 'var(--muted)';
+  } else {
+    prev.style.background = 'var(--gold)';
+    prev.style.color      = '#000';
+    cur.style.background  = 'transparent';
+    cur.style.color       = 'var(--muted)';
+  }
 }
 
 function lbSetFilter(f, btn){
@@ -8719,12 +8765,27 @@ function renderLeaderboard(){
   // Update date label
   const dateLbl = document.getElementById('lb-date-lbl');
   const isWeekly = lbMode === 'weekly';
+  const isPrevWeek = isWeekly && lbWeekView === 'prev';
+
+  // Calculate week boundaries
+  const nowGY     = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+  const curWkStart = getWeekStartGY(nowGY);
+
+  // Previous week: subtract 7 days from current week start
+  const prevWkStartDate = new Date(curWkStart + 'T12:00:00');
+  prevWkStartDate.setDate(prevWkStartDate.getDate() - 7);
+  const prevWkStart = prevWkStartDate.toISOString().slice(0,10);
+  const prevWkEnd   = new Date(prevWkStartDate.getTime() + 6*86400000).toISOString().slice(0,10);
 
   if(dateLbl){
-    if(isWeekly){
-      const nowGY = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
-      const wkStart = getWeekStartGY(nowGY);
-      dateLbl.textContent = 'Week of ' + new Date(wkStart + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' · Weekly Transfer Rankings';
+    if(isPrevWeek){
+      dateLbl.textContent = '📅 PREV WEEK — Week of ' +
+        new Date(prevWkStart + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) +
+        ' · Previous Week Rankings';
+    } else if(isWeekly){
+      dateLbl.textContent = 'Week of ' +
+        new Date(curWkStart + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) +
+        ' · Weekly Transfer Rankings';
     } else {
       dateLbl.textContent = new Date().toLocaleDateString('en-US',{
         weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Guyana'
@@ -8739,11 +8800,11 @@ function renderLeaderboard(){
   let data = [];
 
   if(isWeekly){
-    // Aggregate xfer per agent across all reports this week
-    const nowGY   = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
-    const wkStart = getWeekStartGY(nowGY);
+    // Aggregate xfer per agent across reports in the selected week
     const history = typeof reportHistory !== 'undefined' ? reportHistory : [];
-    const weekReports = history.filter(r => r.date && r.date >= wkStart && r.statsJSON);
+    const weekReports = isPrevWeek
+      ? history.filter(r => r.date && r.date >= prevWkStart && r.date <= prevWkEnd && r.statsJSON)
+      : history.filter(r => r.date && r.date >= curWkStart && r.statsJSON);
     const agentMap = {};
     weekReports.forEach(report => {
       let rows = [];
@@ -8759,7 +8820,7 @@ function renderLeaderboard(){
     });
     data = Object.values(agentMap);
   } else {
-    // Try to pull data from statsData (set by admin CSV upload)
+    // Daily — pull from today's statsData
     data = typeof statsData !== 'undefined' ? [...statsData] : [];
   }
 
@@ -8773,7 +8834,9 @@ function renderLeaderboard(){
     if(noData){
       noData.style.display  = 'block';
       const noDataMsg = noData.querySelector('div:last-child');
-      if(noDataMsg) noDataMsg.textContent = isWeekly
+      if(noDataMsg) noDataMsg.textContent = isPrevWeek
+        ? 'No reports found for the previous week.'
+        : isWeekly
         ? 'No reports uploaded for this week yet. Admin uploads daily CSVs and they accumulate here.'
         : 'Admin uploads the daily CSV and it will appear here automatically.';
     }
@@ -8851,7 +8914,7 @@ function renderLeaderboard(){
           </div>
           <div class="lb-xfer" style="color:${xferColor};font-size:1.8rem;">
             ${agent.xfer}
-            <span class="lb-xfer-lbl" style="font-size:0.5rem;">${isWeekly ? 'WEEK TOTAL' : 'XFERS'}</span>
+            <span class="lb-xfer-lbl" style="font-size:0.5rem;">${isPrevWeek ? 'PREV WEEK' : isWeekly ? 'WEEK TOTAL' : 'XFERS'}</span>
           </div>
         </div>
       </div>`;
@@ -8877,9 +8940,9 @@ function renderLeaderboard(){
           }
         }).catch(()=>{});
       }
-      // Also ensure reportHistory is loaded for weekly mode
+      // Also ensure reportHistory is loaded for weekly mode — load 14 days to cover prev week too
       if(typeof reportHistory !== 'undefined' && !reportHistory.length){
-        db.collection('reports').orderBy('date','desc').limit(7).get().then(snap=>{
+        db.collection('reports').orderBy('date','desc').limit(14).get().then(snap=>{
           snap.forEach(doc=>{ const d=doc.data(); if(d.statsJSON) reportHistory.push(d); });
           if(lbMode === 'weekly') renderLeaderboard();
         }).catch(()=>{});
