@@ -8160,6 +8160,7 @@ function renderQuotesList(){
   // Check if all on this page are selected
   const pageIndices = pageQuotes.map((_,i) => start + i);
   const allPageSelected = pageIndices.length > 0 && pageIndices.every(i => _selectedQuotes.has(i));
+  const allGlobalSelected = _motdQuotes.length > 0 && _selectedQuotes.size === _motdQuotes.length;
 
   // ── Top toolbar ──
   const hasSelection = _selectedQuotes.size > 0;
@@ -8167,7 +8168,7 @@ function renderQuotesList(){
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
       padding:10px 14px;background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.18);
       border-radius:10px;margin-bottom:4px;">
-      <div style="display:flex;align-items:center;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:0.78rem;
           font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);
           font-family:'Barlow Condensed',sans-serif;">
@@ -8176,11 +8177,21 @@ function renderQuotesList(){
             style="width:15px;height:15px;accent-color:var(--gold);cursor:pointer;">
           SELECT ALL (PAGE)
         </label>
+        <button onclick="selectAllQuotesGlobal()" style="padding:3px 11px;border-radius:6px;
+          border:1px solid rgba(251,191,36,${allGlobalSelected?'0.7':'0.3'});
+          background:rgba(251,191,36,${allGlobalSelected?'0.18':'0.06'});
+          color:${allGlobalSelected?'var(--gold)':'#a0a0c0'};
+          font-family:'Barlow Condensed',sans-serif;font-size:0.74rem;font-weight:800;letter-spacing:1px;
+          cursor:pointer;transition:all 0.15s;"
+          onmouseenter="this.style.background='rgba(251,191,36,0.18)';this.style.color='var(--gold)'"
+          onmouseleave="this.style.background='rgba(251,191,36,${allGlobalSelected?'0.18':'0.06'})';this.style.color='${allGlobalSelected?'var(--gold)':'#a0a0c0'}'">
+          ${allGlobalSelected ? '✓ ALL '+total.toLocaleString()+' SELECTED' : 'SELECT ALL '+total.toLocaleString()+' QUOTES'}
+        </button>
         <span style="font-size:0.72rem;color:var(--muted);font-family:'Nunito',sans-serif;">
-          ${_selectedQuotes.size > 0 ? `<strong style="color:var(--gold);">${_selectedQuotes.size}</strong> selected` : 'None selected'}
+          ${_selectedQuotes.size > 0 ? `<strong style="color:var(--gold);">${_selectedQuotes.size.toLocaleString()}</strong> selected` : 'None selected'}
         </span>
       </div>
-      <div style="display:flex;gap:7px;align-items:center;">
+      <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
         ${hasSelection ? `
         <button onclick="deleteSelectedQuotes()" style="padding:5px 14px;border-radius:7px;
           border:1px solid rgba(248,113,113,0.5);background:rgba(248,113,113,0.1);color:var(--red);
@@ -8188,7 +8199,7 @@ function renderQuotesList(){
           cursor:pointer;transition:all 0.15s;"
           onmouseenter="this.style.background='rgba(248,113,113,0.22)'"
           onmouseleave="this.style.background='rgba(248,113,113,0.1)'">
-          🗑 DELETE SELECTED (${_selectedQuotes.size})
+          🗑 DELETE SELECTED (${_selectedQuotes.size.toLocaleString()})
         </button>` : ''}
         <span style="font-size:0.7rem;color:var(--muted);font-family:'Nunito',sans-serif;">
           ${total.toLocaleString()} total quotes
@@ -8281,6 +8292,17 @@ function toggleSelectAllQuotes(checked, start, end){
   for(let i = start; i < end; i++){
     if(checked) _selectedQuotes.add(i);
     else _selectedQuotes.delete(i);
+  }
+  renderQuotesList();
+}
+
+function selectAllQuotesGlobal(){
+  if(_selectedQuotes.size === _motdQuotes.length){
+    // Already all selected — deselect all
+    _selectedQuotes.clear();
+  } else {
+    // Select every quote across all pages
+    for(let i = 0; i < _motdQuotes.length; i++) _selectedQuotes.add(i);
   }
   renderQuotesList();
 }
