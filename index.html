@@ -8126,12 +8126,17 @@ let tbCurrentTeam = 'all';
 //  Stored in settings/motd_quotes  { quotes: [...] }
 // ══════════════════════════════════════════════
 let _motdQuotes = [];
+let _quotePage = 0;          // current page (0-based)
+const _QUOTES_PER_PAGE = 20;
+let _selectedQuotes = new Set(); // indices of selected quotes (global indices)
 
 async function loadMotdQuotes(){
   try{
     const snap = await db.collection('settings').doc('motd_quotes').get();
     _motdQuotes = (snap.exists && snap.data().quotes) ? snap.data().quotes : [];
   }catch(e){ _motdQuotes = []; }
+  _quotePage = 0;
+  _selectedQuotes.clear();
   renderQuotesList();
 }
 
@@ -8142,14 +8147,68 @@ function renderQuotesList(){
     el.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px;font-size:0.82rem;">No quotes yet — add one above or upload a .txt file.</div>';
     return;
   }
-  el.innerHTML = _motdQuotes.map((q,i)=>`
+
+  const total = _motdQuotes.length;
+  const totalPages = Math.ceil(total / _QUOTES_PER_PAGE);
+  if(_quotePage >= totalPages) _quotePage = totalPages - 1;
+  if(_quotePage < 0) _quotePage = 0;
+
+  const start = _quotePage * _QUOTES_PER_PAGE;
+  const end   = Math.min(start + _QUOTES_PER_PAGE, total);
+  const pageQuotes = _motdQuotes.slice(start, end);
+
+  // Check if all on this page are selected
+  const pageIndices = pageQuotes.map((_,i) => start + i);
+  const allPageSelected = pageIndices.length > 0 && pageIndices.every(i => _selectedQuotes.has(i));
+
+  // ── Top toolbar ──
+  const hasSelection = _selectedQuotes.size > 0;
+  const toolbar = `
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+      padding:10px 14px;background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.18);
+      border-radius:10px;margin-bottom:4px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:0.78rem;
+          font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);
+          font-family:'Barlow Condensed',sans-serif;">
+          <input type="checkbox" id="quotes-select-all" ${allPageSelected?'checked':''}
+            onchange="toggleSelectAllQuotes(this.checked,${start},${end})"
+            style="width:15px;height:15px;accent-color:var(--gold);cursor:pointer;">
+          SELECT ALL (PAGE)
+        </label>
+        <span style="font-size:0.72rem;color:var(--muted);font-family:'Nunito',sans-serif;">
+          ${_selectedQuotes.size > 0 ? `<strong style="color:var(--gold);">${_selectedQuotes.size}</strong> selected` : 'None selected'}
+        </span>
+      </div>
+      <div style="display:flex;gap:7px;align-items:center;">
+        ${hasSelection ? `
+        <button onclick="deleteSelectedQuotes()" style="padding:5px 14px;border-radius:7px;
+          border:1px solid rgba(248,113,113,0.5);background:rgba(248,113,113,0.1);color:var(--red);
+          font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:1px;
+          cursor:pointer;transition:all 0.15s;"
+          onmouseenter="this.style.background='rgba(248,113,113,0.22)'"
+          onmouseleave="this.style.background='rgba(248,113,113,0.1)'">
+          🗑 DELETE SELECTED (${_selectedQuotes.size})
+        </button>` : ''}
+        <span style="font-size:0.7rem;color:var(--muted);font-family:'Nunito',sans-serif;">
+          ${total.toLocaleString()} total quotes
+        </span>
+      </div>
+    </div>`;
+
+  // ── Quote rows ──
+  const rows = pageQuotes.map((q, pi) => {
+    const i = start + pi; // global index
+    const checked = _selectedQuotes.has(i);
+    return `
     <div id="quote-row-${i}" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
-      background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.15);border-radius:10px;">
-      <span style="font-size:1rem;flex-shrink:0;margin-top:3px;">💬</span>
-      <div style="flex:1;">
-        <!-- View mode -->
-        <div id="quote-view-${i}" style="font-size:0.84rem;color:#cbd5e1;font-style:italic;line-height:1.6;">"${escHtml(q)}"</div>
-        <!-- Edit mode (hidden by default) -->
+      background:${checked ? 'rgba(251,191,36,0.08)' : 'rgba(251,191,36,0.04)'};
+      border:1px solid ${checked ? 'rgba(251,191,36,0.4)' : 'rgba(251,191,36,0.15)'};border-radius:10px;
+      transition:background 0.15s,border-color 0.15s;">
+      <input type="checkbox" ${checked?'checked':''} onchange="toggleQuoteSelect(${i},this.checked)"
+        style="width:15px;height:15px;margin-top:3px;flex-shrink:0;accent-color:var(--gold);cursor:pointer;">
+      <div style="flex:1;min-width:0;">
+        <div id="quote-view-${i}" style="font-size:0.84rem;color:#cbd5e1;font-style:italic;line-height:1.6;">"${escHtml(sanitizeQuote(q))}"</div>
         <textarea id="quote-edit-${i}" rows="2" style="display:none;width:100%;padding:8px 10px;
           background:#060b18;border:1.5px solid rgba(251,191,36,0.4);border-radius:8px;
           color:var(--text);font-family:'Nunito',sans-serif;font-size:0.84rem;outline:none;resize:vertical;line-height:1.5;"
@@ -8177,7 +8236,65 @@ function renderQuotesList(){
           onmouseenter="this.style.background='rgba(248,113,113,0.15)'"
           onmouseleave="this.style.background='rgba(248,113,113,0.05)'">🗑 DEL</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+
+  // ── Pagination bar ──
+  const pageLabel = `Page ${_quotePage + 1} of ${totalPages}  (${start + 1}–${end} of ${total.toLocaleString()})`;
+  const pagination = totalPages > 1 ? `
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
+      <button onclick="quotesGoPage(${_quotePage - 1})" ${_quotePage === 0 ? 'disabled' : ''}
+        style="padding:6px 16px;border-radius:8px;border:1px solid rgba(251,191,36,0.3);
+        background:rgba(251,191,36,0.07);color:${_quotePage===0?'var(--muted)':'var(--gold)'};
+        font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:1px;
+        cursor:${_quotePage===0?'default':'pointer'};transition:all 0.15s;"
+        onmouseenter="if(${_quotePage>0})this.style.background='rgba(251,191,36,0.15)'"
+        onmouseleave="this.style.background='rgba(251,191,36,0.07)'">◀ PREV</button>
+      <span style="font-size:0.75rem;color:var(--muted);font-family:'Nunito',sans-serif;">${pageLabel}</span>
+      <button onclick="quotesGoPage(${_quotePage + 1})" ${_quotePage >= totalPages - 1 ? 'disabled' : ''}
+        style="padding:6px 16px;border-radius:8px;border:1px solid rgba(251,191,36,0.3);
+        background:rgba(251,191,36,0.07);color:${_quotePage>=totalPages-1?'var(--muted)':'var(--gold)'};
+        font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:800;letter-spacing:1px;
+        cursor:${_quotePage>=totalPages-1?'default':'pointer'};transition:all 0.15s;"
+        onmouseenter="if(${_quotePage<totalPages-1})this.style.background='rgba(251,191,36,0.15)'"
+        onmouseleave="this.style.background='rgba(251,191,36,0.07)'">NEXT ▶</button>
+    </div>` : '';
+
+  el.innerHTML = toolbar + '<div style="display:flex;flex-direction:column;gap:8px;">' + rows + '</div>' + pagination;
+}
+
+function quotesGoPage(page){
+  const totalPages = Math.ceil(_motdQuotes.length / _QUOTES_PER_PAGE);
+  if(page < 0 || page >= totalPages) return;
+  _quotePage = page;
+  renderQuotesList();
+  document.getElementById('quotes-list').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleQuoteSelect(globalIdx, checked){
+  if(checked) _selectedQuotes.add(globalIdx);
+  else _selectedQuotes.delete(globalIdx);
+  renderQuotesList();
+}
+
+function toggleSelectAllQuotes(checked, start, end){
+  for(let i = start; i < end; i++){
+    if(checked) _selectedQuotes.add(i);
+    else _selectedQuotes.delete(i);
+  }
+  renderQuotesList();
+}
+
+async function deleteSelectedQuotes(){
+  if(!_selectedQuotes.size) return;
+  if(!confirm(`Delete ${_selectedQuotes.size} selected quote${_selectedQuotes.size>1?'s':''}?`)) return;
+  // Remove in reverse order to preserve indices
+  const indices = Array.from(_selectedQuotes).sort((a,b)=>b-a);
+  indices.forEach(i => _motdQuotes.splice(i, 1));
+  _selectedQuotes.clear();
+  _quotePage = 0;
+  await saveMotdQuotes();
+  renderQuotesList();
 }
 
 function startQuoteEdit(i){
@@ -8212,13 +8329,13 @@ async function importQuotesTxt(input){
   const file = input.files && input.files[0];
   if(!file) return;
   const text = await file.text();
-  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length > 0);
+  const lines = text.split(/\r?\n/).map(l=>sanitizeQuote(l)).filter(l=>l.length > 0);
   if(!lines.length){ alert('No quotes found in file — make sure each line has one quote.'); return; }
   _motdQuotes.push(...lines);
   await saveMotdQuotes();
+  _quotePage = 0;
   renderQuotesList();
   input.value = '';
-  // Brief feedback
   const btn = document.querySelector('button[onclick*="quotes-txt-upload"]');
   if(btn){ const orig=btn.textContent; btn.textContent=`✅ ${lines.length} quotes imported`; setTimeout(()=>btn.textContent=orig,2500); }
 }
@@ -8231,11 +8348,19 @@ async function addMotdQuote(){
   _motdQuotes.push(q);
   inp.value = '';
   await saveMotdQuotes();
+  _quotePage = Math.ceil(_motdQuotes.length / _QUOTES_PER_PAGE) - 1;
   renderQuotesList();
 }
 
 async function deleteMotdQuote(idx){
   _motdQuotes.splice(idx,1);
+  _selectedQuotes.delete(idx);
+  // Shift selection indices above deleted item
+  const shifted = new Set();
+  _selectedQuotes.forEach(i => shifted.add(i > idx ? i - 1 : i));
+  _selectedQuotes = shifted;
+  const totalPages = Math.ceil(_motdQuotes.length / _QUOTES_PER_PAGE);
+  if(_quotePage >= totalPages && totalPages > 0) _quotePage = totalPages - 1;
   await saveMotdQuotes();
   renderQuotesList();
 }
@@ -8244,6 +8369,23 @@ async function saveMotdQuotes(){
   try{
     await db.collection('settings').doc('motd_quotes').set({ quotes: _motdQuotes });
   }catch(e){ console.error('saveMotdQuotes:', e); }
+}
+
+// Strip any "{lead}", "{next}", tier-prefix, or numbered-list artifacts from quote text
+function sanitizeQuote(q){
+  return String(q)
+    // Remove "5 Leads — Quote 12: " style prefixes
+    .replace(/^\d+\s+Leads?\s*[—–-]\s*Quote\s*\d+\s*:\s*/i, '')
+    // Remove leading numbered list "123. "
+    .replace(/^\d+\.\s+/, '')
+    // Remove "{lead} leads! ", "{lead} down. ", "{lead} on ", "{lead} and ", etc.
+    .replace(/\{lead\}\s+leads?\W*\s*/gi, '')
+    .replace(/\{lead\}\s+/gi, '')
+    // Remove "{next}" anywhere
+    .replace(/\{next\}/gi, '')
+    // Trim surrounding quotes and whitespace
+    .replace(/^["']+|["']+$/g, '')
+    .trim();
 }
 
 function escHtml(s){
@@ -8306,7 +8448,7 @@ async function showTransferBanner(newStatsData, prevStatsData){
   if(!banner) return;
 
   if(agentsEl) agentsEl.innerHTML = chipsHtml;
-  if(quoteEl)  quoteEl.innerHTML  = quote ? `"${escHtml(quote)}"` : '';
+  if(quoteEl)  quoteEl.innerHTML  = quote ? `"${escHtml(sanitizeQuote(quote))}"` : '';
 
   // Reset progress bar animation
   if(progress){ progress.style.animation='none'; void progress.offsetWidth; progress.style.animation=''; }
