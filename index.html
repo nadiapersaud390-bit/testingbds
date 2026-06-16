@@ -8263,12 +8263,17 @@ async function showTransferBanner(newStatsData, prevStatsData){
 
   if(!agents.length) return; // no new transfers — don't show banner
 
-  // Pick a random quote
+  // Pick a quote matched to the top agent's lead/transfer count
+  // Quote index = (xfer count - 1), clamped to array bounds
   let quote = '';
   try{
     const snap = await db.collection('settings').doc('motd_quotes').get();
     const qs = (snap.exists && snap.data().quotes) ? snap.data().quotes : [];
-    if(qs.length) quote = qs[Math.floor(Math.random()*qs.length)];
+    if(qs.length){
+      const topXfer = agents[0] ? (agents[0].xfer || 1) : 1;
+      const idx = Math.min(topXfer - 1, qs.length - 1);
+      quote = qs[idx];
+    }
   }catch(e){}
 
   // Build chips HTML
