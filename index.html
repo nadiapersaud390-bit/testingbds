@@ -5768,6 +5768,9 @@ async function confirmCSVUpload(){
   const expiryDate=new Date();
   expiryDate.setDate(expiryDate.getDate()+selectedExpiryDays);
 
+  // Snapshot previous stats BEFORE parsing new CSV — used for banner diff
+  const prevStats = statsData.map(a=>({name:a.name||a.nameRaw||'', xfer:a.xfer||0}));
+
   // Parse CSV first
   parseStatsCSV(pendingCSVData.text);
 
@@ -5808,7 +5811,7 @@ async function confirmCSVUpload(){
 
   updateGoalBars();
   renderStatsTable();
-  showTransferBanner();
+  showTransferBanner(statsData, prevStats);
 
   // Reload report history so the new upload appears in the buttons immediately
   await loadReportHistory();
@@ -8236,12 +8239,29 @@ function escHtml(s){
 // ══════════════════════════════════════════════
 let _xferBannerTimer = null;
 
-async function showTransferBanner(newStatsData){
-  // Build agent chips — only agents with xfer > 0, sorted desc
-  const agents = (newStatsData || statsData)
-    .filter(a => (a.xfer||0) > 0)
+async function showTransferBanner(newStatsData, prevStatsData){
+  const newData = newStatsData || statsData;
+  const prevData = prevStatsData || [];
+
+  // Build a lookup of previous xfer counts by agent name (normalized)
+  const prevMap = {};
+  prevData.forEach(a => {
+    const key = (a.name||'').toLowerCase().trim();
+    if(key) prevMap[key] = a.xfer || 0;
+  });
+
+  // Only show agents whose xfer count INCREASED vs previous upload
+  const agents = newData
+    .filter(a => {
+      const newXfer = a.xfer || 0;
+      if(newXfer === 0) return false;
+      const key = (a.name||a.nameRaw||'').toLowerCase().trim();
+      const prevXfer = prevMap[key] !== undefined ? prevMap[key] : 0;
+      return newXfer > prevXfer; // only show if they gained new transfers
+    })
     .sort((a,b) => (b.xfer||0) - (a.xfer||0));
-  if(!agents.length) return;
+
+  if(!agents.length) return; // no new transfers — don't show banner
 
   // Pick a random quote
   let quote = '';
