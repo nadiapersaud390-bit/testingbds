@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9366,6 +9367,7 @@ function ltSelectWeek(weekId){
 
   // Real-time listener for leads
   try{
+    let ltInitialLoad = true; // skip 'added' events from the first snapshot burst
     ltUnsubscribeLeads = db.collection('leadTracker')
       .doc(String(currentUser.id))
       .collection('weeks')
@@ -9373,6 +9375,14 @@ function ltSelectWeek(weekId){
       .collection('leads')
       .orderBy('order','asc')
       .onSnapshot(snap => {
+        // Detect genuinely new leads added after initial load
+        if(!ltInitialLoad){
+          const newLeads = snap.docChanges().filter(c => c.type === 'added');
+          if(newLeads.length > 0 && document.hidden){
+            ltNotifyNewLead(newLeads.length);
+          }
+        }
+        ltInitialLoad = false;
         ltLeads = {};
         snap.forEach(doc => { ltLeads[doc.id] = {id: doc.id, ...doc.data()}; });
         ltRenderTable();
@@ -9382,6 +9392,36 @@ function ltSelectWeek(weekId){
     ltRenderTable();
   }
 }
+
+// ── New-lead tab notification ─────────────────────────────────────
+let _ltTabBlinkInterval = null;
+let _ltPendingLeadCount = 0;
+const _ltOriginalTitle  = document.title;
+
+function ltNotifyNewLead(count){
+  _ltPendingLeadCount += count;
+  if(_ltTabBlinkInterval) return; // already blinking
+  let blink = false;
+  _ltTabBlinkInterval = setInterval(() => {
+    document.title = blink
+      ? ('📋 ' + _ltPendingLeadCount + ' NEW LEAD' + (_ltPendingLeadCount > 1 ? 'S' : '') + ' ADDED')
+      : _ltOriginalTitle;
+    blink = !blink;
+  }, 1000);
+}
+
+function ltClearLeadNotify(){
+  if(_ltTabBlinkInterval){ clearInterval(_ltTabBlinkInterval); _ltTabBlinkInterval = null; }
+  _ltPendingLeadCount = 0;
+  document.title = _ltOriginalTitle;
+}
+
+// When user returns to this tab → stop blinking, nothing else
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden && _ltPendingLeadCount > 0){
+    ltClearLeadNotify();
+  }
+});
 
 // ── Show no-week state ──
 function ltShowNoWeek(){
@@ -9719,6 +9759,27 @@ function startVersionListener(){
     });
 }
 
+// ── Tab title blinking for update alert ──────────────────────────
+let _tabBlinkInterval = null;
+const _originalTitle   = document.title;
+
+function startTabBlink(){
+  if(_tabBlinkInterval) return; // already blinking
+  let blink = false;
+  _tabBlinkInterval = setInterval(() => {
+    document.title = blink ? '🔔 UPDATE AVAILABLE — RELOAD NOW' : _originalTitle;
+    blink = !blink;
+  }, 1200);
+}
+
+function stopTabBlink(){
+  if(_tabBlinkInterval){
+    clearInterval(_tabBlinkInterval);
+    _tabBlinkInterval = null;
+  }
+  document.title = _originalTitle;
+}
+
 function showUpdateBanner(){
   let banner = document.getElementById('app-update-banner');
   if(banner && banner.classList.contains('show')) return; // already showing
@@ -9735,11 +9796,13 @@ function showUpdateBanner(){
     document.body.appendChild(banner);
   }
   requestAnimationFrame(() => banner.classList.add('show'));
+  startTabBlink();
 }
 
 function dismissUpdateBanner(){
   const banner = document.getElementById('app-update-banner');
   if(banner) banner.classList.remove('show');
+  stopTabBlink();
   // Re-show after 5 minutes if they haven't reloaded
   setTimeout(showUpdateBanner, 5 * 60 * 1000);
 }
