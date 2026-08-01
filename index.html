@@ -28,7 +28,20 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-01-rebuttal-firebase-r1';
+const APP_VERSION = '2026-08-01-rebuttal-smartmatch-r4';
+
+// Apply the saved appearance before the page paints to prevent a theme flash.
+(function applySavedThemeEarly(){
+  try{
+    const saved = localStorage.getItem('bds_theme');
+    const theme = saved === 'light' || saved === 'dark'
+      ? saved
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  }catch(e){
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -54,6 +67,86 @@ const APP_VERSION = '2026-08-01-rebuttal-firebase-r1';
   --shadow:0 2px 12px rgba(0,0,0,0.4);
   --shadow-md:0 4px 24px rgba(0,0,0,0.5);
 }
+
+/* ── USER APPEARANCE: LIGHT / DARK ── */
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#eef3f9;
+  --surface:#ffffff;
+  --card:#ffffff;
+  --border:#cbd5e1;
+  --accent:#2563eb;
+  --accent2:#0891b2;
+  --green:#059669;
+  --green-light:rgba(5,150,105,.12);
+  --red:#dc2626;
+  --red-light:rgba(220,38,38,.10);
+  --gold:#b45309;
+  --gold-light:rgba(180,83,9,.12);
+  --purple:#7c3aed;
+  --purple-light:rgba(124,58,237,.11);
+  --orange:#c2410c;
+  --cyan:#0891b2;
+  --text:#172033;
+  --muted:#64748b;
+  --shadow:0 2px 12px rgba(15,23,42,.10);
+  --shadow-md:0 8px 28px rgba(15,23,42,.14);
+}
+html[data-theme="light"] body{background:var(--bg);color:var(--text);}
+html[data-theme="light"] .hero{background:linear-gradient(180deg,#f8fafc 0%,#eef2ff 52%,#f1f5f9 100%);border-bottom-color:#cbd5e1;}
+html[data-theme="light"] .hero::before{background:radial-gradient(ellipse,rgba(124,58,237,.12) 0%,transparent 70%);}
+html[data-theme="light"] .login-screen{background:linear-gradient(180deg,#f8fafc,#eaf0f8);}
+html[data-theme="light"] .tabs-wrap,
+html[data-theme="light"] .top-tabs,
+html[data-theme="light"] .tab-page,
+html[data-theme="light"] .admin-panel,
+html[data-theme="light"] .admin-section{background:var(--bg);}
+html[data-theme="light"] :is(.tz-card,.login-card,.rb-smart-card,.admin-card,.ap-card,.rbm-panel,.rbm-form-card,.script-view,.dispo-grid .dsec,.dsec,.modal-card,.rep-card,.stat-card,.leader-card,.tips-card){
+  background:#fff !important;border-color:var(--border) !important;box-shadow:var(--shadow);
+}
+html[data-theme="light"] :is(input,textarea,select,.login-input,.rb-smart-textarea,.rb-quick-wrap,.rb-quick-input,.rbm-input,.rbm-editor){
+  background:#f8fafc !important;color:var(--text) !important;border-color:#b8c5d8 !important;color-scheme:light;
+}
+html[data-theme="light"] :is(.tab-btn,.admin-tab-btn,.adm-tab,.ap-tab,.sub-tab,.rb-lib-btn,.rb-clear-btn,.rb-auto-badge,.rbm-btn,.rbm-mini){
+  color:var(--text);
+}
+html[data-theme="light"] .rb-search-results{background:#fff;border-color:#b8c5d8;box-shadow:0 14px 30px rgba(15,23,42,.16);}
+html[data-theme="light"] .rb-search-item{background:#fff;border-color:#d8e0eb;}
+html[data-theme="light"] .rb-search-item:hover,
+html[data-theme="light"] .rb-search-item.active{background:#eef2ff;}
+html[data-theme="light"] .rbm-rebuttal-item{background:#f8fafc;border-color:#d3dce9;}
+html[data-theme="light"] .rbm-rebuttal-item:hover{background:#eef2ff;border-color:#94a3b8;}
+html[data-theme="light"] .rbm-rebuttal-item.active{background:#ede9fe;border-color:#7c3aed;}
+html[data-theme="light"] .rbm-rebuttal-title{color:var(--text);}
+html[data-theme="light"] [style*="background:#0d1424"],
+html[data-theme="light"] [style*="background: #0d1424"],
+html[data-theme="light"] [style*="background:#0b1324"],
+html[data-theme="light"] [style*="background:#101827"],
+html[data-theme="light"] [style*="background:#0a1020"],
+html[data-theme="light"] [style*="background:#060b18"],
+html[data-theme="light"] [style*="background:#101a30"]{background:#f8fafc !important;}
+html[data-theme="light"] [style*="color:#cbd5e1"],
+html[data-theme="light"] [style*="color: #cbd5e1"],
+html[data-theme="light"] [style*="color:#e2e8f0"],
+html[data-theme="light"] [style*="color:#afbdd2"]{color:var(--text) !important;}
+
+.theme-toggle{
+  position:fixed;top:14px;right:14px;z-index:12000;
+  display:flex;align-items:center;gap:8px;padding:8px 11px;
+  border:1px solid rgba(148,163,184,.32);border-radius:999px;
+  background:rgba(8,13,28,.88);color:#e2e8f0;
+  box-shadow:0 6px 24px rgba(0,0,0,.22);backdrop-filter:blur(12px);
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:800;
+  font-size:.72rem;letter-spacing:1px;text-transform:uppercase;transition:.18s ease;
+}
+.theme-toggle:hover{transform:translateY(-1px);border-color:var(--accent2);}
+.theme-toggle-icon{font-size:1rem;line-height:1;}
+html[data-theme="light"] .theme-toggle{background:rgba(255,255,255,.92);color:#172033;border-color:#cbd5e1;box-shadow:0 6px 24px rgba(15,23,42,.13);}
+@media(max-width:620px){.theme-toggle{top:8px;right:8px;padding:7px 9px}.theme-toggle-label{display:none}}
+
+/* Rebuttal details stay hidden until the agent searches or selects a result. */
+.rb-interaction-panel{display:none;}
+.rb-interaction-panel.revealed{display:block;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 
@@ -160,6 +253,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .tz-time.big-time{font-size:2rem;}
 .tz-time.sm-time{font-size:1.25rem;}
 .tz-et{color:#ffd700;}.tz-ct{color:#7ee8fa;}.tz-mt{color:#c4b5fd;}.tz-pt{color:#6ee7b7;}.tz-ak{color:#fb923c;}.tz-hi{color:#f9a8d4;}
+.firebase-clock-status{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  margin-top:-10px;margin-bottom:12px;
+  font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:800;
+  letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);
+}
+.firebase-clock-status .clock-sync-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 10px rgba(251,191,36,0.55);
+}
+.firebase-clock-status.synced{color:var(--green);}
+.firebase-clock-status.synced .clock-sync-dot{
+  background:var(--green);box-shadow:0 0 12px rgba(52,211,153,0.7);
+}
+.firebase-clock-status.fallback{color:var(--gold);}
 
 /* ── NAV TABS — 3,3,2,1,1 layout using 6-col grid ── */
 .top-tabs{
@@ -888,6 +996,25 @@ body.is-admin #agent-target-widget{display:none !important;}
 .rb-lib-btn:hover{border-color:#6d58d9;color:#fff;background:#121c33;transform:translateY(-1px);}
 .rb-lib-btn.active{border-color:#8b68ff;color:#fff;background:rgba(112,76,255,.18);box-shadow:0 0 14px rgba(112,76,255,.16);}
 #obj-display.rb-firebase-display{min-height:300px;background:linear-gradient(145deg,#0a1020,#080e1c);border:1px solid #1b2944;border-radius:16px;padding:18px;}
+.rb-smart-feedback{display:none;margin:0 0 14px;background:linear-gradient(145deg,rgba(76,52,180,.12),rgba(9,15,29,.82));border:1px solid rgba(139,104,255,.28);border-radius:14px;padding:12px 13px;}
+.rb-smart-feedback.show{display:block;}
+.rb-smart-thinking{display:flex;align-items:center;gap:9px;color:#a991ff;font-size:.72rem;font-weight:900;letter-spacing:.7px;text-transform:uppercase;}
+.rb-thinking-dots{display:inline-flex;gap:3px;align-items:center;}
+.rb-thinking-dots i{display:block;width:5px;height:5px;border-radius:50%;background:#a991ff;animation:rbThink 1s infinite ease-in-out;}
+.rb-thinking-dots i:nth-child(2){animation-delay:.14s;}.rb-thinking-dots i:nth-child(3){animation-delay:.28s;}
+@keyframes rbThink{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.rb-smart-bestline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;}
+.rb-smart-bestcopy{font-size:.69rem;color:#8292ae;font-weight:800;letter-spacing:.5px;}
+.rb-smart-bestcopy strong{color:#b8a7ff;font-family:'Barlow Condensed',sans-serif;font-size:.86rem;letter-spacing:.8px;}
+.rb-smart-match-list{display:flex;flex-wrap:wrap;gap:7px;}
+.rb-smart-match-choice{border:1px solid #2b3a58;background:#0d1629;color:#c8d1e2;border-radius:9px;padding:7px 10px;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:850;cursor:pointer;transition:.14s;}
+.rb-smart-match-choice:hover{border-color:#8b68ff;color:#fff;background:#151f38;transform:translateY(-1px);}
+.rb-smart-match-choice.best{border-color:rgba(139,104,255,.6);background:rgba(112,76,255,.16);color:#fff;}
+.rb-smart-match-score{opacity:.55;font-size:.56rem;margin-left:4px;}
+html[data-theme="light"] .rb-smart-feedback{background:#f7f5ff;border-color:#c7b8ff;}
+html[data-theme="light"] .rb-smart-match-choice{background:#fff;color:var(--text);border-color:#cbd5e1;}
+html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .rb-smart-match-choice.best{background:#ede9fe;border-color:#7c3aed;color:#3b1d85;}
+
 
 /* Admin rebuttal manager */
 .rbm-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
@@ -929,6 +1056,10 @@ body.is-admin #agent-target-widget{display:none !important;}
 @media(max-width:900px){.rb-smart-grid{grid-template-columns:1fr}.rbm-layout{grid-template-columns:1fr}.rbm-rebuttal-list{max-height:260px}.rbm-form-grid{grid-template-columns:1fr}.rbm-field.full{grid-column:1}.rb-smart-card{min-height:auto}.rebuttal-page-shell{padding:12px}}
 </style>
 <body>
+<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch light or dark theme" title="Switch light or dark theme">
+  <span class="theme-toggle-icon" id="theme-toggle-icon">☀️</span>
+  <span class="theme-toggle-label" id="theme-toggle-label">Light Theme</span>
+</button>
 <!-- ── TRANSFER CELEBRATION BANNER ── -->
 <div id="xfer-banner">
   <div class="xfer-banner-inner" style="position:relative;">
@@ -1081,6 +1212,10 @@ body.is-admin #agent-target-widget{display:none !important;}
         <span class="tz-time big-time tz-hi" id="clock-hi">--:--</span>
       </div>
     </div>
+  </div>
+  <div class="firebase-clock-status" id="firebase-clock-status">
+    <span class="clock-sync-dot"></span>
+    <span id="firebase-clock-status-text">Syncing Firebase time…</span>
   </div>
 </div>
 
@@ -2375,7 +2510,7 @@ body.is-admin #agent-target-widget{display:none !important;}
           </div>
           <textarea id="smart-rebuttal-input" class="rb-smart-textarea" placeholder="Example: Is this a real company? I never applied for a loan." oninput="smartRebuttalInput(this.value)"></textarea>
           <div class="rb-smart-foot">
-            <span>⚡ Start typing and the closest rebuttal will open automatically.</span>
+            <span>⚡ Start typing — Smart Match will think, preview the best answer, and show close alternatives.</span>
             <button class="rb-auto-badge" onclick="runSmartRebuttalMatch(true)">AUTO MATCH</button>
           </div>
         </section>
@@ -2401,12 +2536,15 @@ body.is-admin #agent-target-widget{display:none !important;}
         </section>
       </div>
 
-      <div class="rb-library-status">
-        <span id="rebuttal-library-status"><span class="rb-live-dot"></span>Connecting to Firebase rebuttal library...</span>
-        <span id="rebuttal-library-updated"></span>
+      <div id="rebuttal-interaction-panel" class="rb-interaction-panel" aria-live="polite">
+        <div class="rb-library-status">
+          <span id="rebuttal-library-status"><span class="rb-live-dot"></span>Connecting to Firebase rebuttal library...</span>
+          <span id="rebuttal-library-updated"></span>
+        </div>
+        <div id="smart-match-feedback" class="rb-smart-feedback"></div>
+        <div id="rebuttal-section-nav" class="rb-section-nav"></div>
+        <div class="script-view rb-firebase-display" id="obj-display"></div>
       </div>
-      <div id="rebuttal-section-nav" class="rb-section-nav"></div>
-      <div class="script-view rb-firebase-display" id="obj-display"></div>
     </div>
   </div>
 
@@ -3166,9 +3304,12 @@ let rebuttalLibraryReady = false;
 let rebuttalSyncStarting = false;
 let rebuttalSectionUnsubscribe = null;
 let rebuttalItemsUnsubscribe = null;
-let selectedObjectionKey = 'not_interested';
+let selectedObjectionKey = '';
 let lastQuickRebuttalMatches = [];
+let lastSmartRebuttalMatches = [];
 let smartRebuttalTimer = null;
+let smartPreviewObjectionKey = '';
+let smartMatchRequestId = 0;
 let rbmSelectedSectionId = '';
 let rbmSelectedRebuttalId = '';
 let rbmIsNew = false;
@@ -3310,9 +3451,9 @@ function startRebuttalSync(){
       if(status) status.innerHTML=`<span class="rb-live-dot"></span>Firebase live sync · ${Object.values(next).filter(r=>r.active!==false).length} rebuttals`;
       const updated=document.getElementById('rebuttal-library-updated');
       if(updated) updated.textContent='LIVE';
-      if(!next[selectedObjectionKey] || next[selectedObjectionKey].active===false){
-        const first=rbGetActiveRebuttals()[0];
-        if(first) selectedObjectionKey=first.id;
+      if(selectedObjectionKey && (!next[selectedObjectionKey] || next[selectedObjectionKey].active===false)){
+        selectedObjectionKey='';
+        hideRebuttalInteractionPanel();
       }
       if(selectedObjectionKey) loadObjection(selectedObjectionKey,false);
     },err=>{
@@ -3437,22 +3578,130 @@ function rbFindMatches(query,limit=20){
     .slice(0,limit);
 }
 
-function smartRebuttalInput(){
+function revealRebuttalInteractionPanel(){
+  const panel=document.getElementById('rebuttal-interaction-panel');
+  if(panel) panel.classList.add('revealed');
+}
+
+function rbSetSectionNavVisible(visible){
+  const nav=document.getElementById('rebuttal-section-nav');
+  if(nav) nav.style.display=visible?'flex':'none';
+}
+
+function rbRenderSmartFeedback(query,matches,thinking=false){
+  const box=document.getElementById('smart-match-feedback');
+  if(!box) return;
+  const q=String(query||'').trim();
+  if(!q){box.classList.remove('show');box.innerHTML='';return;}
+  box.classList.add('show');
+  if(thinking){
+    box.innerHTML=`<div class="rb-smart-thinking"><span>Finding the best answer</span><span class="rb-thinking-dots"><i></i><i></i><i></i></span></div>`;
+    return;
+  }
+  if(!matches.length){
+    box.innerHTML='<div class="rb-smart-bestcopy">No close answer found yet. Keep typing more of what the customer said.</div>';
+    return;
+  }
+  const top=matches[0].record;
+  box.innerHTML=`<div class="rb-smart-bestline"><div class="rb-smart-bestcopy">Best answer found: <strong>${rbEscape(top.label||top.phase||top.id)}</strong></div><div class="rb-smart-bestcopy">Click a match to count it as used</div></div><div class="rb-smart-match-list">${matches.slice(0,5).map((match,index)=>`<button class="rb-smart-match-choice ${index===0?'best':''}" onclick="openSmartRebuttalMatch('${rbEscape(match.record.id)}')">${index===0?'★ ':''}${rbEscape(match.record.label||match.record.phase||match.record.id)}</button>`).join('')}</div>`;
+}
+
+function hideRebuttalInteractionPanel(){
+  const panel=document.getElementById('rebuttal-interaction-panel');
+  if(panel) panel.classList.remove('revealed');
+  const display=document.getElementById('obj-display');
+  if(display) display.innerHTML='';
+  const feedback=document.getElementById('smart-match-feedback');
+  if(feedback){feedback.classList.remove('show');feedback.innerHTML='';}
+  rbSetSectionNavVisible(true);
+  selectedObjectionKey='';
+  smartPreviewObjectionKey='';
+  lastSmartRebuttalMatches=[];
+  document.querySelectorAll('#page-objections .rb-lib-btn').forEach(el=>el.classList.remove('active'));
+}
+
+function maybeHideRebuttalInteractionPanel(){
+  const smart=(document.getElementById('smart-rebuttal-input')?.value||'').trim();
+  const quick=(document.getElementById('rebuttal-search')?.value||'').trim();
+  if(!smart && !quick && !selectedObjectionKey) hideRebuttalInteractionPanel();
+}
+
+function smartRebuttalInput(value){
+  const typed=String(value??document.getElementById('smart-rebuttal-input')?.value??'').trim();
   clearTimeout(smartRebuttalTimer);
-  smartRebuttalTimer=setTimeout(()=>runSmartRebuttalMatch(false),550);
+  smartMatchRequestId++;
+  if(!typed){
+    rbRenderSmartFeedback('',[]);
+    if(smartPreviewObjectionKey && selectedObjectionKey===smartPreviewObjectionKey){
+      selectedObjectionKey='';
+      smartPreviewObjectionKey='';
+      const display=document.getElementById('obj-display');
+      if(display) display.innerHTML='';
+    }
+    rbSetSectionNavVisible(true);
+    maybeHideRebuttalInteractionPanel();
+    return;
+  }
+  revealRebuttalInteractionPanel();
+  rbSetSectionNavVisible(false);
+  if(selectedObjectionKey){
+    selectedObjectionKey='';
+    smartPreviewObjectionKey='';
+    const display=document.getElementById('obj-display');
+    if(display) display.innerHTML='';
+  }
+  rbRenderSmartFeedback(typed,[],true);
+  const requestId=smartMatchRequestId;
+  smartRebuttalTimer=setTimeout(()=>{
+    if(requestId===smartMatchRequestId) runSmartRebuttalMatch(false);
+  },240);
 }
 
 function runSmartRebuttalMatch(force){
   const input=document.getElementById('smart-rebuttal-input');
-  const value=input?.value||'';
-  if(!value.trim() || (!force && value.trim().length<4)) return;
-  const top=rbFindMatches(value,1)[0];
-  if(top && (force || top.score>=22)) loadObjection(top.record.id);
+  const value=(input?.value||'').trim();
+  if(!value) return;
+  revealRebuttalInteractionPanel();
+  rbSetSectionNavVisible(false);
+  lastSmartRebuttalMatches=rbFindMatches(value,5);
+  rbRenderSmartFeedback(value,lastSmartRebuttalMatches,false);
+  const top=lastSmartRebuttalMatches[0];
+  if(!top){
+    if(smartPreviewObjectionKey && selectedObjectionKey===smartPreviewObjectionKey){
+      selectedObjectionKey='';smartPreviewObjectionKey='';
+      const d=document.getElementById('obj-display');if(d)d.innerHTML='';
+    }
+    return;
+  }
+  if(force){
+    smartPreviewObjectionKey='';
+    loadObjection(top.record.id,true);
+  }else{
+    smartPreviewObjectionKey=top.record.id;
+    loadObjection(top.record.id,false);
+  }
+}
+
+function openSmartRebuttalMatch(id){
+  smartPreviewObjectionKey='';
+  loadObjection(id,true);
 }
 
 function clearSmartRebuttal(){
   const el=document.getElementById('smart-rebuttal-input');
+  const hadValue=!!(el?.value||'').trim();
   if(el){el.value='';el.focus();}
+  clearTimeout(smartRebuttalTimer);
+  smartMatchRequestId++;
+  rbRenderSmartFeedback('',[]);
+  rbSetSectionNavVisible(true);
+  if(hadValue || smartPreviewObjectionKey){
+    selectedObjectionKey='';
+    smartPreviewObjectionKey='';
+    const display=document.getElementById('obj-display');
+    if(display) display.innerHTML='';
+  }
+  maybeHideRebuttalInteractionPanel();
 }
 
 function clearQuickRebuttal(){
@@ -3463,6 +3712,7 @@ function clearQuickRebuttal(){
   lastQuickRebuttalMatches=[];
   const count=document.getElementById('rebuttal-result-count');
   if(count) count.textContent=rbGetActiveRebuttals().length+' results';
+  maybeHideRebuttalInteractionPanel();
 }
 
 function rebuttalSearchKeydown(event){
@@ -3852,9 +4102,10 @@ async function doLogin(){
       return;
     }
 
-    // Step 3 — Firebase sign in
+    // Step 3 — Firebase sign in and server-time synchronization
     btn.innerHTML = '<span class="spinner"></span>SIGNING IN...';
     await ensureFirebaseAuth();
+    try{ await syncFirebaseClock(); }catch(e){ console.warn('Firebase clock sync failed:', e); }
     currentUser = {id, ...agentData, isAdmin:false};
 
     // Step 4 — Mark attendance (non-blocking — don't fail login if this errors)
@@ -3934,7 +4185,7 @@ async function markAttendanceFirebase(agent) {
 // ── CALCULATE PRESENT OR LATE ──
 function getAttendanceStatus(shift) {
   try {
-    const nowGY  = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+    const nowGY  = new Date(getFirebaseNow().toLocaleString('en-US',{timeZone:'America/Guyana'}));
     const isSun  = nowGY.getDay() === 0;
 
     // On Sunday everyone has the same 11:45am shift regardless of their roster shift
@@ -3956,7 +4207,7 @@ function getAttendanceStatus(shift) {
 }
 
 function getTodayGY(){
-  return new Date().toLocaleDateString('en-CA',{timeZone:'America/Guyana'});
+  return getFirebaseNow().toLocaleDateString('en-CA',{timeZone:'America/Guyana'});
 }
 
 // ── SHOW DASHBOARD ──
@@ -4440,16 +4691,128 @@ function stopRosterPolling() {
 
 // ── END ROSTER REAL-TIME SYNC ──
 
+// ── LIGHT / DARK THEME TOGGLE ──
+function getCurrentTheme(){
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function updateThemeToggle(){
+  const current=getCurrentTheme();
+  const icon=document.getElementById('theme-toggle-icon');
+  const label=document.getElementById('theme-toggle-label');
+  const button=document.getElementById('theme-toggle');
+  const next=current==='dark'?'light':'dark';
+  if(icon) icon.textContent=current==='dark'?'☀️':'🌙';
+  if(label) label.textContent=current==='dark'?'Light Theme':'Dark Theme';
+  if(button){
+    button.setAttribute('aria-label',`Switch to ${next} theme`);
+    button.title=`Switch to ${next} theme`;
+  }
+}
+
+function setTheme(theme){
+  const next=theme==='light'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('bds_theme',next);}catch(e){}
+  updateThemeToggle();
+}
+
+function toggleTheme(){
+  setTheme(getCurrentTheme()==='dark'?'light':'dark');
+}
+
+window.addEventListener('DOMContentLoaded',updateThemeToggle);
+
 window.addEventListener('load',()=>{ checkSession(); });
 
 function init(){
   loadScript('intro');
-  loadObjection('not_interested',false);
+  hideRebuttalInteractionPanel();
   startRebuttalSync();
   startClocks();
   const pw=['FIXED-RATE','5.49% APR','SOFT CREDIT CHECK','LENDING SPECIALIST','LIMITED TIME','LOAN AMOUNTS','MONTHLY PAYMENTS','ELIGIBILITY','LENDING PARTNER NETWORK','PRE-QUALIFICATION'];
   const el=document.getElementById('punch-words');
   if(el) el.innerHTML=pw.map(w=>`<div style="background:var(--purple-light);border:1.5px solid #c4b5fd;border-radius:7px;padding:7px;text-align:center;font-size:0.58rem;font-weight:800;color:var(--purple);">${w}</div>`).join('');
+}
+
+// ── FIREBASE-SYNCHRONIZED CLOCK ──
+// Firestore does not expose a continuous clock endpoint. We write a serverTimestamp,
+// calculate the difference between Firebase and the device clock, then tick locally
+// using that Firebase-derived offset. The offset is refreshed periodically.
+let firebaseClockOffsetMs = 0;
+let firebaseClockIsSynced = false;
+let firebaseClockSyncPromise = null;
+let firebaseClockTickTimer = null;
+let firebaseClockResyncTimer = null;
+let firebaseClockVisibilityBound = false;
+
+function getFirebaseNow(){
+  return new Date(Date.now() + firebaseClockOffsetMs);
+}
+window.getFirebaseNow = getFirebaseNow;
+
+function setFirebaseClockStatus(message, state='syncing'){
+  const wrap = document.getElementById('firebase-clock-status');
+  const text = document.getElementById('firebase-clock-status-text');
+  if(text) text.textContent = message;
+  if(wrap){
+    wrap.classList.remove('synced','fallback');
+    if(state==='synced') wrap.classList.add('synced');
+    if(state==='fallback') wrap.classList.add('fallback');
+  }
+}
+
+async function syncFirebaseClock(){
+  if(firebaseClockSyncPromise) return firebaseClockSyncPromise;
+
+  firebaseClockSyncPromise = (async()=>{
+    setFirebaseClockStatus('Syncing Firebase time…','syncing');
+    try{
+      const user = await ensureFirebaseAuth();
+      const uid = user && user.uid ? user.uid : 'browser';
+      // Reuse the existing sessions collection so current Firestore permissions apply.
+      // The document has no agent id/date, so it is excluded from attendance/session queries.
+      const ref = db.collection('sessions').doc('_clock_sync_'+uid);
+      const clientBefore = Date.now();
+
+      await ref.set({
+        type: 'firebase-clock-sync',
+        serverTime: firebase.firestore.FieldValue.serverTimestamp(),
+        clientTimeMs: clientBefore,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      },{merge:true});
+
+      const clientAfterWrite = Date.now();
+      const snap = await ref.get({source:'server'});
+      const serverTime = snap.exists ? snap.data().serverTime : null;
+
+      if(!serverTime || typeof serverTime.toMillis !== 'function'){
+        throw new Error('Firebase did not return a committed server timestamp.');
+      }
+
+      // The write commit is estimated near the middle of the write round-trip.
+      const estimatedClientAtCommit = (clientBefore + clientAfterWrite) / 2;
+      firebaseClockOffsetMs = serverTime.toMillis() - estimatedClientAtCommit;
+      firebaseClockIsSynced = true;
+
+      const differenceSeconds = Math.round(firebaseClockOffsetMs / 1000);
+      const differenceLabel = Math.abs(differenceSeconds) >= 2
+        ? ` · device adjusted ${differenceSeconds > 0 ? '+' : ''}${differenceSeconds}s`
+        : '';
+      setFirebaseClockStatus('Firebase time synced'+differenceLabel,'synced');
+      return getFirebaseNow();
+    }catch(error){
+      firebaseClockIsSynced = false;
+      firebaseClockOffsetMs = 0;
+      setFirebaseClockStatus('Firebase unavailable · using device time','fallback');
+      console.warn('Firebase clock synchronization failed:', error);
+      return getFirebaseNow();
+    }finally{
+      firebaseClockSyncPromise = null;
+    }
+  })();
+
+  return firebaseClockSyncPromise;
 }
 
 function startClocks(){
@@ -4461,14 +4824,38 @@ function startClocks(){
     {id:'clock-ak',tz:'America/Anchorage'},
     {id:'clock-hi',tz:'Pacific/Honolulu'}
   ];
+
   function tick(){
+    const firebaseNow = getFirebaseNow();
     zones.forEach(z=>{
       const el=document.getElementById(z.id);
       if(!el)return;
-      el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:z.tz,hour:'2-digit',minute:'2-digit',hour12:true});
+      el.textContent=firebaseNow.toLocaleTimeString('en-US',{
+        timeZone:z.tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true
+      });
     });
   }
-  tick();setInterval(tick,1000);
+
+  if(firebaseClockTickTimer) clearInterval(firebaseClockTickTimer);
+  if(firebaseClockResyncTimer) clearInterval(firebaseClockResyncTimer);
+
+  tick();
+  firebaseClockTickTimer = setInterval(tick,1000);
+  syncFirebaseClock().then(tick);
+
+  // Refresh the Firebase offset every five minutes to correct device drift.
+  firebaseClockResyncTimer = setInterval(()=>{
+    syncFirebaseClock().then(tick);
+  },5*60*1000);
+
+  // Resync after returning to a sleeping/background browser tab.
+  if(!firebaseClockVisibilityBound){
+    firebaseClockVisibilityBound = true;
+    document.addEventListener('visibilitychange',()=>{
+      if(document.visibilityState==='visible') syncFirebaseClock().then(tick);
+    });
+    window.addEventListener('online',()=>syncFirebaseClock().then(tick));
+  }
 }
 
 // ── COACHING & MONITORING ──
@@ -5127,6 +5514,8 @@ function loadScript(key){
 }
 
 function loadObjection(key,trackUsage=true){
+  revealRebuttalInteractionPanel();
+  if(trackUsage) smartPreviewObjectionKey='';
   const record=REBUTTAL_LIBRARY[key] || rbFallbackLibrary()[key];
   const o=rbRecordToDisplay(record);if(!o)return;
   selectedObjectionKey=key;
@@ -8523,6 +8912,7 @@ function searchRebuttals(val){
     resultsEl.innerHTML='';
     lastQuickRebuttalMatches=[];
     if(countEl) countEl.textContent=rbGetActiveRebuttals().length+' results';
+    maybeHideRebuttalInteractionPanel();
     return;
   }
   lastQuickRebuttalMatches=rbFindMatches(q,20);
