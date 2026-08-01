@@ -1342,7 +1342,7 @@ body.is-admin #agent-target-widget{display:none !important;}
     <!-- ── SCHEDULE TAB ── -->
     <div id="ap-schedule" style="display:none;">
       <div class="ap-card">
-        <div class="ap-card-title">⏰ SHIFT &amp; SCHEDULE — saves directly to Google Sheet</div>
+        <div class="ap-card-title">⏰ SHIFT &amp; SCHEDULE — synced with Firebase</div>
 
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div style="background:#060b18;border:1px solid #1a2540;border-radius:10px;padding:14px;">
@@ -1372,7 +1372,7 @@ body.is-admin #agent-target-widget{display:none !important;}
           </div>
 
           <div style="background:#060b18;border:1px solid #1a2540;border-radius:10px;padding:14px;">
-            <div style="font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fbbf24;margin-bottom:8px;">Break Time <span style="opacity:0.5;">(Firebase only)</span></div>
+            <div style="font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fbbf24;margin-bottom:8px;">Break Time</div>
             <div class="ap-input-row">
               <input id="rp-break-input" type="text" placeholder="e.g. 2:00-2:15 pm" class="ap-input"
                 onfocus="this.style.borderColor='#fbbf24'" onblur="this.style.borderColor='#2a3a5a'">
@@ -1396,7 +1396,7 @@ body.is-admin #agent-target-widget{display:none !important;}
           </div>
         </div>
         <div style="font-size:0.6rem;color:#64748b;margin-top:12px;text-align:center;">
-          Shift &amp; Lunch &amp; Team → Google Sheet · Break → Firebase · Agent sees changes on next login
+          Shift, Lunch, Break &amp; Team → Firebase · Changes sync across open dashboards
         </div>
       </div>
     </div>
@@ -1608,12 +1608,14 @@ body.is-admin #agent-target-widget{display:none !important;}
       <div class="admin-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
           <div class="admin-card-title" style="margin-bottom:0;font-size:0.9rem;">📆 MONTHLY ATTENDANCE</div>
-          <div style="display:flex;gap:8px;align-items:center;">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <input type="month" id="monthly-month-picker" onchange="loadMonthlyAttendance()" aria-label="Attendance month" style="padding:7px 10px;background:#0d1424;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.78rem;outline:none;color-scheme:dark;">
             <select id="monthly-team-filter" onchange="reRenderMonthly()" style="padding:7px 12px;background:#0d1424;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.78rem;outline:none;">
               <option value="all">All Teams</option>
               <option value="BB">Berbice (BB)</option>
               <option value="PR">Providence (PR)</option>
             </select>
+            <button id="monthly-export-btn" onclick="exportMonthlyAttendanceCSV()" style="padding:8px 13px;border-radius:8px;border:1px solid rgba(52,211,153,0.45);background:rgba(52,211,153,0.12);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;white-space:nowrap;">⬇ EXPORT CSV</button>
             <span id="monthly-month-lbl" style="font-size:0.72rem;color:var(--accent2);font-weight:700;"></span>
           </div>
         </div>
@@ -1844,11 +1846,11 @@ body.is-admin #agent-target-widget{display:none !important;}
           <div id="pe-save-status" style="font-size:0.7rem;text-align:center;margin-bottom:10px;min-height:18px;"></div>
 
           <button onclick="saveProfileEdits()" style="width:100%;padding:12px;border-radius:9px;border:none;background:linear-gradient(90deg,var(--accent),var(--cyan));color:#000;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">
-            💾 SAVE ALL CHANGES TO GOOGLE SHEET
+            💾 SAVE ALL CHANGES TO FIREBASE
           </button>
 
           <div style="font-size:0.6rem;color:var(--muted);text-align:center;margin-top:8px;">
-            Shift, Lunch &amp; Status → Google Sheet · Break → Firebase · Agent sees changes on next login
+            Shift, Lunch, Break &amp; Status → Firebase · Changes sync across open dashboards
           </div>
         </div>
       </div>
@@ -2928,218 +2930,89 @@ pitch_urgency:{phase:'SALES PITCH BOOSTING \u2014 URGENCY &amp; NO COMMITMENT',c
 pitch_softpull:{phase:'SALES PITCH BOOSTING \u2014 SOFT PULL / NO WEBSITE / DATA PRIVACY',color:'var(--purple)',content:`<div class="phase-tag" style="background:var(--purple-light);color:var(--purple);border-color:#c4b5fd;">\u{1F4CA} Soft Pull / No Website / Data Privacy Scripts</div><div class="rb" style="border-left:4px solid var(--accent2);"><div class="rblabel" style="color:var(--accent2);">SOFT PULL CLARIFICATION</div><div class="rbtext">"I completely understand, (Customer's Name). Just to reassure you \u2014 this is only a <span class='kw'>soft credit check</span>. It's not a hard pull and <span class='emp'>won't affect your credit score at all</span>. It's simply used to verify your identity and show you what loan options you could qualify for \u2014 no impact, no commitment."</div></div><div class="rb" style="border-left:4px solid var(--gold);"><div class="rblabel" style="color:var(--gold);">NO WEBSITE / CREDENTIALS CONCERN</div><div class="rbtext">"The reason we don't provide specific lender websites right away is because we <span class='kw'>haven't confirmed which lender will offer you the best deal</span>. Once your profile is reviewed through the soft check, our Loan Specialist will <span class='emp'>guide you through the lender's information step-by-step</span>."</div></div><div class="rb" style="border-left:4px solid var(--green);"><div class="rblabel" style="color:var(--green);">DATA PRIVACY &amp; ENCRYPTION</div><div class="rbtext">"Your information is <span class='kw'>completely protected</span>. Once I input your SSN, it's locked and securely sent to underwriting \u2014 I can't access it again. We use <span class='emp'>bank-level encryption</span> to keep everything safe and confidential."</div></div>`},
 };
 
-// ── APPS SCRIPT BRIDGE URL ──
-const BRIDGE_URL = 'https://script.google.com/macros/s/AKfycbynAn0uYQcOO_6_4feNU2RY-886eKTV_BBoCYYASwVB2jpYk60w1S8PY2IqbUphDJDl4A/exec';
+// ── FIREBASE AUTH + ROSTER ──
+let firebaseAuthPromise = null;
 
-// ── JSONP helper — bypasses CORS for Google Apps Script ──
-function callBridge(params) {
-  return new Promise((resolve, reject) => {
-    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*10000);
-    const timeout = setTimeout(() => {
-      delete window[cbName];
-      if(tag && tag.parentNode) tag.parentNode.removeChild(tag);
-      reject(new Error('Timed out'));
-    }, 15000);
-    window[cbName] = (data) => {
-      clearTimeout(timeout);
-      delete window[cbName];
-      if(tag && tag.parentNode) tag.parentNode.removeChild(tag);
-      resolve(data);
-    };
-    const qs = Object.entries({...params, callback: cbName})
-      .map(([k,v]) => encodeURIComponent(k)+'='+encodeURIComponent(v))
-      .join('&');
-    const tag = document.createElement('script');
-    tag.src = BRIDGE_URL + '?' + qs;
-    tag.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Load error')); };
-    document.head.appendChild(tag);
-  });
+async function ensureFirebaseAuth(){
+  if(auth.currentUser) return auth.currentUser;
+  if(!firebaseAuthPromise){
+    firebaseAuthPromise = auth.signInAnonymously()
+      .then(cred => cred.user)
+      .finally(() => { firebaseAuthPromise = null; });
+  }
+  return firebaseAuthPromise;
 }
 
-// ── INACTIVE AGENTS ──
-// Agents are automatically blocked if their Status column in the Google Sheet
-// is NOT "Agent" or "Trainee" — the Apps Script sends inactive:true for those.
-// To remove an agent from the dashboard: change their Status to "Inactive" in the sheet.
-// This hardcoded list is a fallback for agents with no status set.
+// Hardcoded fallback for legacy records. Firestore status="Inactive" is authoritative.
 const INACTIVE_AGENTS = [
   'Esha Singh','Keisha Graig','Angelica Alert'
 ];
 
-// ── ROSTER (loaded live from Google Sheet) ──
 let ROSTER = {};
 let rosterLoaded = false;
 
 // Normalize any team/branch string to canonical 'PR' (Providence) or 'BB' (Berbice)
-// Handles values like: GUYP, GUYB, PR, BB, Providence, Berbice, and combos
 function normalizeTeam(val) {
   if (!val) return 'BB';
-  const v = val.toUpperCase().replace(/[\s\-_]/g, '');
+  const v = String(val).toUpperCase().replace(/[\s\-_]/g, '');
   if (v.startsWith('GUYP') || v.includes('GUYP') || v === 'PR' || v.includes('PROVIDENCE')) return 'PR';
   if (v.startsWith('GUYB') || v.includes('GUYB') || v === 'BB' || v.includes('BERBICE')) return 'BB';
-  return val; // unknown value — pass through unchanged
+  return String(val);
+}
+
+function rosterAgentFromDoc(doc){
+  const raw = doc.data() || {};
+  const userId = String(raw.userId || raw.userid || raw.UserId || raw.user_id || doc.id || '').trim();
+  const name = String(raw.name || raw.Name || raw.agentName || raw.agentname || '').trim();
+  const ytelName = String(raw.ytelName || raw.ytelname || raw.YtelName || raw['Ytel Name'] || raw['ytel name'] || raw.ytel_name || '').trim();
+  const status = String(raw.status || raw.Status || 'Agent').trim();
+  const statusLow = status.toLowerCase();
+
+  if(!userId || !name) return null;
+  if(raw.inactive === true || statusLow === 'inactive') return null;
+  if(INACTIVE_AGENTS.some(n => n.toLowerCase() === name.toLowerCase())) return null;
+
+  let team = normalizeTeam(raw.team || raw.Team || 'BB');
+  if(ytelName){
+    const yn = ytelName.toUpperCase().replace(/[\s\-_]/g,'');
+    if(yn.startsWith('GUYP') || yn.includes('GUYP')) team = 'PR';
+    else if(yn.startsWith('GUYB') || yn.includes('GUYB')) team = 'BB';
+  }
+
+  return {
+    userId,
+    name,
+    ytelName,
+    shift: String(raw.shift || raw.Shift || '').trim(),
+    lunch: String(raw.lunch || raw.Lunch || '').trim(),
+    brk: String(raw.brk || raw.break || raw.Break || '').trim(),
+    team,
+    status: status || 'Agent'
+  };
+}
+
+function rosterFromSnapshot(snapshot){
+  const fresh = {};
+  snapshot.forEach(doc => {
+    const agent = rosterAgentFromDoc(doc);
+    if(agent) fresh[agent.userId] = agent;
+  });
+  return fresh;
 }
 
 async function loadRoster() {
   try {
-    const data = await callBridge({action: 'getRoster'});
-    if (data.success && data.agents) {
-      // DEBUG: Log first agent to see exact field names from Apps Script
-      if (data.agents.length > 0) {
-        console.log('🔍 RAW AGENT FROM APPS SCRIPT:', JSON.stringify(data.agents[0]));
-        console.log('🔍 ALL FIELD NAMES:', Object.keys(data.agents[0]).join(', '));
-        // Log the ytelName specifically so we can see what key it's stored under
-        const firstA = data.agents[0];
-        const ytelKey = Object.keys(firstA).find(k => k.toLowerCase().replace(/[\s_]/g,'') === 'ytelname');
-        console.log('🔍 ytelName key in sheet:', ytelKey, '→', ytelKey ? firstA[ytelKey] : 'NOT FOUND');
-      } else {
-        console.warn('⚠️ Apps Script returned 0 agents — sheet may be offline or misconfigured');
-      }
-      ROSTER = {};
-      data.agents.forEach(rawA => {
-        // Normalize field names — Apps Script may return different casing
-        const a = {
-          userId:   rawA.userId   || rawA.userid   || rawA.UserId   || rawA.user_id   || '',
-          name:     rawA.name     || rawA.Name      || rawA.agentName || rawA.agentname || '',
-          ytelName: rawA.ytelName || rawA.ytelname  || rawA.YtelName  || rawA['Ytel Name'] || rawA['ytel name'] || rawA['ytel_name'] || '',
-          team:     rawA.team     || rawA.Team      || '',
-          shift:    rawA.shift    || rawA.Shift     || '',
-          lunch:    rawA.lunch    || rawA.Lunch     || '',
-          status:   rawA.status   || rawA.Status    || '',
-          inactive: rawA.inactive || false,
-        };
-        if (a.userId) {
-          // Skip inactive agents — either hardcoded or flagged by Apps Script
-          // NOTE: blank status is treated as active (Agent) — only skip when
-          // Apps Script explicitly sets inactive:true OR status is 'inactive'
-          const statusLow = (a.status||'').toLowerCase().trim();
-          const isInactive = INACTIVE_AGENTS.some(n=>n.toLowerCase()===a.name.toLowerCase())
-            || a.inactive === true
-            || (statusLow === 'inactive');
-          if(isInactive) return;
-          // Determine team from ytelName prefix — GUYP = Providence (PR), GUYB = Berbice (BB)
-          // ytelName is the authoritative source; sheet team field is a fallback only
-          // normalizeTeam() converts GUYP/Providence/PR → 'PR', GUYB/Berbice/BB → 'BB'
-          let team = 'BB'; // safe default
-          if (a.ytelName) {
-            const yn = a.ytelName.toUpperCase().replace(/[\s\-_]/g,'');
-            if (yn.startsWith('GUYP') || yn.includes('GUYP')) team = 'PR';
-            else if (yn.startsWith('GUYB') || yn.includes('GUYB')) team = 'BB';
-            else if (a.team) team = normalizeTeam(a.team); // ytelName has no prefix clue — normalize sheet field
-          } else if (a.team) {
-            team = normalizeTeam(a.team); // no ytelName at all — normalize sheet field
-          }
-          const uid = String(a.userId).trim();
-          // If we already have this agent in ROSTER (e.g. just added via Firebase),
-          // and the Sheet came back without a ytelName prefix, trust the existing team
-          const existingTeam = ROSTER[uid] ? ROSTER[uid].team : null;
-          if (!a.ytelName && existingTeam) team = existingTeam;
-
-          ROSTER[uid] = {
-            userId: uid,
-            name: a.name,
-            ytelName: a.ytelName || (ROSTER[uid] ? ROSTER[uid].ytelName : ''),
-            shift: a.shift || '',
-            lunch: a.lunch || '',
-            brk: '',
-            team,
-            status: a.status || 'Agent'
-          };
-        }
-      });
-      rosterLoaded = true;
-      console.log('Roster loaded from sheet:', Object.keys(ROSTER).length, 'agents');
-      // DEBUG: Show first 3 roster entries
-      Object.values(ROSTER).slice(0,3).forEach(a => {
-        console.log('🟢 ROSTER ENTRY:', JSON.stringify(a));
-      });
-    }
+    await ensureFirebaseAuth();
+    const snapshot = await db.collection('roster').get();
+    ROSTER = rosterFromSnapshot(snapshot);
+    rosterLoaded = true;
+    if(typeof getRosterFingerprint === 'function') rosterPollHash = getRosterFingerprint();
+    console.log('Roster loaded from Firebase:', Object.keys(ROSTER).length, 'agents');
+    return ROSTER;
   } catch(e) {
-    console.error('Roster load failed:', e);
-  }
-
-  // ── Merge Firebase roster — catches new reps added via Admin Panel
-  // before the Google Sheet has been updated ──
-  try {
-    const fbSnap = await db.collection('roster').get();
-    let mergeCount = 0;
-    // DEBUG: Log first Firebase doc to see what fields exist
-    let fbDebugDone = false;
-    fbSnap.forEach(doc => {
-      const a = doc.data();
-      if (!fbDebugDone) {
-        console.log('🔥 FIREBASE ROSTER DOC (first):', JSON.stringify(a));
-        console.log('🔥 FIREBASE FIELD NAMES:', Object.keys(a).join(', '));
-        fbDebugDone = true;
-      }
-      const uid = String(a.userId || doc.id).trim();
-      if (!uid) return;
-
-      // If Sheet already loaded this agent, check if Firebase has a better team determination
-      // (Sheet may have saved without ytelName, causing wrong BB default)
-      if (ROSTER[uid]) {
-        // Firebase may only UPGRADE a BB assignment to PR — it must NEVER downgrade PR→BB.
-        // The Google Sheet's ytelName (GUYP prefix) is the authoritative team source.
-        if (ROSTER[uid].team !== 'PR' && a.ytelName) {
-          const yn = a.ytelName.toUpperCase().replace(/[\s\-_]/g,'');
-          const fbTeam = (yn.startsWith('GUYP') || yn.includes('GUYP')) ? 'PR' : null;
-          if (fbTeam) {
-            console.log(`🔥 Firebase upgrading team for ${a.name}: BB → PR (ytelName: ${a.ytelName})`);
-            ROSTER[uid].team = 'PR';
-            if (!ROSTER[uid].ytelName) ROSTER[uid].ytelName = a.ytelName;
-          }
-        }
-        return; // already in roster — Sheet data wins for everything else
-      }
-      // ── Dedup by name: if Sheet already has an agent with this name, don't add a
-      // second Firebase entry with a different userId (would cause them to appear in both branches).
-      const sameNameEntry = Object.values(ROSTER).find(r => r.name && a.name &&
-        r.name.toLowerCase().trim() === (a.name||'').toLowerCase().trim());
-      if (sameNameEntry) {
-        // Merge: keep Sheet userId but apply Firebase upgrade only (BB→PR)
-        if (sameNameEntry.team !== 'PR' && a.ytelName) {
-          const yn = a.ytelName.toUpperCase().replace(/[\s\-_]/g,'');
-          if (yn.startsWith('GUYP') || yn.includes('GUYP')) {
-            console.log(`🔥 Firebase upgrading team for ${a.name} (name-match): BB → PR`);
-            sameNameEntry.team = 'PR';
-          }
-        }
-        return; // don't create a second ROSTER entry for the same person
-      }
-      // Skip if explicitly inactive — blank status treated as active (Agent)
-      const fbStatusLow = (a.status||'').toLowerCase().trim();
-      const isInactive = INACTIVE_AGENTS.some(n => n.toLowerCase() === (a.name||'').toLowerCase())
-        || fbStatusLow === 'inactive'
-        || a.inactive === true;
-      if (isInactive) return;
-      // Determine team from ytelName prefix — GUYP = Providence (PR), GUYB = Berbice (BB)
-      // ytelName is authoritative; a.team is fallback only (always normalized via normalizeTeam)
-      let team = 'BB';
-      if (a.ytelName) {
-        const yn = a.ytelName.toUpperCase().replace(/[\s\-_]/g,'');
-        if (yn.startsWith('GUYP') || yn.includes('GUYP')) team = 'PR';
-        else if (yn.startsWith('GUYB') || yn.includes('GUYB')) team = 'BB';
-        else if (a.team) team = normalizeTeam(a.team);
-      } else if (a.team) {
-        team = normalizeTeam(a.team);
-      }
-      ROSTER[uid] = {
-        userId: uid,
-        name: a.name || '',
-        ytelName: a.ytelName || '',
-        shift: a.shift || '',
-        lunch: a.lunch || '',
-        brk: '',
-        team,
-        status: a.status || 'Agent'
-      };
-      mergeCount++;
-    });
-    if (mergeCount > 0) {
-      console.log('Roster merged', mergeCount, 'agent(s) from Firebase not yet in Sheet');
-      rosterLoaded = true;
-    }
-  } catch(e) {
-    console.warn('Firebase roster merge failed (non-fatal):', e);
+    rosterLoaded = false;
+    console.error('Firebase roster load failed:', e);
+    return ROSTER;
   }
 }
 
@@ -3185,7 +3058,7 @@ async function doLogin(){
       return;
     }
     try{
-      await auth.signInAnonymously();
+      await ensureFirebaseAuth();
       currentUser = {id:'0000', name:'Admin', isAdmin:true, team:'ADMIN'};
       sessionStorage.setItem('bds_user_'+getTodayGY(), JSON.stringify(currentUser));
       btn.innerHTML = 'ENTER DASHBOARD';
@@ -3223,12 +3096,12 @@ async function doLogin(){
 
     // Step 3 — Firebase sign in
     btn.innerHTML = '<span class="spinner"></span>SIGNING IN...';
-    await auth.signInAnonymously();
+    await ensureFirebaseAuth();
     currentUser = {id, ...agentData, isAdmin:false};
 
     // Step 4 — Mark attendance (non-blocking — don't fail login if this errors)
     btn.innerHTML = '<span class="spinner"></span>MARKING ATTENDANCE...';
-    try{ await markAttendanceSheet(agentData); }catch(e){ console.warn('Attendance mark failed:', e); }
+    try{ await markAttendanceFirebase(agentData); }catch(e){ console.warn('Attendance mark failed:', e); }
 
     // Step 5 — Save session
     const today = getTodayGY();
@@ -3254,44 +3127,50 @@ async function doLogin(){
   }
 }
 
-// ── MARK ATTENDANCE IN GOOGLE SHEET ──
-async function markAttendanceSheet(agent) {
-  try {
-    const today  = getTodayGY();
-    const docRef = db.collection('attendance').doc(agent.userId+'_'+today);
+// ── MARK ATTENDANCE IN FIREBASE ──
+async function markAttendanceFirebase(agent) {
+  const today  = getTodayGY();
+  const userId = String(agent.userId || agent.id || '').trim();
+  if(!userId) throw new Error('Agent ID is missing');
 
-    // Check Firebase first — if already logged there, no need to do anything
-    const fbSnap = await docRef.get();
-    if(fbSnap.exists){
-      // Already in Firebase — rep is already showing online, nothing to do
-      return;
-    }
+  await ensureFirebaseAuth();
+  const docRef = db.collection('attendance').doc(userId+'_'+today);
+  const fbSnap = await docRef.get();
+  const now    = firebase.firestore.FieldValue.serverTimestamp();
 
-    // Calculate status (Present / Late) based on shift time
-    const status = getAttendanceStatus(agent.shift) || 'P';
-
-    // Always write to Firebase immediately so the admin sees them online NOW
+  // One Firebase document per agent per day. Repeated website logins update
+  // the same attendance record instead of creating duplicates elsewhere.
+  if(fbSnap.exists){
     await docRef.set({
-      id:        agent.userId,
-      name:      agent.name,
-      team:      agent.team,
-      date:      today,
-      status,
-      shift:     agent.shift || '',
-      loginTime: firebase.firestore.FieldValue.serverTimestamp()
-    },{merge:true});
-
-    // Then try to mark the Google Sheet (non-blocking — sheet may already have them)
-    try{
-      const checkData = await callBridge({action:'checkAttendance', name:agent.name, team:agent.team});
-      if(!checkData.marked){
-        await callBridge({action:'markAttendance', name:agent.name, team:agent.team, status});
-      }
-    }catch(e){ console.warn('Sheet attendance mark failed (non-fatal):', e); }
-
-  } catch(e) {
-    console.error('Attendance mark failed:', e);
+      id: userId,
+      name: agent.name || '',
+      team: normalizeTeam(agent.team || 'BB'),
+      shift: agent.shift || '',
+      date: today,
+      lastLoginTime: now,
+      loginCount: firebase.firestore.FieldValue.increment(1),
+      source: 'website',
+      updatedAt: now
+    }, {merge:true});
+    return;
   }
+
+  const status = getAttendanceStatus(agent.shift) || 'P';
+  await docRef.set({
+    id: userId,
+    name: agent.name || '',
+    team: normalizeTeam(agent.team || 'BB'),
+    date: today,
+    status,
+    shift: agent.shift || '',
+    loginTime: now,
+    firstLoginTime: now,
+    lastLoginTime: now,
+    loginCount: 1,
+    source: 'website',
+    createdAt: now,
+    updatedAt: now
+  }, {merge:true});
 }
 
 // ── CALCULATE PRESENT OR LATE ──
@@ -3389,6 +3268,7 @@ function showDashboard(){
     showAdminUI();
   }
 
+  startRosterPolling();
   scheduleMidnightLogout();
   init();
   loadCompanyName(); // always load latest name on dashboard show
@@ -3456,7 +3336,7 @@ async function saveCompanyName(){
 
 // ══════════════════════════════════════════════
 //  STREAK COUNTER
-//  Stored in Firebase: streaks/{userId}
+//  Stored in Firestore: streaks/{userId}
 //  { streak, lastDate, bestStreak }
 //  Rules:
 //    - Login on time (P) = streak + 1
@@ -3650,20 +3530,20 @@ function doLogout(auto=false){
   if(document.getElementById('login-pw')) document.getElementById('login-pw').value='';
   document.getElementById('pw-wrap').style.display='none';
   document.getElementById('login-err').textContent = auto ? '🔒 Session expired — please log in again.' : '';
-  // Pre-load roster in background for next login
+  // Pre-load the Firebase roster in background for next login
   loadRoster();
 }
 
 // ── CHECK EXISTING SESSION ──
 async function checkSession(){
-  // Pre-load roster in background
+  // Pre-load the Firebase roster in background
   loadRoster();
   const today = getTodayGY();
   const saved = sessionStorage.getItem('bds_user_'+today);
   if(saved){
     try{
       currentUser = JSON.parse(saved);
-      // Reload Firebase overrides for shift/lunch/break
+      // Reload the latest Firebase roster values
       if(!currentUser.isAdmin && currentUser.id){
         try{
           const snap = await db.collection('roster').doc(currentUser.id).get();
@@ -3683,202 +3563,123 @@ async function checkSession(){
 }
 
 // ============================================================
-//  ROSTER AUTO-SYNC — polls Google Sheet every 2 minutes
-//  and silently re-renders all views if anything changed.
+//  ROSTER REAL-TIME SYNC — Firestore onSnapshot listener
 // ============================================================
-let rosterPollHash    = '';   // fingerprint of last known roster
-let rosterPollTimer   = null;
-const ROSTER_POLL_MS  = 2 * 60 * 1000; // 2 minutes
+let rosterPollHash = '';
+let rosterUnsubscribe = null;
+let rosterListenerStarting = false;
 
-// Lightweight string hash (djb2) — no crypto needed
 function hashString(str) {
   let h = 5381;
   for (let i = 0; i < str.length; i++) {
     h = ((h << 5) + h) ^ str.charCodeAt(i);
-    h = h >>> 0; // keep unsigned 32-bit
+    h = h >>> 0;
   }
   return h.toString(36);
 }
 
 function getRosterFingerprint() {
-  // Sort by userId so order changes don't trigger false positives
   return hashString(JSON.stringify(
     Object.values(ROSTER)
       .sort((a,b) => String(a.userId).localeCompare(String(b.userId)))
-      .map(a => ({ id:a.userId, name:a.name, team:a.team, shift:a.shift, lunch:a.lunch, status:a.status }))
+      .map(a => ({ id:a.userId, name:a.name, team:a.team, shift:a.shift, lunch:a.lunch, brk:a.brk, status:a.status }))
   ));
 }
 
 function showRosterToast(msg) {
-  // Remove any existing toast first
   const old = document.getElementById('roster-sync-toast');
   if (old) old.remove();
-
   const toast = document.createElement('div');
   toast.id = 'roster-sync-toast';
   toast.textContent = msg;
   Object.assign(toast.style, {
-    position:       'fixed',
-    bottom:         '24px',
-    left:           '50%',
-    transform:      'translateX(-50%)',
-    background:     '#0d2a1a',
-    border:         '1px solid #34d399',
-    color:          '#34d399',
-    padding:        '10px 22px',
-    borderRadius:   '10px',
-    fontSize:       '0.78rem',
-    fontFamily:     "'Barlow Condensed', sans-serif",
-    fontWeight:     '800',
-    letterSpacing:  '1.5px',
-    textTransform:  'uppercase',
-    zIndex:         '99999',
-    boxShadow:      '0 4px 20px rgba(52,211,153,0.25)',
-    opacity:        '0',
-    transition:     'opacity 0.3s ease',
-    pointerEvents:  'none',
-    whiteSpace:     'nowrap'
+    position:'fixed', bottom:'24px', left:'50%', transform:'translateX(-50%)',
+    background:'#0d2a1a', border:'1px solid #34d399', color:'#34d399',
+    padding:'10px 22px', borderRadius:'10px', fontSize:'0.78rem',
+    fontFamily:"'Barlow Condensed', sans-serif", fontWeight:'800', letterSpacing:'1.5px',
+    textTransform:'uppercase', zIndex:'99999', boxShadow:'0 4px 20px rgba(52,211,153,0.25)',
+    opacity:'0', transition:'opacity 0.3s ease', pointerEvents:'none', whiteSpace:'nowrap'
   });
   document.body.appendChild(toast);
   requestAnimationFrame(() => { toast.style.opacity = '1'; });
   setTimeout(() => {
     toast.style.opacity = '0';
     setTimeout(() => toast.remove(), 400);
-  }, 4000);
+  }, 3500);
 }
 
-async function pollRoster() {
-  try {
-    // Silent reload — don't touch rosterLoaded flag so UI stays usable
-    const data = await callBridge({ action: 'getRoster' });
-    if (!data || !data.success || !data.agents) return;
-
-    // Rebuild a temporary roster map from fresh data
-    const fresh = {};
-    data.agents.forEach(rawA => {
-      const a = {
-        userId:   rawA.userId   || rawA.userid   || rawA.UserId   || rawA.user_id   || '',
-        name:     rawA.name     || rawA.Name      || rawA.agentName || rawA.agentname || '',
-        ytelName: rawA.ytelName || rawA.ytelname  || rawA.YtelName  || rawA['Ytel Name'] || rawA['ytel name'] || rawA['ytel_name'] || '',
-        team:     rawA.team     || rawA.Team      || '',
-        shift:    rawA.shift    || rawA.Shift     || '',
-        lunch:    rawA.lunch    || rawA.Lunch     || '',
-        status:   rawA.status   || rawA.Status    || '',
-        inactive: rawA.inactive || false,
-      };
-      if (!a.userId) return;
-      const statusLow = (a.status || '').toLowerCase().trim();
-      if (statusLow === 'inactive') return;
-      if (INACTIVE_AGENTS.some(n => n.toLowerCase() === a.name.toLowerCase())) return;
-
-      let team = 'BB';
-      if (a.ytelName) {
-        const yn = a.ytelName.toUpperCase().replace(/[\s\-_]/g, '');
-        if (yn.startsWith('GUYP') || yn.includes('GUYP')) team = 'PR';
-        else if (yn.startsWith('GUYB') || yn.includes('GUYB')) team = 'BB';
-        else if (a.team) team = normalizeTeam(a.team);
-      } else if (a.team) {
-        team = normalizeTeam(a.team);
-      }
-      fresh[String(a.userId).trim()] = {
-        userId:   String(a.userId).trim(),
-        name:     a.name,
-        ytelName: a.ytelName,
-        shift:    a.shift  || '',
-        lunch:    a.lunch  || '',
-        brk:      '',
-        team,
-        status:   a.status || 'Agent'
-      };
-    });
-
-    // Compute fingerprint of new data
-    const newHash = hashString(JSON.stringify(
-      Object.values(fresh)
-        .sort((a,b) => String(a.userId).localeCompare(String(b.userId)))
-        .map(a => ({ id:a.userId, name:a.name, team:a.team, shift:a.shift, lunch:a.lunch, status:a.status }))
-    ));
-
-    if (newHash === rosterPollHash) return; // nothing changed — do nothing
-
-    // ── Something changed — figure out what and notify ──
-    const oldCount   = Object.keys(ROSTER).length;
-    const newCount   = Object.keys(fresh).length;
-    const diff       = newCount - oldCount;
-
-    // Check for field changes (shift, lunch, team, name) on existing agents
-    let fieldChanges = 0;
-    Object.values(fresh).forEach(a => {
-      const old = ROSTER[a.userId];
-      if (old && (old.shift !== a.shift || old.lunch !== a.lunch || old.team !== a.team || old.name !== a.name || old.status !== a.status)) {
-        fieldChanges++;
-      }
-    });
-
-    // Apply the fresh roster
-    // Preserve Firebase-only entries (not returned by Sheet) that are still valid
-    // but skip entries that are duplicates of a Sheet agent (same name, different userId)
-    const freshNames = new Set(Object.values(fresh).map(a => (a.name||'').toLowerCase().trim()));
-    Object.keys(ROSTER).forEach(uid => {
-      if (!fresh[uid]) {
-        const entryName = (ROSTER[uid].name||'').toLowerCase().trim();
-        if (freshNames.has(entryName)) {
-          // Same person is already in fresh from the Sheet — don't add the stale Firebase duplicate
-          console.log('pollRoster: skipping Firebase duplicate for', ROSTER[uid].name);
-          return;
-        }
-        // Keep Firebase-only agents unless they're now in the Sheet as inactive
-        fresh[uid] = ROSTER[uid];
-      }
-    });
-    ROSTER        = fresh;
-    rosterLoaded  = true;
-    rosterPollHash = newHash;
-
-    // Build toast message
-    let toastMsg = '🔄 Roster synced';
-    if (diff > 0)          toastMsg = `✅ Roster updated — ${diff} agent${diff>1?'s':''} added`;
-    else if (diff < 0)     toastMsg = `🗑 Roster updated — ${Math.abs(diff)} agent${Math.abs(diff)>1?'s':''} removed`;
-    else if (fieldChanges) toastMsg = `✏️ Roster updated — ${fieldChanges} agent${fieldChanges>1?'s':''} changed`;
-    showRosterToast(toastMsg);
-
-    // Re-render all active views silently
-    if (typeof renderAttTable    === 'function') renderAttTable();
-    if (typeof renderProfileList === 'function') renderProfileList();
-    if (typeof renderStatsTable  === 'function' && statsData.length) renderStatsTable();
-    if (typeof reRenderMonthly   === 'function') reRenderMonthly();
-    // Reload overview board if it is currently visible
-    const ovEl2 = document.getElementById('admin-overview');
-    if (ovEl2 && ovEl2.style.display !== 'none' && typeof loadAdminOverview === 'function') loadAdminOverview();
-    // Refresh team breakdown popup if open
-    if(typeof refreshBreakdownIfOpen === 'function') refreshBreakdownIfOpen();
-    // Reload weekly attendance only if that tab is currently visible
-    const wkEl = document.getElementById('admin-weekly');
-    if (wkEl && wkEl.style.display !== 'none' && typeof loadWeeklyAttendance === 'function') {
-      loadWeeklyAttendance(weeklyTeam || 'BB');
-    }
-
-    console.log('🔄 Roster auto-synced:', newCount, 'agents | diff:', diff, '| field changes:', fieldChanges);
-  } catch(e) {
-    // Silent fail — polling is non-critical, never show errors to user
-    console.warn('Roster poll failed (non-fatal):', e);
+function refreshRosterViews(){
+  if (typeof renderAttTable === 'function') renderAttTable();
+  if (typeof renderProfileList === 'function') renderProfileList();
+  if (typeof renderStatsTable === 'function' && statsData.length) renderStatsTable();
+  if (typeof reRenderMonthly === 'function') {
+    const monthlyEl = document.getElementById('admin-monthly');
+    if(monthlyEl && monthlyEl.style.display !== 'none') reRenderMonthly();
+  }
+  const ovEl = document.getElementById('admin-overview');
+  if (ovEl && ovEl.style.display !== 'none' && typeof loadAdminOverview === 'function') loadAdminOverview();
+  if(typeof refreshBreakdownIfOpen === 'function') refreshBreakdownIfOpen();
+  const wkEl = document.getElementById('admin-weekly');
+  if (wkEl && wkEl.style.display !== 'none' && typeof loadWeeklyAttendance === 'function') {
+    loadWeeklyAttendance(weeklyTeam || 'BB');
   }
 }
 
+async function pollRoster(){
+  await loadRoster();
+  refreshRosterViews();
+}
+
 function startRosterPolling() {
-  // Take initial fingerprint from whatever loadRoster() already loaded
-  rosterPollHash = getRosterFingerprint();
-  // Clear any existing timer (safety measure against double-init)
-  if (rosterPollTimer) clearInterval(rosterPollTimer);
-  rosterPollTimer = setInterval(pollRoster, ROSTER_POLL_MS);
-  console.log('🕐 Roster polling started — every', ROSTER_POLL_MS / 60000, 'minutes');
+  if(rosterUnsubscribe || rosterListenerStarting) return;
+  rosterListenerStarting = true;
+  ensureFirebaseAuth().then(() => {
+    if(rosterUnsubscribe) return;
+    let firstSnapshot = true;
+    rosterUnsubscribe = db.collection('roster').onSnapshot(snapshot => {
+      const previous = ROSTER;
+      const previousCount = Object.keys(previous).length;
+      const fresh = rosterFromSnapshot(snapshot);
+      const freshCount = Object.keys(fresh).length;
+      const oldHash = rosterPollHash || getRosterFingerprint();
+
+      ROSTER = fresh;
+      rosterLoaded = true;
+      const newHash = getRosterFingerprint();
+      rosterPollHash = newHash;
+
+      if(currentUser && !currentUser.isAdmin){
+        const updated = ROSTER[String(currentUser.id)];
+        if(updated){
+          currentUser = {...currentUser, ...updated};
+          sessionStorage.setItem('bds_user_'+getTodayGY(), JSON.stringify(currentUser));
+        }
+      }
+
+      if(!firstSnapshot && newHash !== oldHash){
+        const diff = freshCount - previousCount;
+        let msg = '🔥 Firebase roster synced';
+        if(diff > 0) msg = `✅ ${diff} agent${diff===1?'':'s'} added`;
+        else if(diff < 0) msg = `🗑 ${Math.abs(diff)} agent${Math.abs(diff)===1?'':'s'} removed`;
+        else msg = '✏️ Agent records updated';
+        showRosterToast(msg);
+        refreshRosterViews();
+      }
+      firstSnapshot = false;
+    }, error => console.warn('Firebase roster listener failed:', error));
+  }).catch(error => console.warn('Firebase auth failed:', error))
+    .finally(() => { rosterListenerStarting = false; });
 }
 
 function stopRosterPolling() {
-  if (rosterPollTimer) { clearInterval(rosterPollTimer); rosterPollTimer = null; }
+  if (rosterUnsubscribe) {
+    rosterUnsubscribe();
+    rosterUnsubscribe = null;
+  }
+  rosterListenerStarting = false;
 }
 
-// ── END ROSTER AUTO-SYNC ──
+// ── END ROSTER REAL-TIME SYNC ──
 
 window.addEventListener('load',()=>{ checkSession(); });
 
@@ -4326,98 +4127,61 @@ async function saveNewRep(){
   const msgEl = document.getElementById('nr-status-msg');
   const name   = document.getElementById('nr-name').value.trim();
   const idVal  = document.getElementById('nr-id').value.trim();
-  const team   = document.getElementById('nr-team').value;
+  const team   = normalizeTeam(document.getElementById('nr-team').value);
   const ytel   = document.getElementById('nr-ytel').value.trim();
   const shift  = document.getElementById('nr-shift').value;
   const lunch  = document.getElementById('nr-lunch').value.trim();
   const status = document.getElementById('nr-status').value;
 
-  // Validate required fields
   if(!name){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ Full name is required.'; return; }
   if(!idVal){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ User ID is required.'; return; }
-  if(isNaN(idVal)||idVal===''){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ User ID must be a number.'; return; }
+  if(isNaN(idVal)){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ User ID must be a number.'; return; }
   if(!ytel){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ Ytel Name is required (e.g. GUYB John Smith or GUYP John Smith).'; return; }
-
-  // Check for duplicate ID
   if(ROSTER[String(idVal)]){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ A rep with ID '+idVal+' already exists: '+ROSTER[String(idVal)].name; return; }
 
-  msgEl.style.color='var(--gold)'; msgEl.textContent='⏳ Saving to Google Sheet...';
+  msgEl.style.color='var(--gold)';
+  msgEl.textContent='⏳ Saving to Firebase...';
 
-  let sheetOk = false;
-  let fireOk  = false;
-  const errors = [];
-
-  // 1. Write to Google Sheet via bridge
   try{
-    const r = await callBridge({
-      action:    'addAgent',
-      ytelName:  ytel,
-      agentName: name,
-      userId:    idVal,
-      team,
-      shift,
-      lunch,
-      status
-    });
-    if(r && r.success){ sheetOk = true; }
-    else { errors.push('Sheet: '+(r&&r.error?r.error:'Unknown error')); }
-  }catch(e){ errors.push('Sheet bridge failed — rep added to Firebase only'); }
-
-  // 2. Write to Firebase roster so they can log in immediately
-  try{
-    await db.collection('roster').doc(String(idVal)).set({
+    await ensureFirebaseAuth();
+    const payload = {
       userId: String(idVal),
       name,
       team,
-      ytelName: ytel||'',
-      shift:  shift||'',
-      lunch:  lunch||'',
-      brk:    '',
-      status,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    fireOk = true;
-  }catch(e){ errors.push('Firebase: '+e.message); }
+      ytelName: ytel,
+      shift: shift || '',
+      lunch: lunch || '',
+      brk: '',
+      status: status || 'Agent',
+      inactive: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('roster').doc(String(idVal)).set(payload);
+    ROSTER[String(idVal)] = {...payload, createdAt:null, updatedAt:null};
+    rosterLoaded = true;
+    rosterPollHash = getRosterFingerprint();
 
-  if(!fireOk && !sheetOk){
-    msgEl.style.color='var(--red)'; msgEl.textContent='❌ Failed to save. '+errors.join(' | ');
-    return;
+    msgEl.style.color='var(--green)';
+    msgEl.textContent='✅ '+name+' (ID: '+idVal+') added to Firebase successfully!';
+
+    setTimeout(async ()=>{
+      toggleAddRepForm();
+      await loadRoster();
+      renderProfileList();
+      renderAttTable();
+      if(typeof renderStatsTable === 'function') renderStatsTable();
+      const ovEl = document.getElementById('admin-overview');
+      if(ovEl && ovEl.style.display !== 'none') loadAdminOverview();
+      refreshBreakdownIfOpen();
+      if(weeklyTeam) loadWeeklyAttendance(weeklyTeam);
+      const monthlyEl = document.getElementById('admin-monthly');
+      if(monthlyEl && monthlyEl.style.display !== 'none') reRenderMonthly();
+    }, 500);
+  }catch(e){
+    msgEl.style.color='var(--red)';
+    msgEl.textContent='❌ Firebase save failed: '+(e.message || e);
   }
-
-  // Update local ROSTER so the rep appears immediately without a full reload
-  ROSTER[String(idVal)] = { userId:String(idVal), name, team, ytelName:ytel||'', shift:shift||'', lunch:lunch||'', brk:'', status };
-
-  const note = errors.length ? ' (⚠️ '+errors.join('; ')+')' : '';
-  msgEl.style.color='var(--green)';
-  msgEl.textContent='✅ '+name+' (ID: '+idVal+') added successfully!'+note;
-
-  // Refresh ALL views that display the roster so the new agent appears immediately
-  // in the correct alphabetical position across every tab
-  setTimeout(async ()=>{
-    toggleAddRepForm();
-
-    // Force a fresh roster pull from the Sheet — this picks up the alphabetical
-    // insert that addAgent just performed, ensuring ROSTER is perfectly in sync
-    rosterLoaded = false;
-    await loadRoster();
-
-    // Re-render every view that uses the roster
-    renderProfileList();      // Profiles tab agent list
-    renderAttTable();         // Attendance tab
-    if(typeof renderStatsTable === 'function') renderStatsTable(); // Agent Stats tab
-
-    // Refresh the live overview board (online/absent chips + glance counts)
-    const ovEl = document.getElementById('admin-overview');
-    if(ovEl && ovEl.style.display !== 'none') loadAdminOverview();
-    // Refresh team breakdown popup if open
-    refreshBreakdownIfOpen();
-
-    // Refresh weekly attendance if it's currently open
-    if(weeklyTeam){ loadWeeklyAttendance(weeklyTeam); }
-
-    // Refresh monthly overview if open
-    if(typeof reRenderMonthly === 'function') reRenderMonthly();
-  }, 1800);
 }
 
 function loadAgentProfiles(){
@@ -4514,89 +4278,68 @@ function closeProfileEdit(){
 async function saveProfileEdits(){
   if(!selectedProfileId) return;
   const agent = ROSTER[selectedProfileId];
-  if(!agent){ document.getElementById('pe-save-status').textContent='❌ Agent not found'; return; }
+  const statusEl = document.getElementById('pe-save-status');
+  if(!agent){ statusEl.textContent='❌ Agent not found'; return; }
 
-  const uid = agent.userId || selectedProfileId;
-
+  const uid       = String(agent.userId || selectedProfileId);
   const newShift  = document.getElementById('pe-shift').value.trim();
   const newLunch  = document.getElementById('pe-lunch').value.trim();
   const newBreak  = document.getElementById('pe-break').value.trim();
-  const newStatus = document.getElementById('pe-status').value.trim();
-  const statusEl  = document.getElementById('pe-save-status');
+  const newStatus = document.getElementById('pe-status').value.trim() || 'Agent';
   const saveBtn   = document.querySelector('#profile-edit-panel button[onclick="saveProfileEdits()"]');
 
-  // Show loading state on button
-  if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ SAVING...'; saveBtn.style.opacity='0.7'; }
-  statusEl.textContent = 'Saving to Google Sheet...';
-  statusEl.style.color = '#64748b';
-
-  const errors  = [];
   const updates = [];
+  if(newShift !== (agent.shift||'')) updates.push('Shift');
+  if(newLunch !== (agent.lunch||'')) updates.push('Lunch');
+  if(newBreak !== (agent.brk||'')) updates.push('Break');
+  if(newStatus !== (agent.status||'')) updates.push('Status');
 
-  if(newShift !== (agent.shift||'')){
-    try{
-      const r = await callBridge({action:'updateRosterField', userId:uid, field:'shift', value:newShift});
-      if(r && r.success){ ROSTER[selectedProfileId].shift=newShift; updates.push('Shift'); }
-      else errors.push('Shift: '+(r?.error||'failed'));
-    }catch(e){ errors.push('Shift error'); }
-  }
-
-  if(newLunch !== (agent.lunch||'')){
-    try{
-      const r = await callBridge({action:'updateRosterField', userId:uid, field:'lunch', value:newLunch});
-      if(r && r.success){ ROSTER[selectedProfileId].lunch=newLunch; updates.push('Lunch'); }
-      else errors.push('Lunch: '+(r?.error||'failed'));
-    }catch(e){ errors.push('Lunch error'); }
-  }
-
-  if(newStatus !== (agent.status||'')){
-    try{
-      const r = await callBridge({action:'updateRosterField', userId:uid, field:'status', value:newStatus});
-      if(r && r.success){
-        ROSTER[selectedProfileId].status = newStatus;
-        if(newStatus.toLowerCase()==='inactive'){ delete ROSTER[selectedProfileId]; closeProfileEdit(); }
-        updates.push('Status');
-      } else errors.push('Status: '+(r?.error||'failed'));
-    }catch(e){ errors.push('Status error'); }
-  }
-
-  if(newBreak !== (agent.brk||'')){
-    try{
-      await db.collection('roster').doc(String(uid)).set({brk:newBreak},{merge:true});
-      ROSTER[selectedProfileId].brk = newBreak;
-      updates.push('Break');
-    }catch(e){ errors.push('Break error'); }
-  }
-
-  // Push shift+lunch to Firebase so agent sees on next login
-  try{
-    const fbUp = {};
-    if(newShift) fbUp.shift = newShift;
-    if(newLunch) fbUp.lunch = newLunch;
-    if(Object.keys(fbUp).length) await db.collection('roster').doc(String(uid)).set(fbUp,{merge:true});
-  }catch(e){}
-
-  // Restore button
-  if(saveBtn){
-    saveBtn.disabled=false;
-    saveBtn.style.opacity='1';
-    if(errors.length){ saveBtn.textContent='⚠️ RETRY SAVE'; }
-    else { saveBtn.innerHTML='✅ DONE — SAVED TO GOOGLE SHEET'; }
-    setTimeout(()=>{ if(saveBtn) saveBtn.innerHTML='💾 SAVE ALL CHANGES TO GOOGLE SHEET'; },3500);
-  }
-
-  if(errors.length){
-    statusEl.textContent = '⚠ Errors: '+errors.join(' · ');
-    statusEl.style.color = '#fbbf24';
-  } else if(updates.length){
-    statusEl.textContent = '✅ '+updates.join(', ')+' saved successfully';
-    statusEl.style.color = '#34d399';
-    renderProfileList();
-    setTimeout(()=>{ statusEl.textContent=''; },4000);
-  } else {
-    statusEl.textContent = 'No changes detected.';
-    statusEl.style.color = '#64748b';
+  if(!updates.length){
+    statusEl.textContent='No changes detected.';
+    statusEl.style.color='#64748b';
     setTimeout(()=>{ statusEl.textContent=''; },2000);
+    return;
+  }
+
+  if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ SAVING TO FIREBASE...'; saveBtn.style.opacity='0.7'; }
+  statusEl.textContent='Saving to Firebase...';
+  statusEl.style.color='#64748b';
+
+  try{
+    await ensureFirebaseAuth();
+    await db.collection('roster').doc(uid).set({
+      userId: uid,
+      shift: newShift,
+      lunch: newLunch,
+      brk: newBreak,
+      status: newStatus,
+      inactive: newStatus.toLowerCase()==='inactive',
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, {merge:true});
+
+    if(newStatus.toLowerCase()==='inactive'){
+      delete ROSTER[selectedProfileId];
+      statusEl.textContent='✅ Agent set to Inactive in Firebase';
+      statusEl.style.color='#34d399';
+      setTimeout(()=>closeProfileEdit(), 700);
+    } else {
+      ROSTER[selectedProfileId] = {...agent, shift:newShift, lunch:newLunch, brk:newBreak, status:newStatus};
+      statusEl.textContent='✅ '+updates.join(', ')+' saved to Firebase';
+      statusEl.style.color='#34d399';
+      renderProfileList();
+      setTimeout(()=>{ statusEl.textContent=''; },4000);
+    }
+
+    if(saveBtn){
+      saveBtn.disabled=false;
+      saveBtn.style.opacity='1';
+      saveBtn.innerHTML='✅ DONE — SAVED TO FIREBASE';
+      setTimeout(()=>{ if(saveBtn) saveBtn.innerHTML='💾 SAVE ALL CHANGES TO FIREBASE'; },3000);
+    }
+  }catch(e){
+    statusEl.textContent='❌ Firebase save failed: '+(e.message || e);
+    statusEl.style.color='#f87171';
+    if(saveBtn){ saveBtn.disabled=false; saveBtn.style.opacity='1'; saveBtn.textContent='⚠️ RETRY SAVE'; }
   }
 }
 
@@ -4687,10 +4430,10 @@ let _agentStatsListener  = null; // real-time stats listener for agents
 
 function showAdminUI(){
   document.body.classList.add('is-admin');
-  // Force fresh roster load immediately so all admin views have correct data
+  // Force fresh Firebase roster load immediately so all admin views have correct data
   rosterLoaded = false;
   loadRoster().then(() => {
-    // Start auto-polling AFTER initial load so first fingerprint is accurate
+    // Start the Firebase real-time roster listener after the initial load
     startRosterPolling();
   });
   // Load saved goal
@@ -4939,9 +4682,15 @@ async function loadAdminOverview(){
           });
           // Also backfill Firebase so next refresh doesn't need the fallback
           db.collection('attendance').doc(sid+'_'+today).set({
-            id: sid, name: d.name||'', team: d.team||'',
+            id: sid, name: d.name||'', team: normalizeTeam(d.team||''),
             date: today, status, shift,
-            loginTime: firebase.firestore.FieldValue.serverTimestamp()
+            loginTime: d.loginTime || firebase.firestore.FieldValue.serverTimestamp(),
+            firstLoginTime: d.loginTime || firebase.firestore.FieldValue.serverTimestamp(),
+            lastLoginTime: d.loginTime || firebase.firestore.FieldValue.serverTimestamp(),
+            loginCount: 1,
+            source: 'website-session-backfill',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           },{merge:true}).catch(()=>{});
           attIds.add(sid);
         }
@@ -4950,7 +4699,7 @@ async function loadAdminOverview(){
 
     // ── Reconcile team field in attendance records against current ROSTER ──
     // Firestore records may have been written with the wrong team before a roster fix.
-    // Always trust ROSTER (built from the authoritative Google Sheet) over stored Firestore data.
+    // Always trust the current Firebase roster over older attendance/report metadata.
     allAttRecords.forEach(r => {
       const rosterAgent = ROSTER[String(r.id||'').trim()]
                        || Object.values(ROSTER).find(a => a.name && r.name &&
@@ -5141,84 +4890,64 @@ function renderAttTable(){
   }).join('');
 }
 
-// ── WEEKLY ATTENDANCE — merges Google Sheet + Firebase ──
-let weeklyTeam      = 'BB';
-let weeklySheetData = null;
-let weeklyFirebase  = {}; // date -> {agentName -> status} from Firebase
-let weekRanges      = [];
-let monthlyCache    = {};
+// ── WEEKLY ATTENDANCE — FIREBASE ──
+let weeklyTeam     = 'BB';
+let weeklyFirebase = {}; // date -> {agentId/name -> status}
+let weekRanges     = [];
+let monthlyCache   = {};
+let monthlyAttendanceRecords = [];
+let monthlyAttendanceMeta = {};
+let monthlyLoadedMonth = '';
+let _monthlyAttendanceListener = null;
 
 async function loadWeeklyAttendance(team){
   weeklyTeam = team;
   document.getElementById('wk-bb-btn').classList.toggle('active', team==='BB');
   document.getElementById('wk-pr-btn').classList.toggle('active', team==='PR');
-  document.getElementById('weekly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">Loading...</div>';
+  document.getElementById('weekly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">Loading from Firebase...</div>';
   document.getElementById('week-chips').innerHTML='';
 
-  const today      = getTodayGY();
+  const today = getTodayGY();
   const monthStart = today.substring(0,7);
+  weeklyFirebase = {};
 
-  // ── Fetch both sources in parallel ──
-  const [sheetResult, firebaseResult] = await Promise.allSettled([
-    callBridge({action:'getWeeklyAttendance', team}),
-    db.collection('attendance')
+  try{
+    await ensureFirebaseAuth();
+    const snapshot = await db.collection('attendance')
       .where('date','>=',monthStart+'-01')
       .where('date','<=',monthStart+'-31')
-      .get()
-  ]);
+      .get();
 
-  // ── Process Firebase ──
-  weeklyFirebase = {};
-  if(firebaseResult.status==='fulfilled'){
-    firebaseResult.value.forEach(doc=>{
-      const d = doc.data();
-      if(d.team !== team) return;
-      if(!weeklyFirebase[d.date]) weeklyFirebase[d.date]={};
+    snapshot.forEach(doc=>{
+      const d = doc.data() || {};
+      const recordTeam = normalizeTeam((ROSTER[String(d.id)]||{}).team || d.team || '');
+      if(recordTeam !== team) return;
+      const date = d.date || ((doc.id.match(/(\d{4}-\d{2}-\d{2})$/)||[])[1]);
+      if(!date) return;
+      if(!weeklyFirebase[date]) weeklyFirebase[date] = {};
+      if(d.id) weeklyFirebase[date][String(d.id)] = d.status;
       if(d.name){
-        weeklyFirebase[d.date][d.name]                      = d.status;
-        weeklyFirebase[d.date][d.name.toLowerCase().trim()] = d.status;
+        weeklyFirebase[date][d.name] = d.status;
+        weeklyFirebase[date][d.name.toLowerCase().trim()] = d.status;
       }
     });
-  }
 
-  // ── Process Sheet ──
-  if(sheetResult.status==='fulfilled' && sheetResult.value.success){
-    weeklySheetData = sheetResult.value.weeks || [];
-  } else {
-    console.warn('Sheet weekly load failed — using Firebase only');
-    weeklySheetData = [];
-  }
-
-  // Build week chips
-  const container = document.getElementById('week-chips');
-  if(weeklySheetData.length){
-    container.innerHTML = weeklySheetData.map((w,i)=>
-      `<button class="week-chip${i===weeklySheetData.length-1?' active':''}" onclick="selectSheetWeek(${i},this)">${w.label}</button>`
+    buildWeekRangesFromDates(Object.keys(weeklyFirebase), monthStart);
+    const activeIndex = Math.max(0, weekRanges.findIndex(w => today >= w.startDate && today <= w.endDate));
+    const selectedIndex = activeIndex >= 0 ? activeIndex : Math.max(0, weekRanges.length-1);
+    const container = document.getElementById('week-chips');
+    container.innerHTML = weekRanges.map((w,i)=>
+      `<button class="week-chip${i===selectedIndex?' active':''}" onclick="selectFirebaseWeek(${i},this)">${w.label}</button>`
     ).join('');
-    renderSheetWeeklyTable(weeklySheetData[weeklySheetData.length-1]);
-  } else {
-    // No sheet data — build weeks from Firebase dates
-    const dates = Object.keys(weeklyFirebase).sort();
-    if(dates.length){
-      buildWeekRangesFromDates(dates, monthStart);
-      container.innerHTML = weekRanges.map((w,i)=>
-        `<button class="week-chip${i===weekRanges.length-1?' active':''}" onclick="selectFirebaseWeek(${i},this)">${w.label}</button>`
-      ).join('');
-      if(weekRanges.length) renderFirebaseWeeklyTable(weekRanges[weekRanges.length-1]);
-    } else {
-      document.getElementById('weekly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">No attendance data found yet for this month.</div>';
-    }
+    if(weekRanges.length) renderFirebaseWeeklyTable(weekRanges[selectedIndex]);
+  }catch(e){
+    console.error('Firebase weekly attendance load failed:', e);
+    document.getElementById('weekly-table-wrap').innerHTML='<div style="text-align:center;color:var(--red);padding:20px;">Could not load Firebase attendance: '+(e.message||e)+'</div>';
   }
 }
 
 function switchWeeklyTeam(team){
   loadWeeklyAttendance(team);
-}
-
-function selectSheetWeek(idx, btn){
-  document.querySelectorAll('.week-chip').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  if(weeklySheetData && weeklySheetData[idx]) renderSheetWeeklyTable(weeklySheetData[idx]);
 }
 
 function selectFirebaseWeek(idx, btn){
@@ -5227,7 +4956,6 @@ function selectFirebaseWeek(idx, btn){
   if(weekRanges[idx]) renderFirebaseWeeklyTable(weekRanges[idx]);
 }
 
-// ── Normalize any status value to a short code ──
 function normalizeStatus(raw){
   if(!raw) return '';
   const s = String(raw).toLowerCase().trim();
@@ -5247,80 +4975,6 @@ function statusClass(code){
     :code?'wk-off':'wk-blank';
 }
 
-// ── Render from Sheet data (merged with Firebase) ──
-function renderSheetWeeklyTable(week){
-  if(!week) return;
-  document.getElementById('weekly-range-lbl').textContent = week.label;
-
-  const cols         = week.columns || [];
-  const sheetAgents  = [...week.agents].sort((a,b)=>a.name.localeCompare(b.name));
-
-  let html = '<table class="wk-table"><thead><tr>';
-  html += '<th style="text-align:left;min-width:140px;">Agent Name</th><th>Shift</th>';
-  cols.forEach(col=>{ html += `<th>${col.header}</th>`; });
-  html += '<th style="color:var(--green);">P</th><th style="color:var(--gold);">L</th><th style="color:var(--red);">A</th><th>Comments</th>';
-  html += '</tr></thead><tbody>';
-
-  sheetAgents.forEach((agent,i)=>{
-    const rAgent = Object.values(ROSTER).find(r=>
-      r.name.toLowerCase()===agent.name.toLowerCase() ||
-      r.name.toLowerCase().includes(agent.name.toLowerCase().split(' ')[0])
-    );
-    const shift = agent.shift || (rAgent ? rAgent.shift : '—');
-    const rId   = rAgent ? rAgent.userId : '';
-    const rTeam = rAgent ? rAgent.team : weeklyTeam;
-
-    let p=0,l=0,a=0, dayCells='';
-
-    cols.forEach(col=>{
-      // ── MERGE: Sheet value wins; Firebase fills blank cells ──
-      let sheetVal = normalizeStatus(agent.days[col.header]||'');
-
-      // Try to get Firebase value for this day if sheet is blank
-      if(!sheetVal){
-        // Find the date for this column header (Mon/Tue etc.)
-        // We match by looking at weeklyFirebase for any date that matches
-        const dayKey = col.header.toLowerCase().substring(0,3);
-        const dayMap = {mon:1,tue:2,wed:3,thu:4,fri:5,sat:6,sun:0};
-        const targetDow = dayMap[dayKey];
-        if(targetDow !== undefined){
-          const fbDates = Object.keys(weeklyFirebase);
-          const matchDate = fbDates.find(d=>{
-            const dow = new Date(d).getDay();
-            return dow === targetDow;
-          });
-          if(matchDate){
-            const fbDay = weeklyFirebase[matchDate];
-            const fbStatus = fbDay[agent.name] || fbDay[agent.name.toLowerCase().trim()] || '';
-            sheetVal = normalizeStatus(fbStatus);
-          }
-        }
-      }
-
-      const code = sheetVal;
-      const cls  = statusClass(code);
-      if(code==='P') p++;
-      else if(code==='L') l++;
-      else if(code==='A'||code==='S'||code==='PO') a++;
-      dayCells += `<td><span class="wk-cell ${cls}">${code}</span></td>`;
-    });
-
-    html += `<tr>
-      <td onclick="openRepProfile('${rId}','${agent.name}','${rTeam}','${shift}')" style="cursor:pointer;font-weight:700;">${agent.name}</td>
-      <td style="font-size:0.65rem;color:var(--muted);">${shift}</td>
-      ${dayCells}
-      <td style="color:var(--green);font-weight:800;">${p}</td>
-      <td style="color:var(--gold);font-weight:800;">${l}</td>
-      <td style="color:var(--red);font-weight:800;">${a}</td>
-      <td style="color:var(--muted);font-size:0.7rem;">${agent.comments||'—'}</td>
-    </tr>`;
-  });
-
-  html += '</tbody></table>';
-  document.getElementById('weekly-table-wrap').innerHTML = html;
-}
-
-// ── Render from Firebase only (fallback when sheet unavailable) ──
 function buildWeekRangesFromDates(dates, monthStart){
   const year  = parseInt(monthStart.split('-')[0]);
   const month = parseInt(monthStart.split('-')[1])-1;
@@ -5334,12 +4988,17 @@ function buildWeekRangesFromDates(dates, monthStart){
     const end = Math.min(d, daysInMonth);
     const wkDates = [];
     for(let x=start;x<=end;x++){
-      const ds = monthStart+'-'+(x<10?'0':'')+x;
+      const ds = monthStart+'-'+String(x).padStart(2,'0');
       wkDates.push({date:ds, day:x, dow:new Date(year,month,x).getDay()});
     }
     if(wkDates.length){
       const mn = new Date(year,month,1).toLocaleDateString('en-US',{month:'long'});
-      weekRanges.push({label:mn+' '+start+' – '+end, dates:wkDates});
+      weekRanges.push({
+        label:mn+' '+start+' – '+end,
+        dates:wkDates,
+        startDate:wkDates[0].date,
+        endDate:wkDates[wkDates.length-1].date
+      });
     }
     d++;
   }
@@ -5351,6 +5010,11 @@ function renderFirebaseWeeklyTable(week){
   const agents = Object.values(ROSTER).filter(a=>a.team===weeklyTeam).sort((a,b)=>a.name.localeCompare(b.name));
   const dowMap = {1:'Mon',2:'Tue',3:'Wed',4:'Thu',5:'Fri',6:'Sat',0:'Sun'};
 
+  if(!agents.length){
+    document.getElementById('weekly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">No active agents found for this team.</div>';
+    return;
+  }
+
   let html = '<table class="wk-table"><thead><tr>';
   html += '<th style="text-align:left;min-width:140px;">Agent Name</th><th>Shift</th>';
   week.dates.forEach(d=>{ html+=`<th>${dowMap[d.dow]||''}<br><span style="font-size:0.5rem;color:#4a6080;">${d.day}</span></th>`; });
@@ -5360,7 +5024,7 @@ function renderFirebaseWeeklyTable(week){
     let p=0,l=0,a=0,cells='';
     week.dates.forEach(d=>{
       const dayData = weeklyFirebase[d.date]||{};
-      const raw = dayData[agent.name]||dayData[agent.name.toLowerCase().trim()]||'';
+      const raw = dayData[String(agent.userId)] || dayData[agent.name] || dayData[agent.name.toLowerCase().trim()] || '';
       const code = normalizeStatus(raw);
       const cls  = statusClass(code);
       if(code==='P') p++;
@@ -5381,139 +5045,203 @@ function renderFirebaseWeeklyTable(week){
   document.getElementById('weekly-table-wrap').innerHTML = html;
 }
 
-function renderSheetWeeklyTable(week){
-  if(!week) return;
-  document.getElementById('weekly-range-lbl').textContent = week.label;
-
-  if(!week.agents || !week.agents.length){
-    document.getElementById('weekly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">No agents in this week.</div>';
-    return;
-  }
-
-  // Get column headers from sheet (Mon, Tue, Wed, Thu, Fri, Sat, Sun etc.)
-  const cols = week.columns || [];
-
-  // Get all agent names sorted alphabetically — use roster order for team
-  const sheetAgents = [...week.agents].sort((a,b)=>a.name.localeCompare(b.name));
-
-  let html = '<table class="wk-table"><thead><tr>';
-  html += '<th style="text-align:left;min-width:140px;">Agent Name</th>';
-  html += '<th>Shift</th>';
-  cols.forEach(col=>{
-    html += `<th>${col.header}</th>`;
-  });
-  html += '<th style="color:var(--green);">P</th>';
-  html += '<th style="color:var(--gold);">L</th>';
-  html += '<th style="color:var(--red);">A</th>';
-  html += '<th>Comments</th>';
-  html += '</tr></thead><tbody>';
-
-  sheetAgents.forEach((agent,i)=>{
-    // Find matching roster agent for shift info
-    const rosterAgent = Object.values(ROSTER).find(r=>
-      r.name.toLowerCase()===agent.name.toLowerCase() ||
-      r.name.toLowerCase().includes(agent.name.toLowerCase()) ||
-      agent.name.toLowerCase().includes(r.name.toLowerCase().split(' ')[0].toLowerCase())
-    );
-    const shift = agent.shift || (rosterAgent ? rosterAgent.shift : '—');
-
-    let p=0, l=0, a=0;
-    let dayCells = '';
-    cols.forEach(col=>{
-      const rawStatus = agent.days[col.header] || '';
-      const s = rawStatus.toLowerCase().trim();
-      let code = rawStatus.toUpperCase().trim();
-
-      // Normalize
-      if(s==='present') code='P';
-      else if(s==='late') code='L';
-      else if(s==='absent') code='A';
-      else if(s==='sick') code='S';
-      else if(s==='personal out') code='PO';
-      else if(s==='vacation') code='V';
-
-      const cls = code==='P'?'wk-p'
-        :code==='L'?'wk-l'
-        :code==='A'?'wk-a'
-        :code==='S'?'wk-s'
-        :code==='PO'?'wk-po'
-        :code==='V'?'wk-l'
-        :code==='OFF'?'wk-off'
-        :code?'wk-off':'wk-blank';
-
-      if(code==='P') p++;
-      else if(code==='L') l++;
-      else if(code==='A'||code==='S'||code==='PO') a++;
-
-      dayCells += `<td><span class="wk-cell ${cls}">${code}</span></td>`;
-    });
-
-    const rId = rosterAgent ? rosterAgent.userId : '';
-    const rTeam = rosterAgent ? rosterAgent.team : weeklyTeam;
-    html += `<tr>
-      <td onclick="openRepProfile('${rId}','${agent.name}','${rTeam}','${shift}')" style="cursor:pointer;font-weight:700;">${agent.name}</td>
-      <td style="font-size:0.65rem;color:var(--muted);">${shift}</td>
-      ${dayCells}
-      <td style="color:var(--green);font-weight:800;">${p}</td>
-      <td style="color:var(--gold);font-weight:800;">${l}</td>
-      <td style="color:var(--red);font-weight:800;">${a}</td>
-      <td style="color:var(--muted);font-size:0.7rem;">${agent.comments||'—'}</td>
-    </tr>`;
-  });
-
-  html += '</tbody></table>';
-  document.getElementById('weekly-table-wrap').innerHTML = html;
-}
-
-// ── LOAD MONTHLY ATTENDANCE ──
+// ── LOAD MONTHLY ATTENDANCE — FIREBASE REAL-TIME ──
 async function loadMonthlyAttendance(){
-  const today      = getTodayGY();
-  const monthStart = today.substring(0,7);
-  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const monthIdx   = parseInt(monthStart.split('-')[1])-1;
-  const year       = monthStart.split('-')[0];
-  document.getElementById('monthly-month-lbl').textContent = monthNames[monthIdx]+' '+year;
-  document.getElementById('monthly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">Loading from Google Sheet...</div>';
+  const currentMonth = getTodayGY().substring(0,7);
+  const picker = document.getElementById('monthly-month-picker');
+  if(picker && !picker.value) picker.value = currentMonth;
 
-  // monthlyCache: keyed by lowercase agent name → { 'YYYY-MM-DD': 'P'/'L'/'A'/... }
+  const monthStart = (picker && /^\d{4}-\d{2}$/.test(picker.value)) ? picker.value : currentMonth;
+  const [yearStr, monthStr] = monthStart.split('-');
+  const year = parseInt(yearStr,10);
+  const monthIdx = parseInt(monthStr,10)-1;
+  const daysInMonth = new Date(year, monthIdx+1, 0).getDate();
+  const monthEnd = monthStart+'-'+String(daysInMonth).padStart(2,'0');
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  monthlyLoadedMonth = monthStart;
   monthlyCache = {};
+  monthlyAttendanceRecords = [];
+  monthlyAttendanceMeta = {};
+  document.getElementById('monthly-month-lbl').textContent = monthNames[monthIdx]+' '+year;
+  document.getElementById('monthly-table-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;">Loading from Firebase...</div>';
 
   try{
-    const data = await callBridge({action:'getMonthlyAttendance'});
-    if(!data.success || !Array.isArray(data.agents) || data.agents.length === 0){
-      throw new Error(data.error || 'No agents returned');
+    await ensureFirebaseAuth();
+    if(_monthlyAttendanceListener){
+      _monthlyAttendanceListener();
+      _monthlyAttendanceListener = null;
     }
 
-    data.agents.forEach(agent=>{
-      const nameKey = (agent.name||'').toLowerCase().trim();
-      if(!nameKey) return;
-      const dayData = {};
-      // days = { "2": "Present", "3": "Late", ... } — keys are day numbers as strings
-      Object.entries(agent.days||{}).forEach(([dayStr, status])=>{
-        const d = parseInt(dayStr);
-        const code = normalizeStatus(status);
-        if(code && d >= 1 && d <= 31){
-          const dateStr = monthStart+'-'+(d<10?'0':'')+d;
-          dayData[dateStr] = code;
-        }
+    const query = db.collection('attendance')
+      .where('date','>=',monthStart+'-01')
+      .where('date','<=',monthEnd);
+
+    await new Promise((resolve,reject)=>{
+      let firstSnapshot = true;
+      _monthlyAttendanceListener = query.onSnapshot(snapshot=>{
+      monthlyCache = {};
+      monthlyAttendanceRecords = [];
+      monthlyAttendanceMeta = {};
+
+      snapshot.forEach(doc=>{
+        const d = doc.data() || {};
+        const id = String(d.id || '').trim();
+        const rosterAgent = id ? ROSTER[id] : null;
+        const name = String(d.name || (rosterAgent && rosterAgent.name) || '').trim();
+        const date = d.date || ((doc.id.match(/(\d{4}-\d{2}-\d{2})$/)||[])[1]);
+        if(!date || !name) return;
+
+        const team = normalizeTeam(d.team || (rosterAgent && rosterAgent.team) || 'BB');
+        const shift = d.shift || (rosterAgent && rosterAgent.shift) || '';
+        const status = normalizeStatus(d.status);
+        const record = {docId:doc.id, id, name, team, shift, date, status};
+        monthlyAttendanceRecords.push(record);
+
+        const nameKey = name.toLowerCase();
+        const idKey = id ? 'id:'+id : '';
+        let dayData = monthlyCache[nameKey] || (idKey && monthlyCache[idKey]) || {};
+        dayData[date] = status;
+        monthlyCache[nameKey] = dayData;
+        if(idKey) monthlyCache[idKey] = dayData;
+
+        const metaKey = idKey || 'name:'+nameKey;
+        monthlyAttendanceMeta[metaKey] = {userId:id, name, team, shift};
       });
-      monthlyCache[nameKey] = dayData;
+
+      console.log('[Monthly] Firebase live attendance records:', monthlyAttendanceRecords.length);
+      renderMonthly(monthlyCache, monthStart, String(year), monthIdx);
+      if(firstSnapshot){ firstSnapshot=false; resolve(); }
+    }, e=>{
+      console.error('[Monthly] Firebase listener failed:', e);
+      document.getElementById('monthly-table-wrap').innerHTML=
+        `<div style="color:var(--red);text-align:center;padding:20px;">Could not load Firebase attendance: ${e.message||e}</div>`;
+      if(firstSnapshot){ firstSnapshot=false; reject(e); }
     });
-
-    console.log('[Monthly] Loaded', Object.keys(monthlyCache).length, 'agents from sheet');
-
+    });
   }catch(e){
-    console.error('[Monthly] Load failed:', e.message);
+    console.error('[Monthly] Firebase load failed:', e);
     document.getElementById('monthly-table-wrap').innerHTML=
-      `<div style="color:var(--red);text-align:center;padding:20px;">Could not load monthly data: ${e.message}</div>`;
-    return;
+      `<div style="color:var(--red);text-align:center;padding:20px;">Could not load Firebase attendance: ${e.message||e}</div>`;
   }
-
-  renderMonthly(monthlyCache, monthStart, year, monthIdx);
 }
 
 function reRenderMonthly(){
-  loadMonthlyAttendance();
+  if(!monthlyLoadedMonth){
+    loadMonthlyAttendance();
+    return;
+  }
+  const [yearStr, monthStr] = monthlyLoadedMonth.split('-');
+  renderMonthly(monthlyCache, monthlyLoadedMonth, yearStr, parseInt(monthStr,10)-1);
+}
+
+function csvEscape(value){
+  const text = value == null ? '' : String(value);
+  return /[",\n\r]/.test(text) ? '"'+text.replace(/"/g,'""')+'"' : text;
+}
+
+function getMonthlyExportAgents(teamFilter){
+  const byKey = new Map();
+
+  Object.values(ROSTER).forEach(agent=>{
+    const id = String(agent.userId || agent.id || '').trim();
+    const name = String(agent.name || '').trim();
+    if(!name) return;
+    const key = id ? 'id:'+id : 'name:'+name.toLowerCase();
+    byKey.set(key, {
+      userId:id,
+      name,
+      team:normalizeTeam(agent.team || 'BB'),
+      shift:agent.shift || '',
+      inactive:!!agent.inactive
+    });
+  });
+
+  Object.entries(monthlyAttendanceMeta).forEach(([key,meta])=>{
+    const existing = byKey.get(key);
+    byKey.set(key, existing ? {...existing,...meta} : {...meta,inactive:false});
+  });
+
+  return Array.from(byKey.values())
+    .filter(agent=>{
+      if(teamFilter!=='all' && agent.team!==teamFilter) return false;
+      const idKey = agent.userId ? 'id:'+agent.userId : '';
+      const nameKey = String(agent.name||'').toLowerCase().trim();
+      const hasMonthRecord = !!(monthlyCache[idKey] || monthlyCache[nameKey]);
+      return !agent.inactive || hasMonthRecord;
+    })
+    .sort((a,b)=>a.name.localeCompare(b.name));
+}
+
+async function exportMonthlyAttendanceCSV(){
+  const btn = document.getElementById('monthly-export-btn');
+  const picker = document.getElementById('monthly-month-picker');
+  const selectedMonth = (picker && /^\d{4}-\d{2}$/.test(picker.value)) ? picker.value : getTodayGY().substring(0,7);
+  const teamFilter = document.getElementById('monthly-team-filter').value;
+
+  if(monthlyLoadedMonth !== selectedMonth){
+    await loadMonthlyAttendance();
+  }
+
+  const [yearStr, monthStr] = selectedMonth.split('-');
+  const year = parseInt(yearStr,10);
+  const monthIdx = parseInt(monthStr,10)-1;
+  const daysInMonth = new Date(year,monthIdx+1,0).getDate();
+  const agents = getMonthlyExportAgents(teamFilter);
+
+  if(!agents.length){
+    alert('No Firebase attendance or roster records were found for this month and team.');
+    return;
+  }
+
+  if(btn){ btn.disabled=true; btn.textContent='⏳ EXPORTING...'; }
+  try{
+    const dayHeaders = Array.from({length:daysInMonth},(_,i)=>String(i+1).padStart(2,'0'));
+    const headers = ['Agent ID','Agent Name','Team','Shift',...dayHeaders,'Present','Late','Absent','Sick','Personal Out','Vacation','Off','Recorded Days','Attendance Rate'];
+    const rows = [headers];
+
+    agents.forEach(agent=>{
+      const idKey = agent.userId ? 'id:'+agent.userId : '';
+      const nameKey = agent.name.toLowerCase().trim();
+      const att = monthlyCache[idKey] || monthlyCache[nameKey] || {};
+      const counts = {P:0,L:0,A:0,S:0,PO:0,V:0,OFF:0};
+      const dayValues = [];
+
+      for(let d=1;d<=daysInMonth;d++){
+        const date = selectedMonth+'-'+String(d).padStart(2,'0');
+        const status = normalizeStatus(att[date]);
+        dayValues.push(status);
+        if(Object.prototype.hasOwnProperty.call(counts,status)) counts[status]++;
+      }
+
+      const recorded = counts.P+counts.L+counts.A+counts.S+counts.PO+counts.V+counts.OFF;
+      const accountable = counts.P+counts.L+counts.A+counts.S+counts.PO;
+      const rate = accountable ? Math.round(((counts.P+counts.L)/accountable)*100)+'%' : '0%';
+      rows.push([
+        agent.userId || '', agent.name, agent.team || '', agent.shift || '',
+        ...dayValues,
+        counts.P, counts.L, counts.A, counts.S, counts.PO, counts.V, counts.OFF,
+        recorded, rate
+      ]);
+    });
+
+    const csv = '\uFEFF'+rows.map(row=>row.map(csvEscape).join(',')).join('\r\n');
+    const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const teamLabel = teamFilter==='all' ? 'All-Teams' : teamFilter;
+    a.href = url;
+    a.download = `BDS_Attendance_${selectedMonth}_${teamLabel}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }catch(e){
+    console.error('Monthly CSV export failed:', e);
+    alert('Could not export the monthly attendance CSV: '+(e.message||e));
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent='⬇ EXPORT CSV'; }
+  }
 }
 
 // ── REPORT HISTORY ──
@@ -5698,9 +5426,9 @@ function renderMonthly(attMap, monthStart, year, monthIdx){
   let totalP=0,totalL=0,totalA=0;
 
   allAgents.forEach((agent,i)=>{
-    // monthlyCache is keyed by lowercase agent name
+    // Firebase attendance is indexed by agent ID and normalized name
     const nameKey  = agent.name.toLowerCase().trim();
-    const agentAtt = monthlyCache[nameKey] || {};
+    const agentAtt = attMap['id:'+agent.userId] || attMap[nameKey] || {};
     let p=0,l=0,a=0;
     const rowBg = i%2===0 ? '#070e1c' : '#060b18';
     html+=`<tr style="background:${rowBg};"><td style="padding:7px 10px;font-size:0.72rem;color:var(--text);white-space:nowrap;font-weight:600;border-bottom:1px solid #0f1e35;">${agent.name.split(' ').slice(0,2).join(' ')}</td>`;
@@ -5817,7 +5545,7 @@ function updateExpiryDisplay(){
 async function confirmCSVUpload(){
   if(!pendingCSVData) return;
 
-  // Force fresh roster reload from Google Sheet to get latest IDs and teams
+  // Force a fresh Firebase roster reload to get the latest IDs and teams
   const uploadBtn = document.querySelector('#expiry-picker button');
   if(uploadBtn){ uploadBtn.textContent = '⏳ Loading roster...'; uploadBtn.disabled = true; }
   rosterLoaded = false;
@@ -6372,10 +6100,10 @@ async function apLoadOverview(id,name){
   // 1. Try monthlyCache (populated if Monthly tab was visited)
   let p=0,l=0,a=0;
   const nameKey  = name.toLowerCase().trim();
-  const sheetAtt = monthlyCache[nameKey]||{};
+  const cachedAtt = monthlyCache['id:'+idStr] || monthlyCache[nameKey] || {};
 
-  if(Object.keys(sheetAtt).length > 0){
-    Object.values(sheetAtt).forEach(s=>{
+  if(Object.keys(cachedAtt).length > 0){
+    Object.values(cachedAtt).forEach(s=>{
       const c=normalizeStatus(s);
       if(c==='P') p++;
       else if(c==='L') l++;
@@ -6475,7 +6203,7 @@ async function apLoadAttendance(id,name){
 
   // Build attMap from monthlyCache first, then overlay Firebase docs
   const nameKey = name.toLowerCase().trim();
-  const attMap  = {...(monthlyCache[nameKey]||{})};
+  const attMap  = {...(monthlyCache['id:'+idStr] || monthlyCache[nameKey] || {})};
 
   // Fetch all attendance docs for this month by doc ID (no index needed)
   const daysInMonth = new Date(year, monthIdx+1, 0).getDate();
@@ -6518,25 +6246,6 @@ async function apLoadAttendance(id,name){
       const d=snap.data();
       if(d.date) prevAtt[d.date]=normalizeStatus(d.status);
     });
-  }catch(e){}
-
-  // Also pull from Google Sheet previous month Monthly Overview
-  try{
-    const prevMonthData = await callBridge({action:'getMonthlyAttendance', month: prevMonthPfx});
-    if(prevMonthData && prevMonthData.success && Array.isArray(prevMonthData.agents)){
-      const nl = name.toLowerCase().trim();
-      const agentRow = prevMonthData.agents.find(a=>(a.name||'').toLowerCase().trim()===nl
-        || (a.name||'').toLowerCase().includes(nl.split(' ')[0]));
-      if(agentRow){
-        Object.entries(agentRow.days||{}).forEach(([dayNum,status])=>{
-          const d = parseInt(dayNum);
-          if(d>=1&&d<=31){
-            const dateStr = prevStart+'-'+String(d).padStart(2,'0');
-            if(!prevAtt[dateStr]) prevAtt[dateStr]=normalizeStatus(status);
-          }
-        });
-      }
-    }
   }catch(e){}
 
   renderAgentCalendar('ap-cal-prev', prevYear, prevMonthIdx, prevAtt, '');
@@ -6750,76 +6459,53 @@ async function saveRosterField(field){
     if(statusEl){ statusEl.textContent='⚠ Please enter a value.'; statusEl.style.color='#f87171'; }
     return;
   }
-  if(statusEl){ statusEl.textContent='Saving...'; statusEl.style.color='#64748b'; }
-
-  // Team → Firebase + Google Sheet
-  if(field==='team'){
-    if(!r.id||r.id===''){ if(statusEl){ statusEl.textContent='❌ Agent ID missing'; statusEl.style.color='#f87171'; } return; }
-    if(value!=='BB'&&value!=='PR'){ if(statusEl){ statusEl.textContent='⚠ Please select a team.'; statusEl.style.color='#f87171'; } return; }
-    try{
-      await db.collection('roster').doc(r.id).set({team:value},{merge:true});
-      await callBridge({action:'updateRosterField', userId:r.id, field:'team', value}).catch(()=>{});
-      currentRepProfile.team=value;
-      if(ROSTER[r.id]) ROSTER[r.id].team=value;
-      if(currentUser && String(currentUser.id)===String(r.id)){ currentUser.team=value; }
-      const metaEl=document.getElementById('pe-meta');
-      if(metaEl) metaEl.textContent=(value==='BB'?'Berbice (BB)':'Providence (PR)')+' · ID: '+r.id;
-      if(statusEl){ statusEl.textContent='✅ Team saved — re-upload CSV to apply'; statusEl.style.color='#34d399'; }
-      setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },5000);
-    }catch(e){
-      if(statusEl){ statusEl.textContent='❌ '+e.message; statusEl.style.color='#f87171'; }
-    }
+  if(!r.id || r.id==='unknown'){
+    if(statusEl){ statusEl.textContent='❌ Agent ID missing'; statusEl.style.color='#f87171'; }
+    return;
+  }
+  if(field==='team' && value!=='BB' && value!=='PR'){
+    if(statusEl){ statusEl.textContent='⚠ Please select a team.'; statusEl.style.color='#f87171'; }
     return;
   }
 
-  // Break → Firebase only
-  if(field==='break'){    try{
-      if(!r.id||r.id===''){ throw new Error('Agent ID not found'); }
-      await db.collection('roster').doc(r.id).set({brk:value},{merge:true});
-      currentRepProfile.brk = value;
-      if(statusEl){ statusEl.textContent='✅ Break saved'; statusEl.style.color='#34d399'; }
-      if(currentUser && String(currentUser.id)===String(r.id)){ currentUser.brk=value; }
-      setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },4000);
-    }catch(e){
-      if(statusEl){ statusEl.textContent='❌ '+e.message; statusEl.style.color='#f87171'; }
-    }
-    return;
-  }
-
-  // Shift / Lunch → Google Sheet
-  if(!r.id || r.id==='' || r.id==='unknown'){
-    if(statusEl){ statusEl.textContent='❌ Agent ID missing — open profile from Agent Profiles tab'; statusEl.style.color='#f87171'; }
-    return;
-  }
+  if(statusEl){ statusEl.textContent='Saving to Firebase...'; statusEl.style.color='#64748b'; }
 
   try{
-    const result = await callBridge({action:'updateRosterField', userId:r.id, field, value});
-    if(result && result.success){
-      if(field==='shift'){
-        currentRepProfile.shift=value;
-        if(ROSTER[r.id]) ROSTER[r.id].shift=value;
-        const sb=document.getElementById('ap-shift-badge');
-        if(sb) sb.textContent=value;
-      }
-      if(field==='lunch'){
-        currentRepProfile.lunch=value;
-        if(ROSTER[r.id]) ROSTER[r.id].lunch=value;
-        const mb=document.getElementById('rp-meta');
-        if(mb) mb.textContent='ID: '+r.id+' · Lunch: '+value;
-      }
-      // Push to Firebase so agent sees update on next login
-      const fbUp={}; fbUp[field]=value;
-      await db.collection('roster').doc(r.id).set(fbUp,{merge:true}).catch(()=>{});
-      if(currentUser && String(currentUser.id)===String(r.id)){
-        currentUser[field]=value; showDashboard();
-      }
-      if(statusEl){ statusEl.textContent='✅ Saved to Google Sheet & Firebase'; statusEl.style.color='#34d399'; }
-      setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },4000);
-    } else {
-      if(statusEl){ statusEl.textContent='❌ '+(result?.error||'Save failed'); statusEl.style.color='#f87171'; }
+    await ensureFirebaseAuth();
+    const dbField = field==='break' ? 'brk' : field;
+    const payload = {[dbField]: field==='team' ? normalizeTeam(value) : value};
+    payload.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('roster').doc(String(r.id)).set(payload,{merge:true});
+
+    const savedValue = payload[dbField];
+    if(field==='break') currentRepProfile.brk = savedValue;
+    else currentRepProfile[field] = savedValue;
+
+    if(ROSTER[String(r.id)]) ROSTER[String(r.id)][dbField] = savedValue;
+
+    if(field==='shift'){
+      const badge=document.getElementById('ap-shift-badge');
+      if(badge) badge.textContent=savedValue;
     }
+    if(field==='lunch'){
+      const meta=document.getElementById('rp-meta');
+      if(meta) meta.textContent='ID: '+r.id+' · Lunch: '+savedValue;
+    }
+    if(field==='team'){
+      const meta=document.getElementById('pe-meta');
+      if(meta) meta.textContent=(savedValue==='BB'?'Berbice (BB)':'Providence (PR)')+' · ID: '+r.id;
+    }
+
+    if(currentUser && String(currentUser.id)===String(r.id)){
+      currentUser[dbField] = savedValue;
+      sessionStorage.setItem('bds_user_'+getTodayGY(), JSON.stringify(currentUser));
+      showDashboard();
+    }
+
+    if(statusEl){ statusEl.textContent='✅ Saved to Firebase'; statusEl.style.color='#34d399'; }
+    setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },4000);
   }catch(e){
-    if(statusEl){ statusEl.textContent='❌ '+e.message; statusEl.style.color='#f87171'; }
+    if(statusEl){ statusEl.textContent='❌ '+(e.message||e); statusEl.style.color='#f87171'; }
   }
 }
 
@@ -6913,11 +6599,11 @@ async function markAgentAbsent(status){
   if(!confirm('Mark '+name+' as '+label+' for today?')) return;
   try{
     await db.collection('attendance').doc(id+'_'+today).set({
-      id, name, team, shift, date:today, status,
-      markedBy:'admin', loginTime:firebase.firestore.FieldValue.serverTimestamp()
+      id:String(id), name, team:normalizeTeam(team), shift, date:today, status,
+      markedBy:'admin', source:'admin',
+      markedAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     },{merge:true});
-    // Also write to Google Sheet weekly tab
-    try{ await callBridge({action:'markAttendance', name, team, status}); }catch(e){}
     // Refresh the overview stats
     apLoadOverview(id, name);
   }catch(e){ alert('Could not save: '+e.message); }
@@ -6929,8 +6615,10 @@ async function markAgentAbsentDirect(id,name,team){
   const today=getTodayGY();
   try{
     await db.collection('attendance').doc(id+'_'+today).set({
-      id,name,team,date:today,status:status.toUpperCase().trim(),
-      markedBy:'admin',loginTime:firebase.firestore.FieldValue.serverTimestamp()
+      id:String(id),name,team:normalizeTeam(team),date:today,status:status.toUpperCase().trim(),
+      markedBy:'admin',source:'admin',
+      markedAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     },{merge:true});
     loadAdminAttendance();
   }catch(e){alert('Could not save.');}
@@ -9158,7 +8846,7 @@ function renderLeaderboard(){
 
 // ════════════════════════════════════════════
 //  GOAL POPUP QUOTE — agents can set + edit a personal quote
-//  Stored in Firebase: agentQuotes/{userId}
+//  Stored in Firestore: agentQuotes/{userId}
 // ════════════════════════════════════════════
 
 const DEFAULT_QUOTE = "Enter your number. See it. Vision it. Embrace it. Let it come to life.";
