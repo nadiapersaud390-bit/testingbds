@@ -28,7 +28,7 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-06-16-r1';
+const APP_VERSION = '2026-08-01-rebuttal-firebase-r1';
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -843,6 +843,90 @@ body.is-admin #agent-target-widget{display:none !important;}
 .tb-sum-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
 .tb-sum-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;line-height:1;}
 .tb-sum-lbl{font-size:0.5rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+
+/* ══════════════════════════════════════════════════════════════
+   FIREBASE REBUTTAL LIBRARY + SMART MATCH
+══════════════════════════════════════════════════════════════ */
+.rebuttal-page-shell{padding:16px 18px 22px;overflow-y:auto;flex:1;min-height:0;}
+.rb-smart-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(320px,0.85fr);gap:16px;margin-bottom:16px;}
+.rb-smart-card{position:relative;background:linear-gradient(145deg,rgba(9,12,31,.97),rgba(5,12,27,.98));border:1px solid rgba(130,96,255,.34);border-radius:22px;padding:20px;box-shadow:0 16px 40px rgba(0,0,0,.22),inset 0 0 30px rgba(115,72,255,.025);min-height:248px;}
+.rb-smart-card.quick{border-color:rgba(0,224,201,.27);}
+.rb-smart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.rb-smart-kicker{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:900;letter-spacing:2.1px;text-transform:uppercase;color:#9c7cff;margin-bottom:8px;}
+.rb-smart-card.quick .rb-smart-kicker{color:#00e5d0;}
+.rb-smart-title{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:900;color:#fff;letter-spacing:.2px;}
+.rb-clear-btn{border:1px solid #202b42;background:#0a1020;color:#8290a8;border-radius:10px;padding:7px 13px;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:900;letter-spacing:1.4px;cursor:pointer;transition:.15s;}
+.rb-clear-btn:hover{color:#fff;border-color:#465675;background:#101a2d;}
+.rb-smart-textarea{width:100%;min-height:106px;resize:vertical;background:#060a17;border:1px solid rgba(129,96,255,.34);border-radius:16px;padding:17px;color:#eef2ff;font-family:'Nunito',sans-serif;font-size:.92rem;line-height:1.55;outline:none;transition:.18s;}
+.rb-smart-textarea::placeholder,.rb-quick-input::placeholder{color:#40506c;font-weight:700;}
+.rb-smart-textarea:focus{border-color:#8b68ff;box-shadow:0 0 0 3px rgba(139,104,255,.11);}
+.rb-smart-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;color:#70819f;font-size:.68rem;font-weight:700;}
+.rb-auto-badge{border:1px solid rgba(139,104,255,.42);background:rgba(106,74,255,.12);color:#a991ff;padding:6px 11px;border-radius:999px;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.rb-quick-wrap{position:relative;}
+.rb-quick-input{width:100%;height:60px;background:#060a17;border:1px solid rgba(0,224,201,.28);border-radius:16px;padding:0 52px 0 48px;color:#eef2ff;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;outline:none;transition:.18s;}
+.rb-quick-input:focus{border-color:#00e5d0;box-shadow:0 0 0 3px rgba(0,229,208,.08);}
+.rb-quick-icon{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:#00e5d0;font-size:1.1rem;font-weight:900;pointer-events:none;}
+.rb-input-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:10px;background:#0e1525;color:#62718b;font-size:1.15rem;font-weight:900;cursor:pointer;}
+.rb-input-clear:hover{color:#fff;background:#141f34;}
+.rb-search-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:.62rem;color:#667691;font-weight:800;}
+.rb-search-count{color:#00e5d0;}
+.rb-search-results{display:none;position:absolute;left:0;right:0;top:66px;z-index:120;background:#080e1d;border:1px solid #24324e;border-radius:14px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.55);max-height:330px;overflow-y:auto;}
+.rb-search-item{padding:12px 14px;border-bottom:1px solid #162139;cursor:pointer;transition:.12s;}
+.rb-search-item:last-child{border-bottom:0;}
+.rb-search-item:hover,.rb-search-item.active{background:#111b31;}
+.rb-search-item-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:800;color:#f4f7ff;}
+.rb-search-item-section{font-size:.58rem;color:#7c8aa4;margin-top:3px;letter-spacing:1px;text-transform:uppercase;font-weight:800;}
+.rb-library-status{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;color:#6f819f;font-size:.65rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;}
+.rb-live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px rgba(52,211,153,.8);margin-right:6px;}
+.rb-section-nav{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+.rb-section-group{background:rgba(9,15,29,.7);border:1px solid #17233c;border-radius:14px;padding:12px;}
+.rb-section-heading{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#7e8da8;margin-bottom:9px;}
+.rb-section-count{margin-left:auto;background:#111b30;color:#667894;border:1px solid #26344f;border-radius:999px;padding:2px 8px;font-size:.55rem;}
+.rb-section-buttons{display:flex;flex-wrap:wrap;gap:7px;}
+.rb-lib-btn{border:1px solid #253550;background:#0c1426;color:#aab5c9;border-radius:9px;padding:8px 11px;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:800;letter-spacing:.3px;cursor:pointer;transition:.14s;}
+.rb-lib-btn:hover{border-color:#6d58d9;color:#fff;background:#121c33;transform:translateY(-1px);}
+.rb-lib-btn.active{border-color:#8b68ff;color:#fff;background:rgba(112,76,255,.18);box-shadow:0 0 14px rgba(112,76,255,.16);}
+#obj-display.rb-firebase-display{min-height:300px;background:linear-gradient(145deg,#0a1020,#080e1c);border:1px solid #1b2944;border-radius:16px;padding:18px;}
+
+/* Admin rebuttal manager */
+.rbm-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.rbm-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.rbm-btn{border:1px solid #2a3a5a;background:#101a2e;color:#d7e0ef;border-radius:8px;padding:8px 12px;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:900;letter-spacing:.8px;cursor:pointer;}
+.rbm-btn:hover{background:#17243d;border-color:#53688e;}
+.rbm-btn.primary{background:linear-gradient(135deg,#6f4cff,#4f36c7);border-color:#8a6dff;color:#fff;}
+.rbm-btn.success{background:rgba(52,211,153,.13);border-color:rgba(52,211,153,.45);color:#34d399;}
+.rbm-btn.danger{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.35);color:#f87171;}
+.rbm-layout{display:grid;grid-template-columns:minmax(260px,.75fr) minmax(0,1.85fr);gap:14px;min-height:560px;}
+.rbm-sidebar,.rbm-editor{background:#080f1d;border:1px solid #1b2942;border-radius:13px;padding:13px;min-width:0;}
+.rbm-side-title{font-size:.57rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#71809a;margin-bottom:9px;}
+.rbm-section-item{display:flex;align-items:center;gap:7px;padding:8px;border-radius:8px;border:1px solid transparent;margin-bottom:5px;cursor:pointer;}
+.rbm-section-item:hover{background:#10192c;}
+.rbm-section-item.active{background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.35);}
+.rbm-section-name{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.86rem;font-weight:800;color:#dce5f4;}
+.rbm-mini{border:0;background:transparent;color:#71809a;cursor:pointer;padding:2px 5px;font-size:.75rem;}
+.rbm-mini:hover{color:#fff;}
+.rbm-rebuttal-list{margin-top:13px;border-top:1px solid #1b2942;padding-top:12px;max-height:405px;overflow-y:auto;}
+.rbm-rebuttal-item{padding:9px 10px;border:1px solid #1d2a43;border-radius:8px;margin-bottom:6px;cursor:pointer;background:#0b1324;}
+.rbm-rebuttal-item:hover{border-color:#405275;background:#101a30;}
+.rbm-rebuttal-item.active{border-color:#8b68ff;background:rgba(112,76,255,.12);}
+.rbm-rebuttal-title{font-size:.78rem;font-weight:800;color:#e3e9f4;}
+.rbm-rebuttal-meta{font-size:.55rem;color:#67758e;margin-top:3px;text-transform:uppercase;letter-spacing:.8px;}
+.rbm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.rbm-field{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.rbm-field.full{grid-column:1/-1;}
+.rbm-label{font-size:.56rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#7786a0;}
+.rbm-input,.rbm-select,.rbm-textarea{width:100%;background:#07101e;border:1px solid #283956;border-radius:8px;color:#e7edf7;padding:9px 10px;font-family:'Nunito',sans-serif;font-size:.78rem;outline:none;}
+.rbm-input:focus,.rbm-select:focus,.rbm-textarea:focus{border-color:#7c61ed;box-shadow:0 0 0 2px rgba(124,97,237,.09);}
+.rbm-textarea{min-height:82px;resize:vertical;line-height:1.45;}
+.rbm-content-editor{min-height:280px;max-height:520px;overflow-y:auto;background:#07101e;border:1px solid #283956;border-radius:10px;padding:13px;color:#e2e8f0;outline:none;}
+.rbm-content-editor:focus{border-color:#7c61ed;box-shadow:0 0 0 2px rgba(124,97,237,.09);}
+.rbm-status{min-height:18px;font-size:.68rem;font-weight:800;margin-top:8px;}
+.rbm-empty{display:flex;align-items:center;justify-content:center;min-height:360px;text-align:center;color:#64748b;font-size:.82rem;line-height:1.6;}
+.rbm-checks{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:4px 0;}
+.rbm-check{display:flex;align-items:center;gap:6px;font-size:.72rem;color:#aeb9cc;font-weight:700;}
+.rbm-check input{accent-color:#8b68ff;width:16px;height:16px;}
+@media(max-width:900px){.rb-smart-grid{grid-template-columns:1fr}.rbm-layout{grid-template-columns:1fr}.rbm-rebuttal-list{max-height:260px}.rbm-form-grid{grid-template-columns:1fr}.rbm-field.full{grid-column:1}.rb-smart-card{min-height:auto}.rebuttal-page-shell{padding:12px}}
 </style>
 <body>
 <!-- ── TRANSFER CELEBRATION BANNER ── -->
@@ -1479,6 +1563,7 @@ body.is-admin #agent-target-widget{display:none !important;}
         <button class="adm-tab"        id="atab-coaching"    onclick="switchAdminTab('coaching',this)">📝 Coaching</button>
         <button class="adm-tab"        id="atab-monitoring"  onclick="switchAdminTab('monitoring',this)">🎧 Live Monitoring</button>
         <button class="adm-tab"        id="atab-rebuttal"    onclick="switchAdminTab('rebuttal',this)">🧠 Rebuttal Intel</button>
+        <button class="adm-tab"        id="atab-rebuttals"   onclick="switchAdminTab('rebuttals',this)">🧩 Rebuttal Manager</button>
         <button class="adm-tab"        id="atab-weekperf"    onclick="switchAdminTab('weekperf',this)">🏆 Weekly Performance</button>
         <button class="adm-tab"        id="atab-targetboard" onclick="switchAdminTab('targetboard',this)">🎯 Target Board</button>
         <button class="adm-tab"        id="atab-quotes"      onclick="switchAdminTab('quotes',this)">💬 Quotes</button>
@@ -2020,6 +2105,97 @@ body.is-admin #agent-target-widget{display:none !important;}
       </div>
     </div>
 
+
+    <!-- ── FIREBASE REBUTTAL MANAGER ── -->
+    <div id="admin-rebuttals" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <div class="rbm-toolbar">
+          <div>
+            <div class="admin-card-title" style="margin-bottom:3px;font-size:.9rem;">🧩 FIREBASE REBUTTAL MANAGER</div>
+            <div style="font-size:.68rem;color:var(--muted);">Create sections, add rebuttals under any section, and edit what every agent sees in real time.</div>
+          </div>
+          <div class="rbm-actions">
+            <button class="rbm-btn" onclick="rbmCreateSection()">＋ NEW SECTION</button>
+            <button class="rbm-btn primary" onclick="rbmNewRebuttal()">＋ NEW REBUTTAL</button>
+            <button class="rbm-btn success" onclick="rbmSyncLegacyDefaults()">↻ SYNC ORIGINAL REBUTTALS</button>
+          </div>
+        </div>
+        <div id="rbm-global-status" class="rbm-status"></div>
+        <div class="rbm-layout">
+          <aside class="rbm-sidebar">
+            <div class="rbm-side-title">Sections</div>
+            <div id="rbm-section-list"></div>
+            <div class="rbm-rebuttal-list">
+              <div class="rbm-side-title" id="rbm-rebuttal-list-title">Rebuttals</div>
+              <div id="rbm-rebuttal-list"></div>
+            </div>
+          </aside>
+          <main class="rbm-editor">
+            <div id="rbm-empty" class="rbm-empty">Select a rebuttal to edit it, or click <strong style="color:#a991ff;margin:0 4px;">NEW REBUTTAL</strong> to add one under a section.</div>
+            <div id="rbm-form" style="display:none;">
+              <div class="rbm-form-grid">
+                <div class="rbm-field">
+                  <label class="rbm-label">Button Label</label>
+                  <input id="rbm-label" class="rbm-input" placeholder="Not Interested">
+                </div>
+                <div class="rbm-field">
+                  <label class="rbm-label">Section</label>
+                  <select id="rbm-section" class="rbm-select"></select>
+                </div>
+                <div class="rbm-field full">
+                  <label class="rbm-label">Display Heading</label>
+                  <input id="rbm-phase" class="rbm-input" placeholder="REBUTTAL — I'M NOT INTERESTED">
+                </div>
+                <div class="rbm-field full">
+                  <label class="rbm-label">Customer Says / Smart-Match Examples — one per line</label>
+                  <textarea id="rbm-customer-phrases" class="rbm-textarea" placeholder="I'm not interested&#10;I don't want a loan"></textarea>
+                </div>
+                <div class="rbm-field full">
+                  <label class="rbm-label">Search Keywords — comma or line separated</label>
+                  <textarea id="rbm-keywords" class="rbm-textarea" placeholder="not interested, no thanks, do not want"></textarea>
+                </div>
+                <div class="rbm-field">
+                  <label class="rbm-label">Color</label>
+                  <select id="rbm-color" class="rbm-select">
+                    <option value="var(--gold)">Gold</option>
+                    <option value="var(--purple)">Purple</option>
+                    <option value="var(--accent)">Blue</option>
+                    <option value="var(--cyan)">Cyan</option>
+                    <option value="var(--green)">Green</option>
+                    <option value="var(--orange)">Orange</option>
+                    <option value="var(--red)">Red</option>
+                  </select>
+                </div>
+                <div class="rbm-field">
+                  <label class="rbm-label">Order</label>
+                  <input id="rbm-order" class="rbm-input" type="number" min="0" step="1" value="100">
+                </div>
+                <div class="rbm-field full">
+                  <div class="rbm-checks">
+                    <label class="rbm-check"><input id="rbm-active" type="checkbox" checked> Active — visible to agents</label>
+                    <label class="rbm-check"><input id="rbm-critical" type="checkbox"> Critical rebuttal</label>
+                  </div>
+                </div>
+                <div class="rbm-field full">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                    <label class="rbm-label">Rebuttal Content — click inside and edit visually</label>
+                    <button class="rbm-btn" type="button" onclick="rbmAddResponseBlock()">＋ ADD RESPONSE</button>
+                  </div>
+                  <div id="rbm-content-editor" class="rbm-content-editor" contenteditable="true"></div>
+                </div>
+              </div>
+              <div class="rbm-actions" style="margin-top:12px;">
+                <button class="rbm-btn primary" onclick="rbmSaveRebuttal()">💾 SAVE TO FIREBASE</button>
+                <button class="rbm-btn" onclick="rbmDuplicateRebuttal()">⧉ DUPLICATE</button>
+                <button class="rbm-btn danger" onclick="rbmDeleteRebuttal()">🗑 DELETE</button>
+              </div>
+              <div id="rbm-save-status" class="rbm-status"></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
     <!-- ── REBUTTAL INTEL ── -->
     <div id="admin-rebuttal" class="admin-section" style="display:none;">
       <div class="admin-card">
@@ -2187,42 +2363,51 @@ body.is-admin #agent-target-widget{display:none !important;}
 
   <!-- REBUTTALS -->
   <div class="tab-page" id="page-objections">
-    <div class="sub-tab-row">
-      <div class="sub-tab-label">SEARCH REBUTTALS</div>
-      <div style="width:100%;padding:4px 0 8px;">
-        <input type="text" id="rebuttal-search" placeholder="&#128269; Type what the customer is saying..." oninput="searchRebuttals(this.value)" style="width:100%;padding:9px 14px;background:#0d1424;border:1.5px solid #2a3a5a;border-radius:8px;color:#e2e8f0;font-size:0.85rem;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#2a3a5a'">
-        <div id="search-results" style="display:none;margin-top:6px;background:#0d1424;border:1px solid #2a3a5a;border-radius:8px;overflow:hidden;"></div>
+    <div class="rebuttal-page-shell">
+      <div class="rb-smart-grid">
+        <section class="rb-smart-card">
+          <div class="rb-smart-head">
+            <div>
+              <div class="rb-smart-kicker">⚡ SMART MATCH</div>
+              <div class="rb-smart-title">What did the customer say?</div>
+            </div>
+            <button class="rb-clear-btn" onclick="clearSmartRebuttal()">CLEAR</button>
+          </div>
+          <textarea id="smart-rebuttal-input" class="rb-smart-textarea" placeholder="Example: Is this a real company? I never applied for a loan." oninput="smartRebuttalInput(this.value)"></textarea>
+          <div class="rb-smart-foot">
+            <span>⚡ Start typing and the closest rebuttal will open automatically.</span>
+            <button class="rb-auto-badge" onclick="runSmartRebuttalMatch(true)">AUTO MATCH</button>
+          </div>
+        </section>
+
+        <section class="rb-smart-card quick">
+          <div class="rb-smart-head">
+            <div>
+              <div class="rb-smart-kicker">⌕ QUICK SEARCH</div>
+              <div class="rb-smart-title">Find an objection</div>
+            </div>
+            <button class="rb-clear-btn" onclick="clearQuickRebuttal()">CLEAR</button>
+          </div>
+          <div class="rb-quick-wrap">
+            <span class="rb-quick-icon">⌕</span>
+            <input type="text" id="rebuttal-search" class="rb-quick-input" placeholder="Try company, credit, location, interest rate..." oninput="searchRebuttals(this.value)" onkeydown="rebuttalSearchKeydown(event)">
+            <button class="rb-input-clear" onclick="clearQuickRebuttal()" aria-label="Clear search">×</button>
+            <div id="search-results" class="rb-search-results"></div>
+          </div>
+          <div class="rb-search-meta">
+            <span><kbd style="background:#101827;border:1px solid #253550;border-radius:4px;padding:2px 5px;color:#afbdd2;">Enter</kbd> opens the first result</span>
+            <span class="rb-search-count" id="rebuttal-result-count">0 results</span>
+          </div>
+        </section>
       </div>
-      <div class="sub-tab-label" style="margin-top:4px;">SELECT REBUTTAL</div>
-      <button class="sub-tab st-warn active" id="stab-not_interested" onclick="loadObjection('not_interested')">Not Interested</button>
-      <button class="sub-tab st-warn" id="stab-no_info" onclick="loadObjection('no_info')">Why No Info?</button>
-      <button class="sub-tab st-warn" id="stab-bad_credit" onclick="loadObjection('bad_credit')">Bad Credit</button>
-      <button class="sub-tab st-warn" id="stab-rate_question" onclick="loadObjection('rate_question')">Interest Rate?</button>
-      <button class="sub-tab st-warn" id="stab-how_info" onclick="loadObjection('how_info')">How'd You Get My Info?</button>
-      <button class="sub-tab st-warn" id="stab-no_loan" onclick="loadObjection('no_loan')">Don't Need a Loan</button>
-      <button class="sub-tab st-warn" id="stab-website" onclick="loadObjection('website')">Give Me the Website</button>
-      <button class="sub-tab st-warn" id="stab-spouse" onclick="loadObjection('spouse')">Need to Ask Spouse</button>
-      <button class="sub-tab st-warn" id="stab-no_ssn" onclick="loadObjection('no_ssn')">Won't Give SSN</button>
-      <button class="sub-tab st-warn" id="stab-company_name" onclick="loadObjection('company_name')">What Company Is This?</button>
-      <button class="sub-tab st-warn" id="stab-who_are_we" onclick="loadObjection('who_are_we')">Who Are You / Where Located?</button>
-      <button class="sub-tab st-warn" id="stab-diff_numbers" onclick="loadObjection('diff_numbers')">Different Numbers / Address</button>
-      <button class="sub-tab st-warn" id="stab-lower_rate" onclick="loadObjection('lower_rate')">My Bank Has Lower Rate</button>
-      <button class="sub-tab st-warn" id="stab-voicemail_approved" onclick="loadObjection('voicemail_approved')">Voicemail Said Approved</button>
-      <button class="sub-tab st-bad" id="stab-dnc_file" onclick="loadObjection('dnc_file')">DNC / Enrolled / Bad Lead</button>
-      <button class="sub-tab st-warn" id="stab-llc_question" onclick="loadObjection('llc_question')">Is Your Company LLC?</button>
-      <button class="sub-tab st-warn" id="stab-debt_consolidation" onclick="loadObjection('debt_consolidation')">Is This Debt Consolidation?</button>
-      <button class="sub-tab st-warn" id="stab-soft_pull" onclick="loadObjection('soft_pull')">Soft Credit Pull</button>
-      <button class="sub-tab st-warn" id="stab-private_lender" onclick="loadObjection('private_lender')">What Bank / Private Lender?</button>
-      <div class="sub-tab-label" style="margin-top:6px;">BELIEVE IN YOUR WORK</div>
-      <button class="sub-tab st-ok" id="stab-confidence_mindset" onclick="loadObjection('confidence_mindset')">Confidence Technique</button>
-      <button class="sub-tab st-warn" id="stab-wants_to_hangup" onclick="loadObjection('wants_to_hangup')">Taking over technique</button>
-      <button class="sub-tab st-warn" id="stab-follow_up_pivot" onclick="loadObjection('follow_up_pivot')">Follow up ( Pivot Positively )</button>
-      <button class="sub-tab st-warn" id="stab-ssn_concerns" onclick="loadObjection('ssn_concerns')">Concerns about providing SSN</button>
-      <button class="sub-tab st-ok" id="stab-pitch_benefit" onclick="loadObjection('pitch_benefit')">Sales Pitch Boosting &mdash; Benefit-Oriented</button>
-      <button class="sub-tab st-ok" id="stab-pitch_urgency" onclick="loadObjection('pitch_urgency')">Sales Pitch Boosting &mdash; Urgency / No Commitment</button>
-      <button class="sub-tab st-warn" id="stab-pitch_softpull" onclick="loadObjection('pitch_softpull')">Sales Pitch Boosting &mdash; Soft Pull / Privacy / No Website</button>
+
+      <div class="rb-library-status">
+        <span id="rebuttal-library-status"><span class="rb-live-dot"></span>Connecting to Firebase rebuttal library...</span>
+        <span id="rebuttal-library-updated"></span>
+      </div>
+      <div id="rebuttal-section-nav" class="rb-section-nav"></div>
+      <div class="script-view rb-firebase-display" id="obj-display"></div>
     </div>
-    <div class="script-view" id="obj-display"></div>
   </div>
 
   <!-- DISPOSITION -->
@@ -2930,6 +3115,579 @@ pitch_urgency:{phase:'SALES PITCH BOOSTING \u2014 URGENCY &amp; NO COMMITMENT',c
 pitch_softpull:{phase:'SALES PITCH BOOSTING \u2014 SOFT PULL / NO WEBSITE / DATA PRIVACY',color:'var(--purple)',content:`<div class="phase-tag" style="background:var(--purple-light);color:var(--purple);border-color:#c4b5fd;">\u{1F4CA} Soft Pull / No Website / Data Privacy Scripts</div><div class="rb" style="border-left:4px solid var(--accent2);"><div class="rblabel" style="color:var(--accent2);">SOFT PULL CLARIFICATION</div><div class="rbtext">"I completely understand, (Customer's Name). Just to reassure you \u2014 this is only a <span class='kw'>soft credit check</span>. It's not a hard pull and <span class='emp'>won't affect your credit score at all</span>. It's simply used to verify your identity and show you what loan options you could qualify for \u2014 no impact, no commitment."</div></div><div class="rb" style="border-left:4px solid var(--gold);"><div class="rblabel" style="color:var(--gold);">NO WEBSITE / CREDENTIALS CONCERN</div><div class="rbtext">"The reason we don't provide specific lender websites right away is because we <span class='kw'>haven't confirmed which lender will offer you the best deal</span>. Once your profile is reviewed through the soft check, our Loan Specialist will <span class='emp'>guide you through the lender's information step-by-step</span>."</div></div><div class="rb" style="border-left:4px solid var(--green);"><div class="rblabel" style="color:var(--green);">DATA PRIVACY &amp; ENCRYPTION</div><div class="rbtext">"Your information is <span class='kw'>completely protected</span>. Once I input your SSN, it's locked and securely sent to underwriting \u2014 I can't access it again. We use <span class='emp'>bank-level encryption</span> to keep everything safe and confidential."</div></div>`},
 };
 
+
+// ══════════════════════════════════════════════════════════════
+//  FIREBASE REBUTTAL LIBRARY
+//  Collections:
+//    rebuttal_sections/{sectionId}
+//    rebuttals/{rebuttalId}
+// ══════════════════════════════════════════════════════════════
+const LEGACY_REBUTTAL_KEYWORDS = {
+  not_interested:['not interested','dont want','don\'t want','not looking','no thanks','i pass','not right now','no interest'],
+  no_info:['why do you have','how do you have','where did you get','no info','dont have my info','shouldnt have'],
+  bad_credit:['bad credit','low credit','poor credit','credit score','my credit','credit is bad'],
+  rate_question:['interest rate','what rate','how much interest','apr','percent','rates'],
+  how_info:['how did you get','where did you get my','who gave you','how do you know','privacy','my information'],
+  no_loan:['dont need a loan','don\'t need a loan','dont need money','not looking for a loan','dont want a loan','no loan'],
+  website:['website','web site','give me your site','where is your site','your url','located','address','location'],
+  spouse:['ask my husband','ask my wife','ask my spouse','ask my partner','check with my','run it by my'],
+  no_ssn:['social security','ssn','social number','my social','wont give my','not giving my ssn','dont want to give'],
+  company_name:['what company','what business','who are you','which company','company name','name of the company','who is this'],
+  who_are_we:['who are you','where are you located','where are you from','what company is this','who is calling','nationwide','which location','what state are you in'],
+  diff_numbers:['different numbers','calling from different','phone number','why different number','same number','your number'],
+  lower_rate:['lower rate','my bank','bank rate','better rate','fixed rate','collateral'],
+  voicemail_approved:['voicemail','already approved','said i was approved','pre approved message','got a voicemail'],
+  dnc_file:['dnc','do not call','enrolled','bad lead','cancellation','potential cancellation'],
+  llc_question:['llc','llp','limited liability','type of company','registered'],
+  debt_consolidation:['debt consolidation','consolidate','consolidation','pay off debt','combine debt'],
+  soft_pull:['soft pull','soft credit','affect my credit','hurt my credit','credit check','hard pull','hard inquiry'],
+  private_lender:['what bank','which bank','broker','just connecting','private lender','lender name','bank name'],
+  confidence_mindset:['confidence','mindset','believe in','unsure','feel confident','projecting','tone','uncertain'],
+  wants_to_hangup:['hang up','want to hang','going to hang','about to hang','dont want to talk','taking over','let me go','hanging up'],
+  follow_up_pivot:['pivot','follow up','need your social','next step','how to ask','move forward','back to script'],
+  ssn_concerns:['concerns about social','providing ssn','why social','lender match','why do you need','full ssn explanation'],
+  pitch_benefit:['benefit pitch','sales pitch','pitch boost','how to pitch','what to say','value pitch','empathy pitch'],
+  pitch_urgency:['urgency','no commitment','zero obligation','free consultation','window shopping','nothing to lose','qualify for'],
+  pitch_softpull:['soft pull pitch','no website pitch','data privacy','bank level','privacy pitch','encryption pitch']
+};
+
+const DEFAULT_REBUTTAL_SECTIONS = [
+  {id:'common-objections',name:'Common Objections',order:10,active:true},
+  {id:'belief-confidence',name:'Believe In Your Work',order:20,active:true},
+  {id:'sales-pitch',name:'Sales Pitch Boosting',order:30,active:true}
+];
+
+const LEGACY_CONFIDENCE_KEYS = new Set(['confidence_mindset','wants_to_hangup','follow_up_pivot','ssn_concerns']);
+const LEGACY_SALES_KEYS = new Set(['pitch_benefit','pitch_urgency','pitch_softpull']);
+
+let REBUTTAL_SECTIONS = [];
+let REBUTTAL_LIBRARY = {};
+let rebuttalLibraryReady = false;
+let rebuttalSyncStarting = false;
+let rebuttalSectionUnsubscribe = null;
+let rebuttalItemsUnsubscribe = null;
+let selectedObjectionKey = 'not_interested';
+let lastQuickRebuttalMatches = [];
+let smartRebuttalTimer = null;
+let rbmSelectedSectionId = '';
+let rbmSelectedRebuttalId = '';
+let rbmIsNew = false;
+
+function rbEscape(value){
+  return String(value ?? '').replace(/[&<>'"]/g, ch=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+  })[ch]);
+}
+
+function rbStripHtml(html){
+  const div=document.createElement('div');
+  div.innerHTML=String(html||'');
+  return (div.textContent||div.innerText||'').replace(/\s+/g,' ').trim();
+}
+
+function rbSlug(value){
+  return String(value||'')
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'')
+    .slice(0,80) || ('rebuttal-'+Date.now());
+}
+
+function rbNormalizeText(value){
+  return String(value||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+
+function rbLegacySectionForKey(key){
+  if(LEGACY_SALES_KEYS.has(key)) return 'sales-pitch';
+  if(LEGACY_CONFIDENCE_KEYS.has(key)) return 'belief-confidence';
+  return 'common-objections';
+}
+
+function rbLegacyRecord(key, obj, index){
+  const wrap=document.createElement('div');
+  wrap.innerHTML=obj.content||'';
+  const phraseEl=wrap.querySelector('.phase-tag');
+  const customerText=phraseEl ? rbStripHtml(phraseEl.innerHTML) : '';
+  const phase=String(obj.phase||key).trim();
+  const cleanLabel=phase
+    .replace(/^REBUTTAL\s*[—–-]\s*/i,'')
+    .replace(/^SALES PITCH BOOSTING\s*[—–-]?\s*/i,'')
+    .replace(/^FOLLOW UP\s*\(\s*PIVOT POSITIVELY\s*\)$/i,'Follow Up / Pivot Positively')
+    .replace(/^['"]|['"]$/g,'')
+    .trim();
+  const phrases=[];
+  if(customerText) phrases.push(customerText);
+  return {
+    id:key,
+    key,
+    sectionId:rbLegacySectionForKey(key),
+    label:cleanLabel || key.replace(/_/g,' '),
+    phase,
+    color:obj.color||'var(--gold)',
+    customerPhrases:phrases,
+    keywords:LEGACY_REBUTTAL_KEYWORDS[key]||[],
+    contentHtml:obj.content||'',
+    order:(index+1)*10,
+    active:true,
+    critical:['no_ssn','ssn_concerns','confidence_mindset','not_interested','wants_to_hangup'].includes(key),
+    source:'legacy-dashboard'
+  };
+}
+
+function rbFallbackLibrary(){
+  const out={};
+  Object.entries(OBJ).forEach(([key,obj],idx)=>{out[key]=rbLegacyRecord(key,obj,idx);});
+  return out;
+}
+
+async function seedRebuttalFirebase({mergeMissingOnly=true}={}){
+  await ensureFirebaseAuth();
+  const batchLimit=400;
+  const operations=[];
+  let existingSections=new Set();
+  let existingRebuttals=new Set();
+  if(mergeMissingOnly){
+    const [sectionSnap,itemSnap]=await Promise.all([
+      db.collection('rebuttal_sections').get(),
+      db.collection('rebuttals').get()
+    ]);
+    existingSections=new Set(sectionSnap.docs.map(d=>d.id));
+    existingRebuttals=new Set(itemSnap.docs.map(d=>d.id));
+  }
+  DEFAULT_REBUTTAL_SECTIONS.forEach(section=>{
+    if(!mergeMissingOnly || !existingSections.has(section.id)){
+      operations.push({ref:db.collection('rebuttal_sections').doc(section.id),data:{...section,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}});
+    }
+  });
+  Object.entries(OBJ).forEach(([key,obj],idx)=>{
+    if(mergeMissingOnly && existingRebuttals.has(key)) return;
+    const record=rbLegacyRecord(key,obj,idx);
+    operations.push({ref:db.collection('rebuttals').doc(key),data:{...record,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}});
+  });
+  for(let i=0;i<operations.length;i+=batchLimit){
+    const batch=db.batch();
+    operations.slice(i,i+batchLimit).forEach(op=>batch.set(op.ref,op.data,{merge:true}));
+    await batch.commit();
+  }
+  return operations.length;
+}
+
+async function ensureRebuttalFirebaseSeed(){
+  await ensureFirebaseAuth();
+  const [sectionSnap,itemSnap]=await Promise.all([
+    db.collection('rebuttal_sections').limit(1).get(),
+    db.collection('rebuttals').limit(1).get()
+  ]);
+  if(sectionSnap.empty || itemSnap.empty){
+    await seedRebuttalFirebase({mergeMissingOnly:true});
+  }
+}
+
+function startRebuttalSync(){
+  if(rebuttalSectionUnsubscribe || rebuttalItemsUnsubscribe || rebuttalSyncStarting) return;
+  rebuttalSyncStarting=true;
+  ensureRebuttalFirebaseSeed().then(()=>{
+    rebuttalSectionUnsubscribe=db.collection('rebuttal_sections').onSnapshot(snap=>{
+      REBUTTAL_SECTIONS=snap.docs.map(doc=>({id:doc.id,...doc.data()}))
+        .filter(s=>s.active!==false)
+        .sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)||String(a.name||'').localeCompare(String(b.name||'')));
+      renderRebuttalNavigation();
+      rbmRenderManager();
+    },err=>console.warn('Rebuttal section sync failed:',err));
+
+    rebuttalItemsUnsubscribe=db.collection('rebuttals').onSnapshot(snap=>{
+      const next={};
+      snap.forEach(doc=>{next[doc.id]={id:doc.id,key:doc.id,...doc.data()};});
+      REBUTTAL_LIBRARY=next;
+      rebuttalLibraryReady=true;
+      refreshDynamicRebuttalLabels();
+      renderRebuttalNavigation();
+      rbmRenderManager();
+      const status=document.getElementById('rebuttal-library-status');
+      if(status) status.innerHTML=`<span class="rb-live-dot"></span>Firebase live sync · ${Object.values(next).filter(r=>r.active!==false).length} rebuttals`;
+      const updated=document.getElementById('rebuttal-library-updated');
+      if(updated) updated.textContent='LIVE';
+      if(!next[selectedObjectionKey] || next[selectedObjectionKey].active===false){
+        const first=rbGetActiveRebuttals()[0];
+        if(first) selectedObjectionKey=first.id;
+      }
+      if(selectedObjectionKey) loadObjection(selectedObjectionKey,false);
+    },err=>{
+      console.warn('Rebuttal item sync failed:',err);
+      REBUTTAL_LIBRARY=rbFallbackLibrary();
+      renderRebuttalNavigation();
+      const status=document.getElementById('rebuttal-library-status');
+      if(status) status.textContent='Firebase unavailable — showing built-in backup';
+    });
+  }).catch(err=>{
+    console.warn('Rebuttal Firebase initialization failed:',err);
+    REBUTTAL_LIBRARY=rbFallbackLibrary();
+    REBUTTAL_SECTIONS=[...DEFAULT_REBUTTAL_SECTIONS];
+    renderRebuttalNavigation();
+    const status=document.getElementById('rebuttal-library-status');
+    if(status) status.textContent='Firebase unavailable — showing built-in backup';
+  }).finally(()=>{rebuttalSyncStarting=false;});
+}
+
+function stopRebuttalSync(){
+  if(rebuttalSectionUnsubscribe){rebuttalSectionUnsubscribe();rebuttalSectionUnsubscribe=null;}
+  if(rebuttalItemsUnsubscribe){rebuttalItemsUnsubscribe();rebuttalItemsUnsubscribe=null;}
+}
+
+function rbGetActiveRebuttals(){
+  const lib=Object.keys(REBUTTAL_LIBRARY).length ? REBUTTAL_LIBRARY : rbFallbackLibrary();
+  return Object.values(lib)
+    .filter(r=>r.active!==false)
+    .sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)||String(a.label||'').localeCompare(String(b.label||'')));
+}
+
+function rbGetSections(){
+  if(REBUTTAL_SECTIONS.length) return REBUTTAL_SECTIONS;
+  return DEFAULT_REBUTTAL_SECTIONS;
+}
+
+function rbSectionName(id){
+  return rbGetSections().find(s=>s.id===id)?.name || 'Other Rebuttals';
+}
+
+function refreshDynamicRebuttalLabels(){
+  if(typeof REBUTTAL_LABELS!=='undefined'){
+    Object.keys(REBUTTAL_LABELS).forEach(k=>delete REBUTTAL_LABELS[k]);
+    Object.values(REBUTTAL_LIBRARY).forEach(r=>{if(r.active!==false) REBUTTAL_LABELS[r.id]=r.label||r.phase||r.id;});
+  }
+  if(typeof CRITICAL_REBUTTALS!=='undefined'){
+    CRITICAL_REBUTTALS=Object.values(REBUTTAL_LIBRARY).filter(r=>r.active!==false&&r.critical===true).map(r=>r.id);
+  }
+}
+
+function renderRebuttalNavigation(){
+  const nav=document.getElementById('rebuttal-section-nav');
+  if(!nav) return;
+  const all=rbGetActiveRebuttals();
+  const sections=rbGetSections();
+  const represented=new Set(all.map(r=>r.sectionId));
+  const sectionRows=[...sections];
+  represented.forEach(id=>{if(!sectionRows.some(s=>s.id===id))sectionRows.push({id,name:'Other Rebuttals',order:999});});
+  const countEl=document.getElementById('rebuttal-result-count');
+  const quickInput=document.getElementById('rebuttal-search');
+  if(countEl && !(quickInput&&quickInput.value.trim())) countEl.textContent=all.length+' results';
+  nav.innerHTML=sectionRows.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)).map(section=>{
+    const items=all.filter(r=>r.sectionId===section.id);
+    if(!items.length) return '';
+    return `<div class="rb-section-group">
+      <div class="rb-section-heading">${rbEscape(section.icon||'◈')} ${rbEscape(section.name||'Section')} <span class="rb-section-count">${items.length}</span></div>
+      <div class="rb-section-buttons">${items.map(r=>`<button class="rb-lib-btn ${r.id===selectedObjectionKey?'active':''}" id="stab-${rbEscape(r.id)}" onclick="loadObjection('${rbEscape(r.id)}')">${rbEscape(r.label||r.phase||r.id)}</button>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function rbRecordToDisplay(record){
+  if(!record) return null;
+  return {
+    phase:record.phase||record.label||'REBUTTAL',
+    color:record.color||'var(--gold)',
+    content:record.contentHtml||record.content||''
+  };
+}
+
+function rbSearchHaystack(record){
+  return rbNormalizeText([
+    record.label,record.phase,
+    ...(Array.isArray(record.customerPhrases)?record.customerPhrases:[]),
+    ...(Array.isArray(record.keywords)?record.keywords:[]),
+    rbStripHtml(record.contentHtml||record.content||'')
+  ].filter(Boolean).join(' '));
+}
+
+function rbScoreMatch(query,record){
+  const q=rbNormalizeText(query);
+  if(!q) return 0;
+  const hay=rbSearchHaystack(record);
+  const words=q.split(' ').filter(w=>w.length>1);
+  let score=0;
+  if(hay.includes(q)) score+=120+q.length;
+  const label=rbNormalizeText(record.label||record.phase||'');
+  if(label.includes(q)||q.includes(label)) score+=90;
+  const phrases=[...(record.customerPhrases||[]),...(record.keywords||[])].map(rbNormalizeText);
+  phrases.forEach(p=>{
+    if(!p) return;
+    if(p===q) score+=180;
+    else if(p.includes(q)||q.includes(p)) score+=100;
+  });
+  words.forEach(word=>{
+    if(label.includes(word)) score+=18;
+    if(hay.includes(word)) score+=7;
+  });
+  const uniqueWords=[...new Set(words)];
+  const matched=uniqueWords.filter(w=>hay.includes(w)).length;
+  if(uniqueWords.length) score+=Math.round((matched/uniqueWords.length)*45);
+  return score;
+}
+
+function rbFindMatches(query,limit=20){
+  const q=String(query||'').trim();
+  const items=rbGetActiveRebuttals();
+  if(!q) return items.slice(0,limit).map(r=>({record:r,score:1}));
+  return items.map(record=>({record,score:rbScoreMatch(q,record)}))
+    .filter(x=>x.score>0)
+    .sort((a,b)=>b.score-a.score||(Number(a.record.order)||0)-(Number(b.record.order)||0))
+    .slice(0,limit);
+}
+
+function smartRebuttalInput(){
+  clearTimeout(smartRebuttalTimer);
+  smartRebuttalTimer=setTimeout(()=>runSmartRebuttalMatch(false),550);
+}
+
+function runSmartRebuttalMatch(force){
+  const input=document.getElementById('smart-rebuttal-input');
+  const value=input?.value||'';
+  if(!value.trim() || (!force && value.trim().length<4)) return;
+  const top=rbFindMatches(value,1)[0];
+  if(top && (force || top.score>=22)) loadObjection(top.record.id);
+}
+
+function clearSmartRebuttal(){
+  const el=document.getElementById('smart-rebuttal-input');
+  if(el){el.value='';el.focus();}
+}
+
+function clearQuickRebuttal(){
+  const input=document.getElementById('rebuttal-search');
+  const results=document.getElementById('search-results');
+  if(input){input.value='';input.focus();}
+  if(results){results.style.display='none';results.innerHTML='';}
+  lastQuickRebuttalMatches=[];
+  const count=document.getElementById('rebuttal-result-count');
+  if(count) count.textContent=rbGetActiveRebuttals().length+' results';
+}
+
+function rebuttalSearchKeydown(event){
+  if(event.key==='Enter' && lastQuickRebuttalMatches.length){
+    event.preventDefault();
+    loadObjection(lastQuickRebuttalMatches[0].record.id);
+    clearQuickRebuttal();
+  }
+  if(event.key==='Escape') clearQuickRebuttal();
+}
+
+// ── ADMIN REBUTTAL MANAGER ──
+function rbmSetStatus(message,type='info'){
+  const el=document.getElementById('rbm-global-status');
+  if(!el) return;
+  el.textContent=message||'';
+  el.style.color=type==='error'?'var(--red)':type==='success'?'var(--green)':'var(--muted)';
+}
+
+async function loadRebuttalManager(){
+  startRebuttalSync();
+  rbmRenderManager();
+}
+
+function rbmAllSections(){
+  const map=new Map();
+  DEFAULT_REBUTTAL_SECTIONS.forEach(s=>map.set(s.id,{...s}));
+  REBUTTAL_SECTIONS.forEach(s=>map.set(s.id,{...s}));
+  Object.values(REBUTTAL_LIBRARY).forEach(r=>{
+    if(r.sectionId&&!map.has(r.sectionId)) map.set(r.sectionId,{id:r.sectionId,name:'Other Rebuttals',order:999,active:true});
+  });
+  return [...map.values()].sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)||String(a.name||'').localeCompare(String(b.name||'')));
+}
+
+function rbmRenderManager(){
+  const sectionList=document.getElementById('rbm-section-list');
+  const rebuttalList=document.getElementById('rbm-rebuttal-list');
+  if(!sectionList||!rebuttalList) return;
+  const sections=rbmAllSections();
+  if(!rbmSelectedSectionId || !sections.some(s=>s.id===rbmSelectedSectionId)) rbmSelectedSectionId=sections[0]?.id||'';
+  sectionList.innerHTML=sections.map(section=>{
+    const count=Object.values(REBUTTAL_LIBRARY).filter(r=>r.sectionId===section.id).length;
+    return `<div class="rbm-section-item ${section.id===rbmSelectedSectionId?'active':''}" onclick="rbmSelectSection('${rbEscape(section.id)}')">
+      <span style="color:#8b68ff;">◈</span><span class="rbm-section-name">${rbEscape(section.name||section.id)}</span>
+      <span style="font-size:.58rem;color:#64748b;">${count}</span>
+      <button class="rbm-mini" title="Rename section" onclick="event.stopPropagation();rbmRenameSection('${rbEscape(section.id)}')">✎</button>
+      <button class="rbm-mini" title="Delete section" onclick="event.stopPropagation();rbmDeleteSection('${rbEscape(section.id)}')">×</button>
+    </div>`;
+  }).join('');
+  const selectedSection=sections.find(s=>s.id===rbmSelectedSectionId);
+  const title=document.getElementById('rbm-rebuttal-list-title');
+  if(title) title.textContent=(selectedSection?.name||'Rebuttals')+' — Rebuttals';
+  const items=Object.values(REBUTTAL_LIBRARY)
+    .filter(r=>r.sectionId===rbmSelectedSectionId)
+    .sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)||String(a.label||'').localeCompare(String(b.label||'')));
+  rebuttalList.innerHTML=items.length?items.map(r=>`<div class="rbm-rebuttal-item ${r.id===rbmSelectedRebuttalId?'active':''}" onclick="rbmSelectRebuttal('${rbEscape(r.id)}')">
+    <div class="rbm-rebuttal-title">${rbEscape(r.label||r.phase||r.id)}</div>
+    <div class="rbm-rebuttal-meta">${r.active===false?'Inactive':'Active'} · order ${Number(r.order)||0}${r.critical?' · critical':''}</div>
+  </div>`).join(''):'<div style="color:#60708b;font-size:.72rem;padding:10px 4px;">No rebuttals in this section yet.</div>';
+  const sectionSelect=document.getElementById('rbm-section');
+  if(sectionSelect){
+    const current=sectionSelect.value||rbmSelectedSectionId;
+    sectionSelect.innerHTML=sections.map(s=>`<option value="${rbEscape(s.id)}">${rbEscape(s.name||s.id)}</option>`).join('');
+    if(sections.some(s=>s.id===current)) sectionSelect.value=current;
+  }
+}
+
+function rbmSelectSection(id){
+  rbmSelectedSectionId=id;
+  rbmRenderManager();
+}
+
+function rbmSelectRebuttal(id){
+  const record=REBUTTAL_LIBRARY[id];
+  if(!record) return;
+  rbmSelectedRebuttalId=id;
+  rbmSelectedSectionId=record.sectionId||rbmSelectedSectionId;
+  rbmIsNew=false;
+  document.getElementById('rbm-empty').style.display='none';
+  document.getElementById('rbm-form').style.display='block';
+  document.getElementById('rbm-label').value=record.label||'';
+  document.getElementById('rbm-phase').value=record.phase||'';
+  document.getElementById('rbm-customer-phrases').value=(record.customerPhrases||[]).join('\n');
+  document.getElementById('rbm-keywords').value=(record.keywords||[]).join(', ');
+  document.getElementById('rbm-color').value=record.color||'var(--gold)';
+  document.getElementById('rbm-order').value=Number(record.order)||0;
+  document.getElementById('rbm-active').checked=record.active!==false;
+  document.getElementById('rbm-critical').checked=record.critical===true;
+  document.getElementById('rbm-content-editor').innerHTML=record.contentHtml||'';
+  rbmRenderManager();
+  const select=document.getElementById('rbm-section');
+  if(select) select.value=record.sectionId||rbmSelectedSectionId;
+  const status=document.getElementById('rbm-save-status');if(status)status.textContent='';
+}
+
+function rbmNewRebuttal(){
+  const sections=rbmAllSections();
+  if(!sections.length){rbmSetStatus('Create a section first.','error');return;}
+  rbmIsNew=true;
+  rbmSelectedRebuttalId='';
+  if(!rbmSelectedSectionId) rbmSelectedSectionId=sections[0].id;
+  document.getElementById('rbm-empty').style.display='none';
+  document.getElementById('rbm-form').style.display='block';
+  document.getElementById('rbm-label').value='';
+  document.getElementById('rbm-phase').value='REBUTTAL — ';
+  document.getElementById('rbm-customer-phrases').value='';
+  document.getElementById('rbm-keywords').value='';
+  document.getElementById('rbm-color').value='var(--gold)';
+  const sectionItems=Object.values(REBUTTAL_LIBRARY).filter(r=>r.sectionId===rbmSelectedSectionId);
+  document.getElementById('rbm-order').value=sectionItems.length?Math.max(...sectionItems.map(r=>Number(r.order)||0))+10:10;
+  document.getElementById('rbm-active').checked=true;
+  document.getElementById('rbm-critical').checked=false;
+  document.getElementById('rbm-content-editor').innerHTML='<div class="phase-tag" style="background:var(--gold-light);color:var(--gold);border-color:#fcd34d;">💬 “Customer wording here”</div><div class="rb"><div class="rblabel">RESPONSE 1</div><div class="rbtext">Type the rebuttal response here.</div><div class="pivot">→ Add the pivot question here.</div></div>';
+  rbmRenderManager();
+  const select=document.getElementById('rbm-section');if(select)select.value=rbmSelectedSectionId;
+  document.getElementById('rbm-label').focus();
+}
+
+function rbmSplitValues(value){
+  return [...new Set(String(value||'').split(/[\n,]+/).map(v=>v.trim()).filter(Boolean))];
+}
+
+async function rbmSaveRebuttal(){
+  const status=document.getElementById('rbm-save-status');
+  try{
+    const label=document.getElementById('rbm-label').value.trim();
+    const phase=document.getElementById('rbm-phase').value.trim();
+    const sectionId=document.getElementById('rbm-section').value;
+    if(!label||!phase||!sectionId) throw new Error('Button label, heading, and section are required.');
+    let id=rbmSelectedRebuttalId;
+    if(rbmIsNew||!id){
+      const base=rbSlug(label);
+      id=base;
+      let suffix=2;
+      while(REBUTTAL_LIBRARY[id]) id=base+'-'+suffix++;
+    }
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const data={
+      id,key:id,label,phase,sectionId,
+      customerPhrases:rbmSplitValues(document.getElementById('rbm-customer-phrases').value),
+      keywords:rbmSplitValues(document.getElementById('rbm-keywords').value),
+      color:document.getElementById('rbm-color').value||'var(--gold)',
+      order:Number(document.getElementById('rbm-order').value)||0,
+      active:document.getElementById('rbm-active').checked,
+      critical:document.getElementById('rbm-critical').checked,
+      contentHtml:document.getElementById('rbm-content-editor').innerHTML.trim(),
+      updatedAt:now,updatedBy:currentUser?.name||'Admin'
+    };
+    if(rbmIsNew) data.createdAt=now;
+    await ensureFirebaseAuth();
+    await db.collection('rebuttals').doc(id).set(data,{merge:true});
+    rbmSelectedRebuttalId=id;rbmSelectedSectionId=sectionId;rbmIsNew=false;
+    if(status){status.textContent='✅ Saved to Firebase. Every open dashboard will update automatically.';status.style.color='var(--green)';}
+  }catch(e){
+    if(status){status.textContent='❌ '+(e.message||e);status.style.color='var(--red)';}
+  }
+}
+
+function rbmAddResponseBlock(){
+  const editor=document.getElementById('rbm-content-editor');
+  if(!editor) return;
+  const count=editor.querySelectorAll('.rb').length+1;
+  editor.insertAdjacentHTML('beforeend',`<div class="rb"><div class="rblabel">RESPONSE ${count}</div><div class="rbtext">Type the rebuttal response here.</div><div class="pivot">→ Add the pivot question here.</div></div>`);
+  editor.scrollTop=editor.scrollHeight;
+}
+
+async function rbmDuplicateRebuttal(){
+  if(!rbmSelectedRebuttalId||!REBUTTAL_LIBRARY[rbmSelectedRebuttalId]) return;
+  const source=REBUTTAL_LIBRARY[rbmSelectedRebuttalId];
+  const base=rbSlug((source.label||'rebuttal')+' copy');
+  let id=base,suffix=2;while(REBUTTAL_LIBRARY[id])id=base+'-'+suffix++;
+  const copy={...source,id,key:id,label:(source.label||'Rebuttal')+' Copy',order:(Number(source.order)||0)+1,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:currentUser?.name||'Admin'};
+  delete copy.updatedAtClient;
+  await db.collection('rebuttals').doc(id).set(copy,{merge:true});
+  rbmSelectedRebuttalId=id;rbmIsNew=false;
+  rbmSetStatus('Rebuttal duplicated.','success');
+}
+
+async function rbmDeleteRebuttal(){
+  if(!rbmSelectedRebuttalId) return;
+  const record=REBUTTAL_LIBRARY[rbmSelectedRebuttalId];
+  if(!confirm(`Delete "${record?.label||rbmSelectedRebuttalId}" from Firebase?`)) return;
+  await db.collection('rebuttals').doc(rbmSelectedRebuttalId).delete();
+  rbmSelectedRebuttalId='';rbmIsNew=false;
+  document.getElementById('rbm-form').style.display='none';
+  document.getElementById('rbm-empty').style.display='flex';
+  rbmSetStatus('Rebuttal deleted from Firebase.','success');
+}
+
+async function rbmCreateSection(){
+  const name=prompt('New rebuttal section name:');
+  if(!name||!name.trim()) return;
+  const base=rbSlug(name), sections=rbmAllSections();
+  let id=base,suffix=2;while(sections.some(s=>s.id===id))id=base+'-'+suffix++;
+  const order=sections.length?Math.max(...sections.map(s=>Number(s.order)||0))+10:10;
+  await db.collection('rebuttal_sections').doc(id).set({id,name:name.trim(),order,active:true,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  rbmSelectedSectionId=id;
+  rbmSetStatus('New section created in Firebase.','success');
+}
+
+async function rbmRenameSection(id){
+  const section=rbmAllSections().find(s=>s.id===id);if(!section)return;
+  const name=prompt('Rename section:',section.name||'');
+  if(!name||!name.trim())return;
+  await db.collection('rebuttal_sections').doc(id).set({name:name.trim(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  rbmSetStatus('Section renamed.','success');
+}
+
+async function rbmDeleteSection(id){
+  const section=rbmAllSections().find(s=>s.id===id);if(!section)return;
+  const used=Object.values(REBUTTAL_LIBRARY).filter(r=>r.sectionId===id);
+  if(used.length){rbmSetStatus(`Move or delete the ${used.length} rebuttal(s) in "${section.name}" before deleting the section.`,'error');return;}
+  if(!confirm(`Delete empty section "${section.name}"?`))return;
+  await db.collection('rebuttal_sections').doc(id).delete();
+  rbmSelectedSectionId='';
+  rbmSetStatus('Section deleted.','success');
+}
+
+async function rbmSyncLegacyDefaults(){
+  if(!confirm('Sync any missing original rebuttals into Firebase? Existing edited rebuttals will be preserved.'))return;
+  rbmSetStatus('Syncing original rebuttals...');
+  try{await seedRebuttalFirebase({mergeMissingOnly:true});rbmSetStatus('Original rebuttals are synced to Firebase.','success');}
+  catch(e){rbmSetStatus('Sync failed: '+e.message,'error');}
+}
+
 // ── FIREBASE AUTH + ROSTER ──
 let firebaseAuthPromise = null;
 
@@ -3515,6 +4273,7 @@ function scheduleMidnightLogout(){
 function doLogout(auto=false){
   clearTimeout(midnightTimer);
   stopRosterPolling(); // stop background sync on logout
+  stopRebuttalSync();
   sessionStorage.removeItem('bds_user_'+getTodayGY());
   currentUser = null;
   auth.signOut();
@@ -3685,7 +4444,8 @@ window.addEventListener('load',()=>{ checkSession(); });
 
 function init(){
   loadScript('intro');
-  loadObjection('not_interested');
+  loadObjection('not_interested',false);
+  startRebuttalSync();
   startClocks();
   const pw=['FIXED-RATE','5.49% APR','SOFT CREDIT CHECK','LENDING SPECIALIST','LIMITED TIME','LOAN AMOUNTS','MONTHLY PAYMENTS','ELIGIBILITY','LENDING PARTNER NETWORK','PRE-QUALIFICATION'];
   const el=document.getElementById('punch-words');
@@ -4366,38 +5126,32 @@ function loadScript(key){
   const r=document.createElement('button');r.className='btn';r.innerText='\u21BA RESET';r.onclick=()=>loadScript('intro');nb.appendChild(r);
 }
 
-function loadObjection(key){
-  const o=OBJ[key];if(!o)return;
-  document.querySelectorAll('#page-objections .sub-tab').forEach(el=>el.classList.toggle('active',el.id==='stab-'+key));
+function loadObjection(key,trackUsage=true){
+  const record=REBUTTAL_LIBRARY[key] || rbFallbackLibrary()[key];
+  const o=rbRecordToDisplay(record);if(!o)return;
+  selectedObjectionKey=key;
+  document.querySelectorAll('#page-objections .rb-lib-btn').forEach(el=>el.classList.toggle('active',el.id==='stab-'+key));
   const d=document.getElementById('obj-display');
-  d.innerHTML=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:${o.color};margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);">${o.phase}</div>${o.content}`;
-  d.scrollTop=0;
+  if(d){
+    d.innerHTML=`<div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:${o.color};margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);">${rbEscape(o.phase)}</div>${o.content}`;
+    d.scrollTop=0;
+  }
   // ── REBUTTAL TRACKING ──
-  if(currentUser && !currentUser.isAdmin){
+  if(trackUsage && currentUser && !currentUser.isAdmin){
     const today = getTodayGY();
     const docId = currentUser.id+'_'+today;
     const ref   = db.collection('rebuttal_clicks').doc(docId);
-    const tsNow = Date.now(); // client timestamp in ms
-
+    const tsNow = Date.now();
     ref.get().then(snap=>{
       const dat    = snap.exists ? snap.data() : {};
       const clicks = dat.clicks  || {};
-      const events = dat.events  || []; // array of {key, ts} for burst detection
-
+      const events = dat.events  || [];
       clicks[key] = (clicks[key]||0)+1;
-
-      // Keep last 200 events max to avoid doc bloat
       events.push({key, ts: tsNow});
       if(events.length > 200) events.splice(0, events.length - 200);
-
       ref.set({
-        id:   String(currentUser.id),
-        name: currentUser.name||'',
-        team: currentUser.team||'',
-        date: today,
-        clicks,
-        events,
-        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+        id:String(currentUser.id),name:currentUser.name||'',team:currentUser.team||'',date:today,
+        clicks,events,lastUpdated:firebase.firestore.FieldValue.serverTimestamp()
       },{merge:true});
     }).catch(()=>{});
   }
@@ -4494,7 +5248,7 @@ function switchAdminTab(tab, btn){
   const adminBtn = document.getElementById('tab-admin');
   if(adminBtn) adminBtn.classList.add('active');
   // Show correct sub-section
-  ['overview','attendance','weekly','monthly','stats','profiles','coaching','monitoring','rebuttal','weekperf'].forEach(t=>{
+  ['overview','attendance','weekly','monthly','stats','profiles','coaching','monitoring','rebuttal','rebuttals','weekperf','targetboard','quotes'].forEach(t=>{
     const el=document.getElementById('admin-'+t);
     if(el) el.style.display = t===tab?'':'none';
     const b=document.getElementById('atab-'+t);
@@ -4508,6 +5262,7 @@ function switchAdminTab(tab, btn){
   if(tab==='coaching')    loadCoachingNotes();
   if(tab==='monitoring')  loadMonitoringNotes();
   if(tab==='rebuttal')    loadRebuttalIntel();
+  if(tab==='rebuttals')   loadRebuttalManager();
   if(tab==='weekperf')   loadWeeklyPerformance();
   if(tab==='stats'){
     rosterLoaded = false;
@@ -7285,7 +8040,7 @@ async function apLoadRebuttalUsage(id, name){
 }
 
 // ── REBUTTAL INTEL JS ──
-const REBUTTAL_LABELS = {
+let REBUTTAL_LABELS = {
   not_interested:'Not Interested', no_info:'Why No Info?', bad_credit:'Bad Credit',
   rate_question:'Interest Rate?', how_info:"How'd You Get My Info?", no_loan:"Don't Need a Loan",
   website:'Give Me the Website', spouse:'Need to Ask Spouse', no_ssn:"Won't Give SSN",
@@ -7300,7 +8055,7 @@ const REBUTTAL_LABELS = {
   pitch_softpull:'Pitch — Soft Pull / Privacy'
 };
 
-const CRITICAL_REBUTTALS = ['no_ssn','ssn_concerns','confidence_mindset','not_interested','wants_to_hangup'];
+let CRITICAL_REBUTTALS = ['no_ssn','ssn_concerns','confidence_mindset','not_interested','wants_to_hangup'];
 let riCurrentView = 'reps';
 let riAllData = [];
 
@@ -7760,50 +8515,30 @@ function riRenderSignals(){
 
 function searchRebuttals(val){
   const resultsEl=document.getElementById('search-results');
-  if(!val||val.trim().length<2){resultsEl.style.display='none';return;}
-  const q=val.toLowerCase();
-  const keywords={
-    'not interested':['not interested','dont want','not looking','no thanks','i pass','not right now','no interest'],
-    'no_info':['why do you have','how do you have','where did you get','no info','dont have my info','shouldnt have'],
-    'bad_credit':['bad credit','low credit','poor credit','credit score','my credit','credit is bad','credit sucks'],
-    'rate_question':['interest rate','what rate','how much interest','apr','percent','rate is','rates'],
-    'how_info':['how did you get','where did you get my','who gave you','how do you know','privacy','my information'],
-    'no_loan':['dont need a loan','dont need money','not looking for a loan','dont want a loan','no loan'],
-    'website':['website','web site','give me your site','where is your site','your url','located','where are you','address','location'],
-    'spouse':['ask my husband','ask my wife','ask my spouse','ask my partner','check with my','run it by my'],
-    'no_ssn':['social security','ssn','social number','my social','wont give my','not giving my ssn','dont want to give'],
-    'company_name':['what company','what business','who are you','which company','company name','name of the company','who is this'],
-    'who_are_we':['who are you','where are you located','where are you from','what company is this','who is calling','nationwide','which location','your location','what state are you in'],
-    'diff_numbers':['different numbers','calling from different','phone number','why different number','same number','your number'],
-    'lower_rate':['lower rate','my bank','bank rate','better rate','fixed rate','collateral'],
-    'voicemail_approved':['voicemail','already approved','said i was approved','pre approved message','got a voicemail'],
-    'dnc_file':['dnc','do not call','enrolled','bad lead','cancellation','potential cancellation'],
-    'llc_question':['llc','llp','limited liability','type of company','registered'],
-    'debt_consolidation':['debt consolidation','consolidate','consolidation','pay off debt','combine debt'],
-    'soft_pull':['soft pull','soft credit','affect my credit','hurt my credit','credit check','hard pull','hard inquiry'],
-    'private_lender':['what bank','which bank','broker','just connecting','private lender','lender name','bank name'],
-    'confidence_mindset':['confidence','mindset','believe in','unsure','feel confident','projecting','tone','uncertain','insecure about'],
-    'wants_to_hangup':['hang up','want to hang','going to hang','about to hang','dont want to talk','taking over','let me go','hanging up'],
-    'follow_up_pivot':['pivot','follow up','need your social','next step','how to ask','move forward','back to script'],
-    'ssn_concerns':['concerns about social','providing ssn','why social','lender match','why do you need','extended ssn','full ssn explanation'],
-    'pitch_benefit':['benefit pitch','sales pitch','pitch boost','how to pitch','what to say','value pitch','empathy pitch'],
-    'pitch_urgency':['urgency','no commitment','zero obligation','free consultation','window shopping','nothing to lose','qualify for'],
-    'pitch_softpull':['soft pull pitch','no website pitch','data privacy','bank level','privacy pitch','encryption pitch']
-  };
-  const matches=[];
-  for(const[key,phrases]of Object.entries(keywords)){
-    if(phrases.some(p=>p.includes(q)||q.includes(p.split(' ')[0]))){
-      const o=OBJ[key];if(o)matches.push({key,label:o.phase.replace('REBUTTAL \u2014 ','')});
-    }
+  const countEl=document.getElementById('rebuttal-result-count');
+  if(!resultsEl) return;
+  const q=String(val||'').trim();
+  if(!q){
+    resultsEl.style.display='none';
+    resultsEl.innerHTML='';
+    lastQuickRebuttalMatches=[];
+    if(countEl) countEl.textContent=rbGetActiveRebuttals().length+' results';
+    return;
   }
-  if(matches.length===0){
-    resultsEl.style.display='block';
-    resultsEl.innerHTML='<div style="padding:10px 14px;font-size:0.8rem;color:var(--muted);">No match found — try different words or pick from the list below.</div>';
-  }else{
-    resultsEl.style.display='block';
-    resultsEl.innerHTML='<div style="padding:6px 10px 3px;font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">POSSIBLE REBUTTALS:</div>'+
-    matches.map(m=>`<div onclick="loadObjection('${m.key}');document.getElementById('rebuttal-search').value='';document.getElementById('search-results').style.display='none';" style="padding:10px 14px;font-size:0.88rem;color:var(--text);cursor:pointer;border-top:1px solid var(--border);font-weight:600;transition:background 0.1s;" onmouseover="this.style.background='#141e34'" onmouseout="this.style.background=''">${m.label}</div>`).join('');
+  lastQuickRebuttalMatches=rbFindMatches(q,20);
+  if(countEl) countEl.textContent=lastQuickRebuttalMatches.length+' result'+(lastQuickRebuttalMatches.length===1?'':'s');
+  resultsEl.style.display='block';
+  if(!lastQuickRebuttalMatches.length){
+    resultsEl.innerHTML='<div style="padding:14px;color:var(--muted);font-size:.78rem;">No close match found. Try a different word.</div>';
+    return;
   }
+  resultsEl.innerHTML=lastQuickRebuttalMatches.map((match,index)=>{
+    const r=match.record;
+    return `<div class="rb-search-item ${index===0?'active':''}" onclick="loadObjection('${rbEscape(r.id)}');clearQuickRebuttal()">
+      <div class="rb-search-item-title">${rbEscape(r.label||r.phase||r.id)}</div>
+      <div class="rb-search-item-section">${rbEscape(rbSectionName(r.sectionId))}</div>
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════════════════════

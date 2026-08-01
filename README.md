@@ -1,17 +1,23 @@
-# BDS Dashboard — Firebase-Only Build
+# BDS Dashboard — Firebase Rebuttal Library
 
-Firebase/Firestore is the only database used by this website.
+This build keeps the existing dashboard and adds a fully Firebase-synchronized rebuttal system.
 
-## Firestore data
+## Firestore collections
 
-- `roster/{userId}` — agent profile, team, shift, lunch, break and status
-- `attendance/{userId}_{YYYY-MM-DD}` — one daily attendance document per agent
-- `sessions/{userId}_{YYYY-MM-DD}` — website login session information
-- `reports/{YYYY-MM-DD}` — uploaded performance reports
-- Existing Firestore collections for coaching, monitoring, targets, quotes, leads and settings remain unchanged
+- `rebuttal_sections` — section/category records shown in the Rebuttals page and Admin Rebuttal Manager.
+- `rebuttals` — all rebuttal content, search phrases, keywords, display order and active/critical settings.
+- `rebuttal_clicks` — existing agent usage tracking remains unchanged.
 
-Attendance is created when an agent signs in through the website. Repeated logins update the same daily Firestore attendance document and increment its login count. Admin attendance changes also write directly to the same Firestore document.
+On the first successful login, if the two rebuttal collections are empty, the built-in original rebuttals are copied into Firebase automatically. Existing edited Firebase records are not overwritten by the **Sync Original Rebuttals** button; it only restores missing originals.
 
-The Monthly Attendance page reads the selected month directly from Firestore in real time. Administrators can select a month and team, then export the displayed Firebase attendance as a CSV file. The CSV is generated in the browser and is not stored in another service.
+## Admin use
 
-Firebase Anonymous Authentication must remain enabled, and Firestore rules must allow authenticated dashboard users to access the required collections.
+Open **Admin Panel → Rebuttal Manager** to:
+
+- Add, rename or delete empty sections.
+- Add a rebuttal under any section.
+- Edit the button label, heading, customer phrases, search keywords, order, active status and critical status.
+- Edit the visible rebuttal content directly in the rich content area.
+- Add response blocks, duplicate or delete rebuttals.
+
+All changes are stored in Firestore and appear on open agent dashboards through real-time listeners.
