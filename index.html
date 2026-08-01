@@ -28,7 +28,7 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-01-rebuttal-smartmatch-r4';
+const APP_VERSION = '2026-08-01-rebuttal-library-r5';
 
 // Apply the saved appearance before the page paints to prevent a theme flash.
 (function applySavedThemeEarly(){
@@ -145,7 +145,7 @@ html[data-theme="light"] .theme-toggle{background:rgba(255,255,255,.92);color:#1
 @media(max-width:620px){.theme-toggle{top:8px;right:8px;padding:7px 9px}.theme-toggle-label{display:none}}
 
 /* Rebuttal details stay hidden until the agent searches or selects a result. */
-.rb-interaction-panel{display:none;}
+.rb-interaction-panel{display:block;}
 .rb-interaction-panel.revealed{display:block;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
@@ -2536,12 +2536,13 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
         </section>
       </div>
 
-      <div id="rebuttal-interaction-panel" class="rb-interaction-panel" aria-live="polite">
+      <div id="rebuttal-interaction-panel" class="rb-interaction-panel revealed" aria-live="polite">
         <div class="rb-library-status">
           <span id="rebuttal-library-status"><span class="rb-live-dot"></span>Connecting to Firebase rebuttal library...</span>
           <span id="rebuttal-library-updated"></span>
         </div>
         <div id="smart-match-feedback" class="rb-smart-feedback"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:4px 0 10px;">All Rebuttals · Click Any Answer</div>
         <div id="rebuttal-section-nav" class="rb-section-nav"></div>
         <div class="script-view rb-firebase-display" id="obj-display"></div>
       </div>
@@ -3579,6 +3580,7 @@ function rbFindMatches(query,limit=20){
 }
 
 function revealRebuttalInteractionPanel(){
+  // The full Firebase rebuttal library always remains visible at the bottom.
   const panel=document.getElementById('rebuttal-interaction-panel');
   if(panel) panel.classList.add('revealed');
 }
@@ -3607,8 +3609,9 @@ function rbRenderSmartFeedback(query,matches,thinking=false){
 }
 
 function hideRebuttalInteractionPanel(){
+  // Do not hide the library. Only clear the opened answer and Smart Match feedback.
   const panel=document.getElementById('rebuttal-interaction-panel');
-  if(panel) panel.classList.remove('revealed');
+  if(panel) panel.classList.add('revealed');
   const display=document.getElementById('obj-display');
   if(display) display.innerHTML='';
   const feedback=document.getElementById('smart-match-feedback');
@@ -3621,9 +3624,9 @@ function hideRebuttalInteractionPanel(){
 }
 
 function maybeHideRebuttalInteractionPanel(){
-  const smart=(document.getElementById('smart-rebuttal-input')?.value||'').trim();
-  const quick=(document.getElementById('rebuttal-search')?.value||'').trim();
-  if(!smart && !quick && !selectedObjectionKey) hideRebuttalInteractionPanel();
+  // The complete Firebase rebuttal library stays visible even when both searches are empty.
+  revealRebuttalInteractionPanel();
+  rbSetSectionNavVisible(true);
 }
 
 function smartRebuttalInput(value){
@@ -3643,7 +3646,7 @@ function smartRebuttalInput(value){
     return;
   }
   revealRebuttalInteractionPanel();
-  rbSetSectionNavVisible(false);
+  rbSetSectionNavVisible(true);
   if(selectedObjectionKey){
     selectedObjectionKey='';
     smartPreviewObjectionKey='';
@@ -3662,7 +3665,7 @@ function runSmartRebuttalMatch(force){
   const value=(input?.value||'').trim();
   if(!value) return;
   revealRebuttalInteractionPanel();
-  rbSetSectionNavVisible(false);
+  rbSetSectionNavVisible(true);
   lastSmartRebuttalMatches=rbFindMatches(value,5);
   rbRenderSmartFeedback(value,lastSmartRebuttalMatches,false);
   const top=lastSmartRebuttalMatches[0];

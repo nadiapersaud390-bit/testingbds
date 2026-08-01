@@ -21,3 +21,9 @@ Open **Admin Panel → Rebuttal Manager** to:
 - Add response blocks, duplicate or delete rebuttals.
 
 All changes are stored in Firestore and appear on open agent dashboards through real-time listeners.
+
+## Agent rebuttal screen behavior
+
+- The complete Firebase rebuttal library is always visible at the bottom and every rebuttal can be opened directly.
+- Smart Match begins scoring as the agent types, previews the closest answer, and keeps the full library visible.
+- Quick Search filters suggestions while the full sectioned library remains available.
