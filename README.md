@@ -68,3 +68,20 @@ Open **Admin Panel → Missing From Stats** while logged in as Rose.
 - Rose can review, mark inactive, reactivate, or archive and delete a flagged profile. Deletions are backed up in `deleted_agent_profiles`.
 
 Deploy version: `2026-08-02-rose-missing-stats-r11`
+
+## Rose archive manager and theme repair (r12)
+
+The Rose-only **Missing From Stats** area now includes two internal views: **Missing Profiles** and **Archive**.
+
+- Missing profiles can be selected individually, by visible page, or all matching filters.
+- Page size can be set to 10, 25, 50 or all profiles.
+- Bulk actions include **Mark Inactive** and **Archive Selected**.
+- Archiving writes a complete profile copy to `archived_agent_profiles/{agentId}` and removes only the live `roster/{agentId}` document.
+- Attendance, reports, coaching, rebuttal use and other history are not deleted.
+- The Archive view supports search, team filtering, pagination, multi-select, bulk restore and optional permanent deletion of archive copies.
+- Legacy backups in `deleted_agent_profiles` also appear in the Archive view and can be restored.
+- Archive, restore and permanent-delete actions are audited in `unused_profile_actions`.
+
+The light theme has broader coverage for the admin navigation, forms, tables, modal panels and remaining dark inline surfaces. Native date/month/select controls now switch their browser color scheme correctly.
+
+Deploy version: `2026-08-02-rose-archive-theme-r12`

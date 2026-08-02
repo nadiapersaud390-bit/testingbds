@@ -28,7 +28,7 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-02-rose-missing-stats-r11';
+const APP_VERSION = '2026-08-02-rose-archive-theme-r12';
 
 // Apply the saved appearance before the page paints to prevent a theme flash.
 (function applySavedThemeEarly(){
@@ -129,6 +129,84 @@ html[data-theme="light"] [style*="color:#cbd5e1"],
 html[data-theme="light"] [style*="color: #cbd5e1"],
 html[data-theme="light"] [style*="color:#e2e8f0"],
 html[data-theme="light"] [style*="color:#afbdd2"]{color:var(--text) !important;}
+
+
+/* ── R12: COMPLETE LIGHT THEME + ROSE ARCHIVE MANAGER ── */
+html,body,.main,.tab-page,.admin-section,.admin-card,.tz-card,.login-card,
+.rb-smart-card,.rbm-panel,.rbm-form-card,.script-view,.dsec,.modal-card,
+.rep-card,.stat-card,.leader-card,.tips-card,.agent-panel,.overlay-card{
+  transition:background-color .18s ease,color .18s ease,border-color .18s ease;
+}
+html[data-theme="light"] body,
+html[data-theme="light"] .main,
+html[data-theme="light"] #page-admin,
+html[data-theme="light"] .tab-page,
+html[data-theme="light"] .admin-section{background:var(--bg)!important;color:var(--text)!important;}
+html[data-theme="light"] [style*="background:#0"],
+html[data-theme="light"] [style*="background: #0"],
+html[data-theme="light"] [style*="background:#1"],
+html[data-theme="light"] [style*="background: #1"]{
+  background:var(--surface)!important;
+}
+html[data-theme="light"] [style*="border-bottom:2px solid #1"],
+html[data-theme="light"] [style*="border:1px solid #1"],
+html[data-theme="light"] [style*="border:1.5px solid #2"],
+html[data-theme="light"] [style*="border:2px solid #1"]{
+  border-color:var(--border)!important;
+}
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select{
+  background:#fff!important;color:#172033!important;border-color:#b8c5d8!important;
+  color-scheme:light!important;
+}
+html[data-theme="light"] option{background:#fff;color:#172033;}
+html[data-theme="light"] table{color:var(--text);}
+html[data-theme="light"] th{background:#e8eef7!important;color:#334155!important;border-color:#cbd5e1!important;}
+html[data-theme="light"] td{border-color:#d8e0eb!important;}
+html[data-theme="light"] tr:hover td{background:#f3f6fb;}
+html[data-theme="light"] .agent-panel,
+html[data-theme="light"] .modal-card,
+html[data-theme="light"] .login-card{background:#fff!important;color:var(--text)!important;}
+html[data-theme="light"] .adm-tab.active,
+html[data-theme="light"] .tab-btn.active,
+html[data-theme="light"] .admin-tab-btn.active{background:#e0e7ff!important;color:#3730a3!important;border-color:#818cf8!important;}
+html[data-theme="light"] code{background:#e8eef7;color:#334155;border-radius:5px;padding:1px 4px;}
+html[data-theme="light"] ::placeholder{color:#7c8ba1;opacity:1;}
+
+.rose-review-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.rose-view-tab{padding:8px 13px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:.8px;cursor:pointer;}
+.rose-view-tab.active{background:var(--purple-light);border-color:var(--purple);color:var(--purple);}
+.rose-tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;padding:1px 6px;margin-left:5px;border-radius:999px;background:rgba(148,163,184,.13);font-size:.62rem;}
+.rose-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.rose-filter-row input{flex:1;min-width:180px;}
+.rose-control{padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:.8rem;outline:none;}
+.rose-bulkbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:rgba(148,163,184,.045);}
+.rose-check-label{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;color:var(--text);font-weight:800;cursor:pointer;}
+.rose-check-label input,.rose-card-check{accent-color:var(--purple);width:16px;height:16px;cursor:pointer;}
+.rose-selected-count{font-size:.68rem;color:var(--purple);font-weight:900;margin-right:auto;}
+.rose-action{padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:.66rem;font-weight:900;cursor:pointer;}
+.rose-action:disabled{opacity:.42;cursor:not-allowed;}
+.rose-action.purple{border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.08);color:var(--purple);}
+.rose-action.green{border-color:rgba(52,211,153,.5);background:rgba(52,211,153,.08);color:var(--green);}
+.rose-action.red{border-color:rgba(248,113,113,.5);background:rgba(248,113,113,.08);color:var(--red);}
+.rose-action.gold{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.08);color:var(--gold);}
+.rose-profile-card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;background:var(--card);padding:12px 14px;}
+.rose-profile-card.selected{border-color:var(--purple);box-shadow:0 0 0 2px var(--purple-light);}
+.rose-profile-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+.rose-pagination{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.rose-page-info{font-size:.67rem;color:var(--muted);min-width:170px;text-align:center;}
+.rose-empty{text-align:center;color:var(--muted);padding:28px;border:1px dashed var(--border);border-radius:10px;}
+.rose-help{margin-top:14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(96,165,250,.05);font-size:.65rem;color:var(--muted);line-height:1.55;}
+html[data-theme="light"] .rose-bulkbar{background:#f8fafc;}
+html[data-theme="light"] .rose-profile-card{background:#fff;}
+html[data-theme="light"] .rose-profile-card.selected{background:#faf5ff;}
+html[data-theme="light"] .rose-help{background:#eff6ff;}
+@media(max-width:760px){
+  .rose-profile-card{grid-template-columns:auto minmax(0,1fr);}
+  .rose-profile-actions{grid-column:1/-1;justify-content:flex-start;padding-left:27px;}
+  .rose-selected-count{width:100%;margin-right:0;}
+}
 
 .theme-toggle{
   position:fixed;top:14px;right:14px;z-index:12000;
@@ -2250,61 +2328,122 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
         </div>
       </div>
     </div>
-    <!-- ── ROSE-ONLY AGENTS MISSING FROM UPLOADED STATS ── -->
+    <!-- ── ROSE-ONLY MISSING-STATS + ARCHIVE MANAGER ── -->
     <div id="admin-unused" class="admin-section" style="display:none;">
       <div class="admin-card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
           <div>
-            <div class="admin-card-title" style="margin-bottom:4px;font-size:0.92rem;">📉 AGENTS MISSING FROM STATS</div>
-            <div style="font-size:0.68rem;color:var(--muted);line-height:1.55;max-width:780px;">
-              Rose-only review. Every Agent Stats upload is saved in Firebase. This tab flags roster profiles whose name or agent ID has been missing from several consecutive uploaded reports.
+            <div class="admin-card-title" style="margin-bottom:4px;font-size:0.92rem;">📉 MISSING AGENT PROFILE REVIEW</div>
+            <div style="font-size:0.68rem;color:var(--muted);line-height:1.55;max-width:790px;">
+              Rose-only review. Profiles are flagged when their name or agent ID is missing from several consecutive Agent Stats uploads. Archived profiles are removed from the live roster but remain restorable in Firebase.
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span style="padding:5px 10px;border:1px solid rgba(244,114,182,0.4);border-radius:999px;background:rgba(244,114,182,0.09);color:#f9a8d4;font-size:0.62rem;font-weight:900;letter-spacing:1.4px;">ROSE ONLY</span>
-            <button type="button" onclick="roseRefreshUnusedProfiles()" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:0.76rem;font-weight:900;letter-spacing:1px;cursor:pointer;">↻ REFRESH</button>
+            <span style="padding:5px 10px;border:1px solid rgba(244,114,182,0.4);border-radius:999px;background:rgba(244,114,182,0.09);color:#db2777;font-size:0.62rem;font-weight:900;letter-spacing:1.4px;">ROSE ONLY</span>
+            <button type="button" class="rose-action" onclick="roseRefreshUnusedProfiles()">↻ REFRESH</button>
           </div>
         </div>
 
-        <div id="rose-unused-summary" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;">
-          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-total" style="color:var(--accent);">—</div><div class="rp-stat-lbl">Roster Profiles</div></div>
-          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-used" style="color:var(--green);">—</div><div class="rp-stat-lbl">In Latest Upload</div></div>
-          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-count" style="color:var(--gold);">—</div><div class="rp-stat-lbl">Flagged Missing</div></div>
-          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-inactive" style="color:var(--purple);">—</div><div class="rp-stat-lbl">Inactive Profiles</div></div>
+        <div class="rose-review-tabs">
+          <button id="rose-view-missing-btn" class="rose-view-tab active" type="button" onclick="roseSwitchProfileView('missing')">📉 MISSING PROFILES <span class="rose-tab-count" id="rose-missing-tab-count">0</span></button>
+          <button id="rose-view-archive-btn" class="rose-view-tab" type="button" onclick="roseSwitchProfileView('archive')">🗄️ ARCHIVE <span class="rose-tab-count" id="rose-archive-tab-count">0</span></button>
         </div>
 
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-          <input id="rose-unused-search" type="text" placeholder="🔍 Search name or agent ID..." oninput="roseRenderUnusedProfiles()"
-            style="flex:1;min-width:175px;padding:9px 13px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;">
-          <select id="rose-unused-threshold" onchange="roseBuildUnusedProfiles()"
-            style="padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;outline:none;">
-            <option value="2">Flag after 2 uploads</option>
-            <option value="3" selected>Flag after 3 uploads</option>
-            <option value="5">Flag after 5 uploads</option>
-            <option value="7">Flag after 7 uploads</option>
-            <option value="10">Flag after 10 uploads</option>
-          </select>
-          <select id="rose-unused-team" onchange="roseRenderUnusedProfiles()"
-            style="padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;outline:none;">
-            <option value="all">All Teams</option>
-            <option value="BB">🏠 Berbice</option>
-            <option value="PR">🌴 Providence</option>
-          </select>
-          <select id="rose-unused-status" onchange="roseRenderUnusedProfiles()"
-            style="padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;outline:none;">
-            <option value="all">All Statuses</option>
-            <option value="active">Active only</option>
-            <option value="inactive">Inactive only</option>
-          </select>
+        <div id="rose-missing-view">
+          <div id="rose-unused-summary" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;">
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-total" style="color:var(--accent);">—</div><div class="rp-stat-lbl">Roster Profiles</div></div>
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-used" style="color:var(--green);">—</div><div class="rp-stat-lbl">In Latest Upload</div></div>
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-count" style="color:var(--gold);">—</div><div class="rp-stat-lbl">Flagged Missing</div></div>
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-inactive" style="color:var(--purple);">—</div><div class="rp-stat-lbl">Inactive Profiles</div></div>
+          </div>
+
+          <div class="rose-filter-row">
+            <input id="rose-unused-search" class="rose-control" type="text" placeholder="🔍 Search name or agent ID..." oninput="roseMissingFilterChanged()">
+            <select id="rose-unused-threshold" class="rose-control" onchange="roseBuildUnusedProfiles()">
+              <option value="2">Flag after 2 uploads</option>
+              <option value="3" selected>Flag after 3 uploads</option>
+              <option value="5">Flag after 5 uploads</option>
+              <option value="7">Flag after 7 uploads</option>
+              <option value="10">Flag after 10 uploads</option>
+            </select>
+            <select id="rose-unused-team" class="rose-control" onchange="roseMissingFilterChanged()">
+              <option value="all">All Teams</option>
+              <option value="BB">🏠 Berbice</option>
+              <option value="PR">🌴 Providence</option>
+            </select>
+            <select id="rose-unused-status" class="rose-control" onchange="roseMissingFilterChanged()">
+              <option value="all">All Statuses</option>
+              <option value="active">Active only</option>
+              <option value="inactive">Inactive only</option>
+            </select>
+            <select id="rose-unused-page-size" class="rose-control" onchange="roseMissingPage=1;roseRenderUnusedProfiles()" aria-label="Profiles per page">
+              <option value="10">Show 10</option>
+              <option value="25" selected>Show 25</option>
+              <option value="50">Show 50</option>
+              <option value="all">Show all</option>
+            </select>
+          </div>
+
+          <div class="rose-bulkbar">
+            <label class="rose-check-label"><input id="rose-missing-select-page" type="checkbox" onchange="roseSelectMissingPage(this.checked)"> Select page</label>
+            <button type="button" class="rose-action" onclick="roseSelectAllMissingMatching()">SELECT ALL MATCHING</button>
+            <button type="button" class="rose-action" onclick="roseClearMissingSelection()">CLEAR</button>
+            <span class="rose-selected-count" id="rose-missing-selected-count">0 selected</span>
+            <button id="rose-missing-inactive-btn" type="button" class="rose-action gold" onclick="roseBulkSetMissingActive(false)" disabled>MARK INACTIVE</button>
+            <button id="rose-missing-archive-btn" type="button" class="rose-action purple" onclick="roseBulkArchiveSelected()" disabled>ARCHIVE SELECTED</button>
+          </div>
+
+          <div id="rose-unused-status-message" style="font-size:0.7rem;color:var(--muted);min-height:20px;margin-bottom:6px;" aria-live="polite"></div>
+          <div id="rose-unused-list" style="display:flex;flex-direction:column;gap:8px;">
+            <div class="rose-empty">Open this tab as Rose to compare the roster with Firebase stats uploads.</div>
+          </div>
+          <div id="rose-missing-pagination" class="rose-pagination"></div>
+
+          <div class="rose-help">
+            <strong style="color:var(--accent);">Archive:</strong> removes the profile from the live <code>roster</code> and stores a full copy in <code>archived_agent_profiles</code>. Attendance, reports, coaching and other historical records remain untouched. The profile can be restored at any time from the Archive section.
+          </div>
         </div>
 
-        <div id="rose-unused-status-message" style="font-size:0.7rem;color:var(--muted);min-height:20px;margin-bottom:6px;" aria-live="polite"></div>
-        <div id="rose-unused-list" style="display:flex;flex-direction:column;gap:8px;">
-          <div style="text-align:center;color:var(--muted);padding:26px;">Open this tab as Rose to compare the roster with Firebase stats uploads.</div>
-        </div>
+        <div id="rose-archive-view" style="display:none;">
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px;">
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-archive-total" style="color:var(--purple);">—</div><div class="rp-stat-lbl">Archived Profiles</div></div>
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-archive-bb" style="color:var(--accent);">—</div><div class="rp-stat-lbl">Berbice</div></div>
+            <div class="rp-stat"><div class="rp-stat-val" id="rose-archive-pr" style="color:var(--green);">—</div><div class="rp-stat-lbl">Providence</div></div>
+          </div>
 
-        <div style="margin-top:14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(96,165,250,0.05);font-size:0.65rem;color:var(--muted);line-height:1.55;">
-          <strong style="color:var(--accent);">How it works:</strong> a profile is flagged only after it is absent from the selected number of consecutive Agent Stats uploads. “Archive &amp; Delete” backs up the roster profile in <code>deleted_agent_profiles</code> before removing it from the live roster.
+          <div class="rose-filter-row">
+            <input id="rose-archive-search" class="rose-control" type="text" placeholder="🔍 Search archived name or agent ID..." oninput="roseArchiveFilterChanged()">
+            <select id="rose-archive-team" class="rose-control" onchange="roseArchiveFilterChanged()">
+              <option value="all">All Teams</option>
+              <option value="BB">🏠 Berbice</option>
+              <option value="PR">🌴 Providence</option>
+            </select>
+            <select id="rose-archive-page-size" class="rose-control" onchange="roseArchivePage=1;roseRenderArchiveProfiles()" aria-label="Archived profiles per page">
+              <option value="10">Show 10</option>
+              <option value="25" selected>Show 25</option>
+              <option value="50">Show 50</option>
+              <option value="all">Show all</option>
+            </select>
+          </div>
+
+          <div class="rose-bulkbar">
+            <label class="rose-check-label"><input id="rose-archive-select-page" type="checkbox" onchange="roseSelectArchivePage(this.checked)"> Select page</label>
+            <button type="button" class="rose-action" onclick="roseSelectAllArchiveMatching()">SELECT ALL MATCHING</button>
+            <button type="button" class="rose-action" onclick="roseClearArchiveSelection()">CLEAR</button>
+            <span class="rose-selected-count" id="rose-archive-selected-count">0 selected</span>
+            <button id="rose-archive-restore-btn" type="button" class="rose-action green" onclick="roseBulkRestoreSelected()" disabled>RESTORE SELECTED</button>
+            <button id="rose-archive-delete-btn" type="button" class="rose-action red" onclick="roseBulkDeleteArchivedSelected()" disabled>DELETE PERMANENTLY</button>
+          </div>
+
+          <div id="rose-archive-status-message" style="font-size:0.7rem;color:var(--muted);min-height:20px;margin-bottom:6px;" aria-live="polite"></div>
+          <div id="rose-archive-list" style="display:flex;flex-direction:column;gap:8px;">
+            <div class="rose-empty">Archived profiles will appear here.</div>
+          </div>
+          <div id="rose-archive-pagination" class="rose-pagination"></div>
+
+          <div class="rose-help">
+            <strong style="color:var(--purple);">Restore:</strong> puts the saved profile back into the live Firebase roster. <strong style="color:var(--red);">Delete permanently</strong> removes only the archived profile copy and cannot be undone; attendance and other historical collections are not deleted.
+          </div>
         </div>
       </div>
     </div>
@@ -5128,15 +5267,22 @@ function updateThemeToggle(){
 function setTheme(theme){
   const next=theme==='light'?'light':'dark';
   document.documentElement.setAttribute('data-theme',next);
+  if(document.body) document.body.setAttribute('data-theme',next);
+  document.documentElement.style.colorScheme=next;
+  document.querySelectorAll('input,textarea,select').forEach(el=>{ el.style.colorScheme=next; });
+  let meta=document.querySelector('meta[name=\"theme-color\"]');
+  if(!meta){ meta=document.createElement('meta'); meta.name='theme-color'; document.head.appendChild(meta); }
+  meta.content=next==='light'?'#eef3f9':'#060b18';
   try{localStorage.setItem('bds_theme',next);}catch(e){}
   updateThemeToggle();
+  window.dispatchEvent(new CustomEvent('bds-theme-change',{detail:{theme:next}}));
 }
 
 function toggleTheme(){
   setTheme(getCurrentTheme()==='dark'?'light':'dark');
 }
 
-window.addEventListener('DOMContentLoaded',updateThemeToggle);
+window.addEventListener('DOMContentLoaded',()=>{ setTheme(getCurrentTheme()); });
 
 window.addEventListener('load',()=>{ checkSession(); });
 
@@ -5907,14 +6053,20 @@ async function saveProfileEdits(){
 
 
 // ══════════════════════════════════════════════
-//  ROSE-ONLY MISSING-FROM-STATS PROFILE REVIEW
+//  ROSE-ONLY MISSING-STATS + RESTORABLE ARCHIVE MANAGER
 //  Compares the Firebase roster with consecutive Agent Stats uploads.
 // ══════════════════════════════════════════════
 let roseUnusedProfiles = [];
 let roseUnusedSummary = {total:0, used:0, unused:0, inactive:0};
+let roseArchivedProfiles = [];
 let roseUnusedUnsubs = [];
-let roseUnusedSnapshots = {roster:null, reports:null, presence:null};
+let roseUnusedSnapshots = {roster:null, reports:null, presence:null, archive:null, legacyArchive:null};
 let roseStatsReports = [];
+let roseCurrentProfileView = 'missing';
+let roseMissingSelected = new Set();
+let roseArchiveSelected = new Set();
+let roseMissingPage = 1;
+let roseArchivePage = 1;
 
 function isRoseAdmin(){
   return !!(currentUser && currentUser.isAdmin && normalizeAdminUsername(currentUser.username || '') === 'rose');
@@ -5968,11 +6120,34 @@ function roseSetStatus(message, type='normal'){
   el.style.color = type==='error' ? 'var(--red)' : type==='success' ? 'var(--green)' : 'var(--muted)';
 }
 
+function roseSetArchiveStatus(message, type='normal'){
+  const el = document.getElementById('rose-archive-status-message');
+  if(!el) return;
+  el.textContent = message || '';
+  el.style.color = type==='error' ? 'var(--red)' : type==='success' ? 'var(--green)' : 'var(--muted)';
+}
+
+function roseSwitchProfileView(view){
+  roseCurrentProfileView = view === 'archive' ? 'archive' : 'missing';
+  const missing = document.getElementById('rose-missing-view');
+  const archive = document.getElementById('rose-archive-view');
+  const missingBtn = document.getElementById('rose-view-missing-btn');
+  const archiveBtn = document.getElementById('rose-view-archive-btn');
+  if(missing) missing.style.display = roseCurrentProfileView === 'missing' ? '' : 'none';
+  if(archive) archive.style.display = roseCurrentProfileView === 'archive' ? '' : 'none';
+  if(missingBtn) missingBtn.classList.toggle('active', roseCurrentProfileView === 'missing');
+  if(archiveBtn) archiveBtn.classList.toggle('active', roseCurrentProfileView === 'archive');
+  if(roseCurrentProfileView === 'archive') roseRenderArchiveProfiles();
+  else roseRenderUnusedProfiles();
+}
+
 function stopRoseUnusedWatch(){
   roseUnusedUnsubs.forEach(unsub=>{ try{ unsub(); }catch(e){} });
   roseUnusedUnsubs = [];
-  roseUnusedSnapshots = {roster:null, reports:null, presence:null};
+  roseUnusedSnapshots = {roster:null, reports:null, presence:null, archive:null, legacyArchive:null};
   roseStatsReports = [];
+  roseMissingSelected.clear();
+  roseArchiveSelected.clear();
 }
 
 async function startRoseUnusedWatch(){
@@ -5980,19 +6155,24 @@ async function startRoseUnusedWatch(){
   if(roseUnusedUnsubs.length) return;
   await ensureFirebaseAuth();
   roseSetStatus('Connecting to Firebase roster and stats uploads...');
+  roseSetArchiveStatus('Connecting to Firebase archive...');
 
-  const watch = (key, collectionName) => db.collection(collectionName).onSnapshot(snapshot=>{
+  const watch = (key, collectionName, callback) => db.collection(collectionName).onSnapshot(snapshot=>{
     roseUnusedSnapshots[key] = snapshot;
-    roseBuildUnusedProfiles();
+    callback();
   }, error=>{
-    console.error('Rose stats-presence listener failed for '+collectionName, error);
-    roseSetStatus('Could not read '+collectionName+': '+(error.message||error), 'error');
+    console.error('Rose listener failed for '+collectionName, error);
+    const message = 'Could not read '+collectionName+': '+(error.message||error);
+    if(key==='archive' || key==='legacyArchive') roseSetArchiveStatus(message,'error');
+    else roseSetStatus(message,'error');
   });
 
   roseUnusedUnsubs = [
-    watch('roster','roster'),
-    watch('reports','reports'),
-    watch('presence','stats_presence')
+    watch('roster','roster',roseBuildUnusedProfiles),
+    watch('reports','reports',roseBuildUnusedProfiles),
+    watch('presence','stats_presence',roseBuildUnusedProfiles),
+    watch('archive','archived_agent_profiles',roseBuildArchivedProfiles),
+    watch('legacyArchive','deleted_agent_profiles',roseBuildArchivedProfiles)
   ];
 }
 
@@ -6029,14 +6209,7 @@ function roseBuildReportHistory(){
         if(id) ids.add(id);
         if(name) names.add(name);
       });
-      reportMap.set(date,{
-        date,
-        uploadedAt:data.uploadedAt || null,
-        filename:data.filename || '',
-        ids,
-        names,
-        source:'reports'
-      });
+      reportMap.set(date,{date,uploadedAt:data.uploadedAt||null,filename:data.filename||'',ids,names,source:'reports'});
     });
   }
 
@@ -6048,14 +6221,7 @@ function roseBuildReportHistory(){
       const ids = new Set((Array.isArray(data.agentIds)?data.agentIds:[]).map(v=>String(v).trim()).filter(Boolean));
       const names = new Set((Array.isArray(data.agentNames)?data.agentNames:[]).map(roseStatsNameKey).filter(Boolean));
       if(!ids.size && !names.size) return;
-      reportMap.set(date,{
-        date,
-        uploadedAt:data.uploadedAt || null,
-        filename:data.filename || '',
-        ids,
-        names,
-        source:'stats_presence'
-      });
+      reportMap.set(date,{date,uploadedAt:data.uploadedAt||null,filename:data.filename||'',ids,names,source:'stats_presence'});
     });
   }
 
@@ -6091,50 +6257,23 @@ function roseBuildUnusedProfiles(){
     if(!id || !name) return;
     const status = String(data.status || data.Status || 'Agent').trim();
     const inactive = data.inactive === true || status.toLowerCase()==='inactive';
-    const agent = {
-      id,
-      name,
-      ytelName:String(data.ytelName || data.ytelname || data['Ytel Name'] || '').trim(),
-      team:normalizeTeam(data.team || data.Team || 'BB'),
-      shift:String(data.shift || data.Shift || '').trim(),
-      status,
-      inactive,
-      raw:data
-    };
+    const agent = {id,name,ytelName:String(data.ytelName||data.ytelname||data['Ytel Name']||'').trim(),team:normalizeTeam(data.team||data.Team||'BB'),shift:String(data.shift||data.Shift||'').trim(),status,inactive,raw:data};
 
     let missingStreak = 0;
     let lastSeenReport = null;
     let seenCount = 0;
     roseStatsReports.forEach((report,index)=>{
       const seen = roseReportContainsAgent(report,agent);
-      if(seen){
-        seenCount++;
-        if(!lastSeenReport) lastSeenReport = report;
-      }
+      if(seen){ seenCount++; if(!lastSeenReport) lastSeenReport = report; }
       if(index===missingStreak && !seen && !lastSeenReport) missingStreak++;
     });
 
     const inLatest = roseStatsReports.length ? roseReportContainsAgent(roseStatsReports[0],agent) : false;
     const flagged = roseStatsReports.length >= threshold && missingStreak >= threshold;
-    all.push({
-      ...agent,
-      inLatest,
-      flagged,
-      missingStreak,
-      seenCount,
-      reportCount:roseStatsReports.length,
-      lastSeenDate:lastSeenReport ? lastSeenReport.date : '',
-      lastSeenUpload:lastSeenReport,
-      latestDate:roseStatsReports[0] ? roseStatsReports[0].date : ''
-    });
+    all.push({...agent,inLatest,flagged,missingStreak,seenCount,reportCount:roseStatsReports.length,lastSeenDate:lastSeenReport?lastSeenReport.date:'',lastSeenUpload:lastSeenReport,latestDate:roseStatsReports[0]?roseStatsReports[0].date:''});
   });
 
-  roseUnusedSummary = {
-    total:all.length,
-    used:all.filter(item=>item.inLatest).length,
-    unused:all.filter(item=>item.flagged).length,
-    inactive:all.filter(item=>item.inactive).length
-  };
+  roseUnusedSummary = {total:all.length,used:all.filter(item=>item.inLatest).length,unused:all.filter(item=>item.flagged).length,inactive:all.filter(item=>item.inactive).length};
   roseUnusedProfiles = all.filter(item=>item.flagged).sort((a,b)=>{
     if(a.lastSeenDate==='' && b.lastSeenDate!=='') return -1;
     if(a.lastSeenDate!=='' && b.lastSeenDate==='') return 1;
@@ -6142,190 +6281,326 @@ function roseBuildUnusedProfiles(){
     return a.name.localeCompare(b.name);
   });
 
-  const totalEl=document.getElementById('rose-unused-total');
-  const usedEl=document.getElementById('rose-unused-used');
-  const unusedEl=document.getElementById('rose-unused-count');
-  const inactiveEl=document.getElementById('rose-unused-inactive');
-  if(totalEl) totalEl.textContent=roseUnusedSummary.total;
-  if(usedEl) usedEl.textContent=roseUnusedSummary.used;
-  if(unusedEl) unusedEl.textContent=roseUnusedSummary.unused;
-  if(inactiveEl) inactiveEl.textContent=roseUnusedSummary.inactive;
+  for(const id of [...roseMissingSelected]) if(!roseUnusedProfiles.some(item=>item.id===id)) roseMissingSelected.delete(id);
+  const values = [['rose-unused-total',roseUnusedSummary.total],['rose-unused-used',roseUnusedSummary.used],['rose-unused-count',roseUnusedSummary.unused],['rose-unused-inactive',roseUnusedSummary.inactive],['rose-missing-tab-count',roseUnusedSummary.unused]];
+  values.forEach(([id,value])=>{ const el=document.getElementById(id); if(el) el.textContent=value; });
 
-  if(!roseStatsReports.length){
-    roseSetStatus('No Agent Stats uploads were found in Firebase. Upload a CSV in Agent Stats first.', 'error');
-  }else if(roseStatsReports.length < threshold){
-    roseSetStatus(`Only ${roseStatsReports.length} stats upload${roseStatsReports.length===1?' is':'s are'} available. At least ${threshold} are needed before profiles are flagged.`);
-  }else{
-    roseSetStatus(`Latest upload: ${roseStatsReports[0].date} · ${roseUnusedSummary.unused} profile${roseUnusedSummary.unused===1?' is':'s are'} missing from ${threshold}+ consecutive uploads.`, 'success');
-  }
+  if(!roseStatsReports.length) roseSetStatus('No Agent Stats uploads were found in Firebase. Upload a CSV in Agent Stats first.','error');
+  else if(roseStatsReports.length < threshold) roseSetStatus(`Only ${roseStatsReports.length} stats upload${roseStatsReports.length===1?' is':'s are'} available. At least ${threshold} are needed before profiles are flagged.`);
+  else roseSetStatus(`Latest upload: ${roseStatsReports[0].date} · ${roseUnusedSummary.unused} profile${roseUnusedSummary.unused===1?' is':'s are'} missing from ${threshold}+ consecutive uploads.`,'success');
   roseRenderUnusedProfiles();
 }
 
-function roseRenderUnusedProfiles(){
-  const container = document.getElementById('rose-unused-list');
-  if(!container) return;
-  if(!isRoseAdmin()){
-    container.innerHTML='<div style="text-align:center;color:var(--red);padding:24px;">Rose administrator access is required.</div>';
-    return;
-  }
+function roseArchiveRecordFromDoc(doc, sourceCollection){
+  const data = doc.data() || {};
+  const profile = data.profile && typeof data.profile==='object' ? data.profile : {};
+  const agentId = String(data.agentId || profile.userId || profile.userid || profile.id || '').trim();
+  if(!agentId) return null;
+  const name = String(data.agentName || profile.name || profile.Name || 'Unknown Agent').trim();
+  const archivedAt = data.archivedAt || data.deletedAt || data.createdAt || null;
+  return {
+    key:sourceCollection+':'+doc.id,
+    sourceCollection,
+    archiveDocId:doc.id,
+    agentId,
+    name,
+    team:normalizeTeam(profile.team || profile.Team || data.team || 'BB'),
+    status:String(profile.status || profile.Status || 'Agent'),
+    inactive:profile.inactive===true || String(profile.status||'').toLowerCase()==='inactive',
+    ytelName:String(profile.ytelName || profile.ytelname || '').trim(),
+    shift:String(profile.shift || profile.Shift || '').trim(),
+    profile,
+    archivedAt,
+    archivedBy:String(data.archivedBy || data.deletedBy || 'rose'),
+    reason:String(data.reason || 'Archived profile'),
+    missingStatsUploads:Number(data.missingStatsUploads || 0),
+    lastSeenStatsDate:data.lastSeenStatsDate || null,
+    legacy:sourceCollection==='deleted_agent_profiles'
+  };
+}
 
-  const search = String((document.getElementById('rose-unused-search')||{}).value || '').toLowerCase().trim();
-  const team = String((document.getElementById('rose-unused-team')||{}).value || 'all');
-  const status = String((document.getElementById('rose-unused-status')||{}).value || 'all');
-  const filtered = roseUnusedProfiles.filter(item=>{
+function roseBuildArchivedProfiles(){
+  if(!isRoseAdmin()) return;
+  const map = new Map();
+  const addSnapshot = (snapshot, source)=>{
+    if(!snapshot) return;
+    snapshot.forEach(doc=>{
+      const item = roseArchiveRecordFromDoc(doc,source);
+      if(!item) return;
+      const previous = map.get(item.agentId);
+      if(!previous || source==='archived_agent_profiles' || roseTimestampMillis(item.archivedAt)>roseTimestampMillis(previous.archivedAt)) map.set(item.agentId,item);
+    });
+  };
+  addSnapshot(roseUnusedSnapshots.legacyArchive,'deleted_agent_profiles');
+  addSnapshot(roseUnusedSnapshots.archive,'archived_agent_profiles');
+  roseArchivedProfiles = [...map.values()].sort((a,b)=>roseTimestampMillis(b.archivedAt)-roseTimestampMillis(a.archivedAt) || a.name.localeCompare(b.name));
+  for(const key of [...roseArchiveSelected]) if(!roseArchivedProfiles.some(item=>item.key===key)) roseArchiveSelected.delete(key);
+  const total=document.getElementById('rose-archive-total');
+  const bb=document.getElementById('rose-archive-bb');
+  const pr=document.getElementById('rose-archive-pr');
+  const tab=document.getElementById('rose-archive-tab-count');
+  if(total) total.textContent=roseArchivedProfiles.length;
+  if(bb) bb.textContent=roseArchivedProfiles.filter(item=>item.team==='BB').length;
+  if(pr) pr.textContent=roseArchivedProfiles.filter(item=>item.team==='PR').length;
+  if(tab) tab.textContent=roseArchivedProfiles.length;
+  roseSetArchiveStatus(roseArchivedProfiles.length ? `${roseArchivedProfiles.length} archived profile${roseArchivedProfiles.length===1?' is':'s are'} available to restore.` : 'No archived profiles.','success');
+  roseRenderArchiveProfiles();
+}
+
+function rosePageSize(id){
+  const value=String((document.getElementById(id)||{}).value||'25');
+  return value==='all' ? Number.POSITIVE_INFINITY : Math.max(1,Number(value)||25);
+}
+
+function rosePaginate(items,page,size){
+  if(!Number.isFinite(size)) return {page:1,totalPages:1,start:0,end:items.length,rows:items};
+  const totalPages=Math.max(1,Math.ceil(items.length/size));
+  const safePage=Math.min(Math.max(1,page),totalPages);
+  const start=(safePage-1)*size;
+  return {page:safePage,totalPages,start,end:Math.min(start+size,items.length),rows:items.slice(start,start+size)};
+}
+
+function roseGetFilteredMissing(){
+  const search=String((document.getElementById('rose-unused-search')||{}).value||'').toLowerCase().trim();
+  const team=String((document.getElementById('rose-unused-team')||{}).value||'all');
+  const status=String((document.getElementById('rose-unused-status')||{}).value||'all');
+  return roseUnusedProfiles.filter(item=>{
     if(team!=='all' && item.team!==team) return false;
     if(status==='active' && item.inactive) return false;
     if(status==='inactive' && !item.inactive) return false;
     if(search && !(`${item.name} ${item.id} ${item.ytelName}`.toLowerCase().includes(search))) return false;
     return true;
   });
+}
 
-  if(!roseStatsReports.length){
-    container.innerHTML='<div style="text-align:center;color:var(--muted);padding:28px;border:1px dashed var(--border);border-radius:10px;">No uploaded Agent Stats reports are available yet.</div>';
-    return;
-  }
-  if(!filtered.length){
-    container.innerHTML='<div style="text-align:center;color:var(--muted);padding:28px;border:1px dashed var(--border);border-radius:10px;">No profiles have been missing long enough to match these settings.</div>';
-    return;
-  }
+function roseGetFilteredArchive(){
+  const search=String((document.getElementById('rose-archive-search')||{}).value||'').toLowerCase().trim();
+  const team=String((document.getElementById('rose-archive-team')||{}).value||'all');
+  return roseArchivedProfiles.filter(item=>{
+    if(team!=='all' && item.team!==team) return false;
+    if(search && !(`${item.name} ${item.agentId} ${item.ytelName}`.toLowerCase().includes(search))) return false;
+    return true;
+  });
+}
 
-  container.innerHTML = filtered.map(item=>{
-    const teamColor = item.team==='PR' ? 'var(--purple)' : 'var(--accent)';
-    const lastSeen = item.lastSeenDate ? roseFormatDateOnly(item.lastSeenDate) : 'Never found in saved stats';
-    const latest = item.latestDate ? roseFormatDateOnly(item.latestDate) : 'Unknown';
-    return `<div style="border:1px solid var(--border);border-radius:12px;background:var(--card);padding:12px 14px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
-        <div style="min-width:220px;flex:1;">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
-            <span style="font-size:0.62rem;font-weight:900;color:${teamColor};">${roseEscape(item.team)}</span>
-            <strong style="font-size:0.9rem;color:var(--text);">${roseEscape(item.name)}</strong>
-            <span style="font-size:0.58rem;padding:3px 7px;border-radius:999px;border:1px solid ${item.inactive?'rgba(167,139,250,0.45)':'rgba(251,191,36,0.45)'};color:${item.inactive?'var(--purple)':'var(--gold)'};">${item.inactive?'INACTIVE':'ACTIVE'}</span>
-          </div>
-          <div style="font-size:0.66rem;color:var(--muted);line-height:1.55;">
-            ID: <strong style="color:var(--text);">${roseEscape(item.id)}</strong>
-            ${item.ytelName?' · '+roseEscape(item.ytelName):''}
-            ${item.shift?' · Shift '+roseEscape(item.shift):''}
-          </div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;">
-            <span style="font-size:0.6rem;padding:4px 7px;border-radius:7px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:var(--gold);">Missing ${item.missingStreak} consecutive upload${item.missingStreak===1?'':'s'}</span>
-            <span style="font-size:0.6rem;padding:4px 7px;border-radius:7px;background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.25);color:var(--accent);">Last seen: ${roseEscape(lastSeen)}</span>
-            <span style="font-size:0.6rem;padding:4px 7px;border-radius:7px;background:rgba(148,163,184,0.06);border:1px solid var(--border);color:var(--muted);">Seen in ${item.seenCount}/${item.reportCount} uploads</span>
-          </div>
-          <div style="font-size:0.61rem;color:var(--muted);margin-top:7px;">Latest saved stats upload: ${roseEscape(latest)}</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
-          <button type="button" onclick="roseOpenUnusedProfile('${roseEscape(item.id)}')" style="padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.66rem;font-weight:800;cursor:pointer;">VIEW</button>
-          <button type="button" onclick="roseSetUnusedProfileActive('${roseEscape(item.id)}',${item.inactive?'true':'false'})" style="padding:7px 10px;border-radius:7px;border:1px solid ${item.inactive?'rgba(52,211,153,0.45)':'rgba(167,139,250,0.45)'};background:${item.inactive?'rgba(52,211,153,0.08)':'rgba(167,139,250,0.08)'};color:${item.inactive?'var(--green)':'var(--purple)'};font-size:0.66rem;font-weight:900;cursor:pointer;">${item.inactive?'REACTIVATE':'MARK INACTIVE'}</button>
-          <button type="button" onclick="roseDeleteUnusedProfile('${roseEscape(item.id)}')" style="padding:7px 10px;border-radius:7px;border:1px solid rgba(248,113,113,0.5);background:rgba(248,113,113,0.08);color:var(--red);font-size:0.66rem;font-weight:900;cursor:pointer;">ARCHIVE &amp; DELETE</button>
-        </div>
+function roseMissingFilterChanged(){ roseMissingPage=1; roseRenderUnusedProfiles(); }
+function roseArchiveFilterChanged(){ roseArchivePage=1; roseRenderArchiveProfiles(); }
+
+function roseRenderPagination(containerId,paged,total,kind){
+  const el=document.getElementById(containerId); if(!el) return;
+  if(!total){ el.innerHTML=''; return; }
+  const first=paged.start+1, last=paged.end;
+  el.innerHTML=`<button type="button" class="rose-action" ${paged.page<=1?'disabled':''} onclick="${kind==='missing'?'roseGoMissingPage(-1)':'roseGoArchivePage(-1)'}">← PREVIOUS</button><span class="rose-page-info">Showing ${first}–${last} of ${total} · Page ${paged.page}/${paged.totalPages}</span><button type="button" class="rose-action" ${paged.page>=paged.totalPages?'disabled':''} onclick="${kind==='missing'?'roseGoMissingPage(1)':'roseGoArchivePage(1)'}">NEXT →</button>`;
+}
+function roseGoMissingPage(delta){ roseMissingPage=Math.max(1,roseMissingPage+delta); roseRenderUnusedProfiles(); }
+function roseGoArchivePage(delta){ roseArchivePage=Math.max(1,roseArchivePage+delta); roseRenderArchiveProfiles(); }
+
+function roseRenderUnusedProfiles(){
+  const container=document.getElementById('rose-unused-list'); if(!container) return;
+  if(!isRoseAdmin()){ container.innerHTML='<div class="rose-empty" style="color:var(--red);">Rose administrator access is required.</div>'; return; }
+  const filtered=roseGetFilteredMissing();
+  const paged=rosePaginate(filtered,roseMissingPage,rosePageSize('rose-unused-page-size'));
+  roseMissingPage=paged.page;
+
+  if(!roseStatsReports.length) container.innerHTML='<div class="rose-empty">No uploaded Agent Stats reports are available yet.</div>';
+  else if(!filtered.length) container.innerHTML='<div class="rose-empty">No profiles have been missing long enough to match these settings.</div>';
+  else container.innerHTML=paged.rows.map(item=>{
+    const checked=roseMissingSelected.has(item.id);
+    const teamColor=item.team==='PR'?'var(--purple)':'var(--accent)';
+    const lastSeen=item.lastSeenDate?roseFormatDateOnly(item.lastSeenDate):'Never found in saved stats';
+    const latest=item.latestDate?roseFormatDateOnly(item.latestDate):'Unknown';
+    return `<div class="rose-profile-card ${checked?'selected':''}">
+      <input class="rose-card-check" type="checkbox" ${checked?'checked':''} aria-label="Select ${roseEscape(item.name)}" onchange="roseToggleMissingSelection('${roseEscape(item.id)}',this.checked)">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;"><span style="font-size:.62rem;font-weight:900;color:${teamColor};">${roseEscape(item.team)}</span><strong style="font-size:.9rem;color:var(--text);">${roseEscape(item.name)}</strong><span style="font-size:.58rem;padding:3px 7px;border-radius:999px;border:1px solid ${item.inactive?'rgba(167,139,250,.45)':'rgba(251,191,36,.45)'};color:${item.inactive?'var(--purple)':'var(--gold)'};">${item.inactive?'INACTIVE':'ACTIVE'}</span></div>
+        <div style="font-size:.66rem;color:var(--muted);line-height:1.55;">ID: <strong style="color:var(--text);">${roseEscape(item.id)}</strong>${item.ytelName?' · '+roseEscape(item.ytelName):''}${item.shift?' · Shift '+roseEscape(item.shift):''}</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;"><span style="font-size:.6rem;padding:4px 7px;border-radius:7px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);color:var(--gold);">Missing ${item.missingStreak} consecutive upload${item.missingStreak===1?'':'s'}</span><span style="font-size:.6rem;padding:4px 7px;border-radius:7px;background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.25);color:var(--accent);">Last seen: ${roseEscape(lastSeen)}</span><span style="font-size:.6rem;padding:4px 7px;border-radius:7px;background:rgba(148,163,184,.06);border:1px solid var(--border);color:var(--muted);">Seen in ${item.seenCount}/${item.reportCount} uploads</span></div>
+        <div style="font-size:.61rem;color:var(--muted);margin-top:7px;">Latest saved stats upload: ${roseEscape(latest)}</div>
       </div>
+      <div class="rose-profile-actions"><button type="button" class="rose-action" onclick="roseOpenUnusedProfile('${roseEscape(item.id)}')">VIEW</button><button type="button" class="rose-action ${item.inactive?'green':'gold'}" onclick="roseSetUnusedProfileActive('${roseEscape(item.id)}',${item.inactive?'true':'false'})">${item.inactive?'REACTIVATE':'MARK INACTIVE'}</button><button type="button" class="rose-action purple" onclick="roseArchiveUnusedProfile('${roseEscape(item.id)}')">ARCHIVE</button></div>
     </div>`;
   }).join('');
+  roseRenderPagination('rose-missing-pagination',paged,filtered.length,'missing');
+  roseUpdateMissingSelectionUI(paged.rows);
+}
+
+function roseRenderArchiveProfiles(){
+  const container=document.getElementById('rose-archive-list'); if(!container) return;
+  if(!isRoseAdmin()){ container.innerHTML='<div class="rose-empty" style="color:var(--red);">Rose administrator access is required.</div>'; return; }
+  const filtered=roseGetFilteredArchive();
+  const paged=rosePaginate(filtered,roseArchivePage,rosePageSize('rose-archive-page-size'));
+  roseArchivePage=paged.page;
+  if(!filtered.length) container.innerHTML='<div class="rose-empty">No archived profiles match these settings.</div>';
+  else container.innerHTML=paged.rows.map(item=>{
+    const checked=roseArchiveSelected.has(item.key);
+    const teamColor=item.team==='PR'?'var(--purple)':'var(--accent)';
+    const archived=roseFormatDateOnly(item.archivedAt);
+    return `<div class="rose-profile-card ${checked?'selected':''}">
+      <input class="rose-card-check" type="checkbox" ${checked?'checked':''} aria-label="Select archived ${roseEscape(item.name)}" onchange="roseToggleArchiveSelection('${roseEscape(item.key)}',this.checked)">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;"><span style="font-size:.62rem;font-weight:900;color:${teamColor};">${roseEscape(item.team)}</span><strong style="font-size:.9rem;color:var(--text);">${roseEscape(item.name)}</strong>${item.legacy?'<span style="font-size:.56rem;color:var(--gold);">LEGACY ARCHIVE</span>':''}</div>
+        <div style="font-size:.66rem;color:var(--muted);line-height:1.55;">ID: <strong style="color:var(--text);">${roseEscape(item.agentId)}</strong>${item.ytelName?' · '+roseEscape(item.ytelName):''}${item.shift?' · Shift '+roseEscape(item.shift):''}</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;"><span style="font-size:.6rem;padding:4px 7px;border-radius:7px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3);color:var(--purple);">Archived: ${roseEscape(archived)}</span>${item.missingStatsUploads?`<span style="font-size:.6rem;padding:4px 7px;border-radius:7px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);color:var(--gold);">Missing ${item.missingStatsUploads} uploads</span>`:''}<span style="font-size:.6rem;padding:4px 7px;border-radius:7px;border:1px solid var(--border);color:var(--muted);">${roseEscape(item.reason)}</span></div>
+      </div>
+      <div class="rose-profile-actions"><button type="button" class="rose-action green" onclick="roseRestoreArchivedProfiles(['${roseEscape(item.key)}'])">RESTORE</button><button type="button" class="rose-action red" onclick="roseDeleteArchivedProfiles(['${roseEscape(item.key)}'])">DELETE PERMANENTLY</button></div>
+    </div>`;
+  }).join('');
+  roseRenderPagination('rose-archive-pagination',paged,filtered.length,'archive');
+  roseUpdateArchiveSelectionUI(paged.rows);
+}
+
+function roseToggleMissingSelection(id,checked){ if(checked) roseMissingSelected.add(String(id)); else roseMissingSelected.delete(String(id)); roseRenderUnusedProfiles(); }
+function roseToggleArchiveSelection(key,checked){ if(checked) roseArchiveSelected.add(String(key)); else roseArchiveSelected.delete(String(key)); roseRenderArchiveProfiles(); }
+function roseSelectMissingPage(checked){ const paged=rosePaginate(roseGetFilteredMissing(),roseMissingPage,rosePageSize('rose-unused-page-size')); paged.rows.forEach(item=>checked?roseMissingSelected.add(item.id):roseMissingSelected.delete(item.id)); roseRenderUnusedProfiles(); }
+function roseSelectArchivePage(checked){ const paged=rosePaginate(roseGetFilteredArchive(),roseArchivePage,rosePageSize('rose-archive-page-size')); paged.rows.forEach(item=>checked?roseArchiveSelected.add(item.key):roseArchiveSelected.delete(item.key)); roseRenderArchiveProfiles(); }
+function roseSelectAllMissingMatching(){ roseGetFilteredMissing().forEach(item=>roseMissingSelected.add(item.id)); roseRenderUnusedProfiles(); }
+function roseSelectAllArchiveMatching(){ roseGetFilteredArchive().forEach(item=>roseArchiveSelected.add(item.key)); roseRenderArchiveProfiles(); }
+function roseClearMissingSelection(){ roseMissingSelected.clear(); roseRenderUnusedProfiles(); }
+function roseClearArchiveSelection(){ roseArchiveSelected.clear(); roseRenderArchiveProfiles(); }
+
+function roseUpdateMissingSelectionUI(pageRows=[]){
+  const count=roseMissingSelected.size;
+  const countEl=document.getElementById('rose-missing-selected-count'); if(countEl) countEl.textContent=`${count} selected`;
+  ['rose-missing-inactive-btn','rose-missing-archive-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=!count;});
+  const page=document.getElementById('rose-missing-select-page'); if(page){const selected=pageRows.filter(item=>roseMissingSelected.has(item.id)).length;page.checked=!!pageRows.length&&selected===pageRows.length;page.indeterminate=selected>0&&selected<pageRows.length;}
+}
+function roseUpdateArchiveSelectionUI(pageRows=[]){
+  const count=roseArchiveSelected.size;
+  const countEl=document.getElementById('rose-archive-selected-count'); if(countEl) countEl.textContent=`${count} selected`;
+  ['rose-archive-restore-btn','rose-archive-delete-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=!count;});
+  const page=document.getElementById('rose-archive-select-page'); if(page){const selected=pageRows.filter(item=>roseArchiveSelected.has(item.key)).length;page.checked=!!pageRows.length&&selected===pageRows.length;page.indeterminate=selected>0&&selected<pageRows.length;}
 }
 
 async function loadRoseUnusedProfiles(){
-  if(!isRoseAdmin()){
-    roseSetStatus('Rose administrator access is required.', 'error');
-    return;
-  }
+  if(!isRoseAdmin()){ roseSetStatus('Rose administrator access is required.','error'); return; }
   applyRoseOnlyAdminUI();
-  const list=document.getElementById('rose-unused-list');
-  if(list) list.innerHTML='<div style="text-align:center;color:var(--muted);padding:28px;">Comparing Firebase roster with stats uploads...</div>';
-  try{
-    await startRoseUnusedWatch();
-  }catch(error){
-    roseSetStatus('Firebase scan failed: '+(error.message||error), 'error');
-  }
+  const list=document.getElementById('rose-unused-list'); if(list) list.innerHTML='<div class="rose-empty">Comparing Firebase roster with stats uploads...</div>';
+  try{ await startRoseUnusedWatch(); }catch(error){ roseSetStatus('Firebase scan failed: '+(error.message||error),'error'); }
 }
 
 function roseRefreshUnusedProfiles(){
   if(!isRoseAdmin()) return;
   stopRoseUnusedWatch();
-  roseUnusedProfiles=[];
+  roseUnusedProfiles=[]; roseArchivedProfiles=[]; roseMissingPage=1; roseArchivePage=1;
   loadRoseUnusedProfiles();
 }
 
 function roseOpenUnusedProfile(id){
   const item=roseUnusedProfiles.find(row=>row.id===String(id));
-  if(!item) return;
-  openRepProfile(item.id,item.name,item.team,item.shift||'');
+  if(item) openRepProfile(item.id,item.name,item.team,item.shift||'');
 }
 
-async function roseSetUnusedProfileActive(id, currentlyInactive){
+async function roseCommitBatches(operations,chunkSize=140){
+  for(let i=0;i<operations.length;i+=chunkSize){
+    const batch=db.batch();
+    operations.slice(i,i+chunkSize).forEach(operation=>operation(batch));
+    await batch.commit();
+  }
+}
+
+async function roseSetProfilesActive(ids,makeActive){
   if(!isRoseAdmin()) return alert('Rose administrator access is required.');
-  const item=roseUnusedProfiles.find(row=>row.id===String(id));
-  if(!item) return alert('Refresh the list and try again.');
-  const makeActive=!!currentlyInactive;
+  const unique=[...new Set(ids.map(String))];
+  const items=unique.map(id=>roseUnusedProfiles.find(row=>row.id===id)).filter(Boolean);
+  if(!items.length) return alert('No matching profiles were selected.');
   const action=makeActive?'reactivate':'mark inactive';
-  if(!confirm(`${action.charAt(0).toUpperCase()+action.slice(1)} ${item.name} (ID ${item.id})?`)) return;
+  if(!confirm(`${action.charAt(0).toUpperCase()+action.slice(1)} ${items.length} selected profile${items.length===1?'':'s'}?`)) return;
   try{
     await ensureFirebaseAuth();
     const now=firebase.firestore.FieldValue.serverTimestamp();
-    const batch=db.batch();
-    batch.set(db.collection('roster').doc(item.id),{
-      status:makeActive?'Agent':'Inactive',
-      inactive:!makeActive,
-      updatedAt:now,
-      missingStatsReviewedBy:'rose',
-      missingStatsReviewedAt:now
-    },{merge:true});
-    batch.set(db.collection('unused_profile_actions').doc(),{
-      agentId:item.id, agentName:item.name,
-      action:makeActive?'reactivated':'marked_inactive',
-      performedBy:'rose', performedAt:now,
-      reason:`Missing from ${item.missingStreak} consecutive Agent Stats uploads`
+    const ops=[];
+    items.forEach(item=>{
+      ops.push(batch=>batch.set(db.collection('roster').doc(item.id),{status:makeActive?'Agent':'Inactive',inactive:!makeActive,updatedAt:now,missingStatsReviewedBy:'rose',missingStatsReviewedAt:now},{merge:true}));
+      ops.push(batch=>batch.set(db.collection('unused_profile_actions').doc(),{agentId:item.id,agentName:item.name,action:makeActive?'reactivated':'marked_inactive',performedBy:'rose',performedAt:now,reason:`Missing from ${item.missingStreak} consecutive Agent Stats uploads`}));
     });
-    await batch.commit();
-    roseSetStatus(`✅ ${item.name} was ${makeActive?'reactivated':'marked inactive'} in Firebase.`, 'success');
-  }catch(error){
-    roseSetStatus('Could not update profile: '+(error.message||error), 'error');
-  }
+    await roseCommitBatches(ops);
+    roseSetStatus(`✅ ${items.length} profile${items.length===1?' was':'s were'} ${makeActive?'reactivated':'marked inactive'}.`,'success');
+    roseMissingSelected.clear();
+  }catch(error){ roseSetStatus('Could not update profiles: '+(error.message||error),'error'); }
 }
 
-async function roseDeleteUnusedProfile(id){
+function roseSetUnusedProfileActive(id,currentlyInactive){ return roseSetProfilesActive([id],!!currentlyInactive); }
+function roseBulkSetMissingActive(makeActive){ return roseSetProfilesActive([...roseMissingSelected],makeActive); }
+
+async function roseArchiveProfiles(ids){
   if(!isRoseAdmin()) return alert('Rose administrator access is required.');
-  const item=roseUnusedProfiles.find(row=>row.id===String(id));
-  if(!item) return alert('This profile is no longer in the missing-stats list. Refresh and try again.');
-  if(!confirm(`Archive and delete ${item.name} (ID ${item.id}) from the live roster?\n\nThe profile has been missing from ${item.missingStreak} consecutive stats uploads. Attendance and report history will remain in Firebase.`)) return;
-  const typed=prompt(`Type the agent ID ${item.id} to confirm deletion:`,'');
-  if(String(typed||'').trim()!==item.id) return alert('Deletion cancelled because the ID did not match.');
-
+  const unique=[...new Set(ids.map(String))];
+  const items=unique.map(id=>roseUnusedProfiles.find(row=>row.id===id)).filter(Boolean);
+  if(!items.length) return alert('No matching missing profiles were selected.');
+  if(!confirm(`Archive ${items.length} profile${items.length===1?'':'s'}?\n\nThey will be removed from the live roster but can be restored from the Archive section. Attendance and report history will remain.`)) return;
   try{
     await ensureFirebaseAuth();
-    const rosterRef=db.collection('roster').doc(item.id);
-    const fresh=await rosterRef.get();
-    if(!fresh.exists) return alert('This roster profile was already removed.');
-    const archiveRef=db.collection('deleted_agent_profiles').doc(item.id+'_'+Date.now());
-    const auditRef=db.collection('unused_profile_actions').doc();
+    const snapshots=await Promise.all(items.map(item=>db.collection('roster').doc(item.id).get()));
     const now=firebase.firestore.FieldValue.serverTimestamp();
-    const batch=db.batch();
-    batch.set(archiveRef,{
-      agentId:item.id,
-      agentName:item.name,
-      profile:fresh.data(),
-      deletedBy:'rose',
-      deletedAt:now,
-      missingStatsUploads:item.missingStreak,
-      lastSeenStatsDate:item.lastSeenDate || null,
-      reason:`Missing from ${item.missingStreak} consecutive Agent Stats uploads`
+    const ops=[];
+    snapshots.forEach((fresh,index)=>{
+      if(!fresh.exists) return;
+      const item=items[index];
+      const archiveRef=db.collection('archived_agent_profiles').doc(item.id);
+      ops.push(batch=>batch.set(archiveRef,{agentId:item.id,agentName:item.name,profile:fresh.data(),archivedBy:'rose',archivedAt:now,missingStatsUploads:item.missingStreak,lastSeenStatsDate:item.lastSeenDate||null,reason:`Missing from ${item.missingStreak} consecutive Agent Stats uploads`,source:'missing_stats'},{merge:false}));
+      ops.push(batch=>batch.set(db.collection('unused_profile_actions').doc(),{agentId:item.id,agentName:item.name,action:'archived',archiveDocument:archiveRef.id,performedBy:'rose',performedAt:now,missingStatsUploads:item.missingStreak,lastSeenStatsDate:item.lastSeenDate||null,reason:'Missing from Agent Stats uploads'}));
+      ops.push(batch=>batch.delete(db.collection('roster').doc(item.id)));
     });
-    batch.set(auditRef,{
-      agentId:item.id, agentName:item.name,
-      action:'archived_and_deleted',
-      archiveDocument:archiveRef.id,
-      performedBy:'rose', performedAt:now,
-      missingStatsUploads:item.missingStreak,
-      lastSeenStatsDate:item.lastSeenDate || null,
-      reason:'Missing from Agent Stats uploads'
-    });
-    batch.delete(rosterRef);
-    await batch.commit();
-    delete ROSTER[item.id];
-    roseSetStatus(`✅ ${item.name} was archived and removed from the live roster.`, 'success');
-  }catch(error){
-    roseSetStatus('Delete failed: '+(error.message||error), 'error');
-  }
+    await roseCommitBatches(ops);
+    items.forEach(item=>delete ROSTER[item.id]);
+    roseMissingSelected.clear();
+    roseSetStatus(`✅ ${items.length} profile${items.length===1?' was':'s were'} archived and removed from the live roster.`,'success');
+    roseSwitchProfileView('archive');
+  }catch(error){ roseSetStatus('Archive failed: '+(error.message||error),'error'); }
 }
+function roseArchiveUnusedProfile(id){ return roseArchiveProfiles([id]); }
+function roseBulkArchiveSelected(){ return roseArchiveProfiles([...roseMissingSelected]); }
+// Backward-compatible name from r11 now performs a recoverable archive.
+function roseDeleteUnusedProfile(id){ return roseArchiveUnusedProfile(id); }
+
+function roseFindArchivedByKeys(keys){
+  const set=new Set(keys.map(String));
+  return roseArchivedProfiles.filter(item=>set.has(item.key));
+}
+
+async function roseRestoreArchivedProfiles(keys){
+  if(!isRoseAdmin()) return alert('Rose administrator access is required.');
+  const items=roseFindArchivedByKeys(keys);
+  if(!items.length) return alert('No archived profiles were selected.');
+  if(!confirm(`Restore ${items.length} profile${items.length===1?'':'s'} to the live roster?`)) return;
+  try{
+    await ensureFirebaseAuth();
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const ops=[];
+    items.forEach(item=>{
+      const profile={...(item.profile||{}),userId:item.agentId,restoredBy:'rose',restoredAt:now,updatedAt:now};
+      ops.push(batch=>batch.set(db.collection('roster').doc(item.agentId),profile,{merge:true}));
+      ops.push(batch=>batch.delete(db.collection(item.sourceCollection).doc(item.archiveDocId)));
+      ops.push(batch=>batch.set(db.collection('unused_profile_actions').doc(),{agentId:item.agentId,agentName:item.name,action:'restored_from_archive',archiveDocument:item.archiveDocId,archiveCollection:item.sourceCollection,performedBy:'rose',performedAt:now}));
+    });
+    await roseCommitBatches(ops);
+    items.forEach(item=>roseArchiveSelected.delete(item.key));
+    roseSetArchiveStatus(`✅ ${items.length} profile${items.length===1?' was':'s were'} restored to the live roster.`,'success');
+  }catch(error){ roseSetArchiveStatus('Restore failed: '+(error.message||error),'error'); }
+}
+function roseBulkRestoreSelected(){ return roseRestoreArchivedProfiles([...roseArchiveSelected]); }
+
+async function roseDeleteArchivedProfiles(keys){
+  if(!isRoseAdmin()) return alert('Rose administrator access is required.');
+  const items=roseFindArchivedByKeys(keys);
+  if(!items.length) return alert('No archived profiles were selected.');
+  if(!confirm(`Permanently delete ${items.length} archived profile ${items.length===1?'copy':'copies'}?\n\nThis cannot be undone. Attendance and other historical records will not be deleted.`)) return;
+  const typed=prompt('Type DELETE to confirm permanent removal:','');
+  if(String(typed||'').trim().toUpperCase()!=='DELETE') return alert('Permanent deletion cancelled.');
+  try{
+    await ensureFirebaseAuth();
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const ops=[];
+    items.forEach(item=>{
+      ops.push(batch=>batch.delete(db.collection(item.sourceCollection).doc(item.archiveDocId)));
+      ops.push(batch=>batch.set(db.collection('unused_profile_actions').doc(),{agentId:item.agentId,agentName:item.name,action:'archive_deleted_permanently',archiveDocument:item.archiveDocId,archiveCollection:item.sourceCollection,performedBy:'rose',performedAt:now}));
+    });
+    await roseCommitBatches(ops);
+    items.forEach(item=>roseArchiveSelected.delete(item.key));
+    roseSetArchiveStatus(`✅ ${items.length} archived profile ${items.length===1?'copy was':'copies were'} permanently deleted.`,'success');
+  }catch(error){ roseSetArchiveStatus('Permanent delete failed: '+(error.message||error),'error'); }
+}
+function roseBulkDeleteArchivedSelected(){ return roseDeleteArchivedProfiles([...roseArchiveSelected]); }
 
 function switchTab(tab){
   document.querySelectorAll('.tab-page').forEach(p=>{
