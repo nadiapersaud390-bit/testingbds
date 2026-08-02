@@ -39,3 +39,32 @@ All changes are stored in Firestore and appear on open agent dashboards through 
 - The alert can be dismissed with the close button, **LET'S GO**, Escape, or by clicking the blurred background.
 
 Deploy version: `2026-08-02-new-lead-live-30s-r7`
+
+## Bulk attendance update
+
+Open **Admin Panel → Daily Attendance** to:
+
+- Choose any attendance date.
+- Filter by all agents, team or current attendance status.
+- Select individual agents or use **Select Visible**.
+- Mark all selected agents as Present, Late, Absent, Sick, Vacation, Personal Out, Day Off or Holiday.
+- Add an optional note and save every selected record to Firestore in one action.
+
+Each agent/date is stored in `attendance/{agentId}_{YYYY-MM-DD}`. A summary audit of every bulk action is stored in `attendance_bulk_updates`.
+
+## Firebase administrator account
+
+This build seeds a Firebase-backed administrator document at `admin_accounts/rose` the first time the dashboard connects. The password is verified using a SHA-256 hash; the plain password is not stored in Firestore. Successful Rose logins update `admin_accounts/rose` and create an audit record in `admin_login_history`.
+
+## Rose-only missing-from-stats review (r11)
+
+Open **Admin Panel → Missing From Stats** while logged in as Rose.
+
+- Each Agent Stats CSV upload is saved in Firestore as the normal `reports/{date}` record and a compact `stats_presence/{date}` snapshot.
+- The snapshot stores the agent IDs and normalized names found in that upload.
+- Rose can choose how many consecutive uploads an agent must be absent from before the profile is flagged: 2, 3, 5, 7 or 10 uploads.
+- The list shows the missing-upload streak, last report in which the agent appeared, and how many saved uploads contained the agent.
+- Existing report history is also read directly, so reports uploaded before r11 are included where available.
+- Rose can review, mark inactive, reactivate, or archive and delete a flagged profile. Deletions are backed up in `deleted_agent_profiles`.
+
+Deploy version: `2026-08-02-rose-missing-stats-r11`

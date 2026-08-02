@@ -28,7 +28,7 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-02-new-lead-live-30s-r7';
+const APP_VERSION = '2026-08-02-rose-missing-stats-r11';
 
 // Apply the saved appearance before the page paints to prevent a theme flash.
 (function applySavedThemeEarly(){
@@ -878,6 +878,16 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
 .save-btn{padding:8px 18px;border-radius:8px;border:none;background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:800;letter-spacing:1px;cursor:pointer;transition:all 0.15s;}
 .mark-absent-btn{padding:5px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;transition:all 0.15s;}
 .mark-absent-btn:hover{border-color:var(--red);color:var(--red);}
+
+.att-bulk-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(8,18,36,0.72);}
+.att-bulk-toolbar select,.att-bulk-toolbar input{padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface,#0d1424);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;outline:none;}
+.att-bulk-toolbar select:focus,.att-bulk-toolbar input:focus{border-color:var(--accent);}
+.att-bulk-update-btn{padding:9px 14px;border:1px solid rgba(52,211,153,0.5);border-radius:8px;background:rgba(52,211,153,0.14);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:1px;cursor:pointer;}
+.att-bulk-update-btn:hover{background:rgba(52,211,153,0.22);}
+.att-bulk-update-btn:disabled{opacity:.55;cursor:not-allowed;}
+.att-select-box{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;}
+.att-row-selected td{background:rgba(96,165,250,0.12)!important;}
+.att-selection-count{font-size:0.72rem;font-weight:800;color:var(--accent2);white-space:nowrap;}
 .note-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:0.82rem;line-height:1.6;color:#cbd5e1;}
 .note-date{font-size:0.58rem;color:var(--muted);font-weight:700;margin-bottom:3px;}
 /* ── ADMIN SUB TABS ── */
@@ -1239,18 +1249,18 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
 <!-- ── LOGIN SCREEN ── -->
 <div class="login-screen" id="login-screen">
   <div class="login-logo">BDS LOAN CR</div>
-  <div class="login-sub">Agent Dashboard · Enter your Ytel ID to continue</div>
+  <div class="login-sub">Agent Dashboard · Enter your Ytel ID or admin username</div>
   <div class="login-card">
-    <label class="login-field-lbl">Ytel ID</label>
-    <input class="login-input" id="login-id" placeholder="Enter your Ytel ID here" maxlength="6" type="tel" oninput="onIdInput(this.value)" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-field-lbl">Ytel ID or Admin Username</label>
+    <input class="login-input" id="login-id" placeholder="Enter Ytel ID or admin username" maxlength="32" type="text" inputmode="text" autocomplete="username" autocapitalize="none" spellcheck="false" oninput="onIdInput(this.value)" onkeydown="if(event.key==='Enter')doLogin()">
     <div class="pw-wrap" id="pw-wrap">
       <label class="login-field-lbl">Admin Password</label>
-      <input class="login-input" id="login-pw" type="password" placeholder="••••••••" style="letter-spacing:4px;" onkeydown="if(event.key==='Enter')doLogin()">
+      <input class="login-input" id="login-pw" type="password" autocomplete="current-password" placeholder="••••••••" style="letter-spacing:4px;" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <button class="login-btn" onclick="doLogin()">ENTER DASHBOARD</button>
     <div class="login-err" id="login-err"></div>
   </div>
-  <div class="login-hint">Agents — enter your Ytel ID only<br>Admin — enter 0000 then your password</div>
+  <div class="login-hint">Agents — enter your numeric Ytel ID only<br>Admins — enter 0000 or your Firebase admin username, then your password</div>
 </div>
 
 <!-- ── REP HEADER BAR ── -->
@@ -1824,6 +1834,7 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
     <div style="background:#060d1a;border-bottom:2px solid #1a2a45;padding:14px 16px;">
       <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
         <button class="adm-tab active" id="atab-profiles"    onclick="switchAdminTab('profiles',this)">👤 Agent Profiles</button>
+        <button class="adm-tab" id="atab-unused" onclick="switchAdminTab('unused',this)" style="display:none;">📉 Missing From Stats</button>
         <button class="adm-tab"        id="atab-overview"    onclick="switchAdminTab('overview',this)">⚡ Daily Overview</button>
         <button class="adm-tab"        id="atab-attendance"  onclick="switchAdminTab('attendance',this)">📅 Daily Attendance</button>
         <button class="adm-tab"        id="atab-weekly"      onclick="switchAdminTab('weekly',this)">📋 Weekly Attendance</button>
@@ -1902,7 +1913,10 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
       <div class="admin-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
           <div class="admin-card-title" style="margin-bottom:0;font-size:0.9rem;">📅 DAILY ATTENDANCE</div>
-          <span id="att-date" style="color:var(--accent2);font-size:0.72rem;font-weight:700;"></span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+            <input type="date" id="att-date-picker" onchange="changeAttendanceDate()" aria-label="Attendance date" style="padding:7px 10px;background:var(--surface,#0d1424);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.78rem;outline:none;color-scheme:dark;">
+            <span id="att-date" style="color:var(--accent2);font-size:0.72rem;font-weight:700;"></span>
+          </div>
         </div>
         <!-- Team toggle -->
         <div style="display:flex;justify-content:center;gap:10px;margin-bottom:12px;">
@@ -1916,12 +1930,37 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
           <button class="adm-filter green"  id="att-filter-P"    onclick="filterAtt('P',this)">✅ Present</button>
           <button class="adm-filter amber"  id="att-filter-L"    onclick="filterAtt('L',this)">🟡 Late</button>
           <button class="adm-filter red"    id="att-filter-A"    onclick="filterAtt('A',this)">🔴 Absent</button>
+          <button class="adm-filter red"    id="att-filter-S"    onclick="filterAtt('S',this)">🤒 Sick</button>
+          <button class="adm-filter amber"  id="att-filter-V"    onclick="filterAtt('V',this)">🏖 Vacation</button>
+          <button class="adm-filter"        id="att-filter-PO"   onclick="filterAtt('PO',this)">🏠 Personal Out</button>
+          <button class="adm-filter gray"   id="att-filter-OFF"  onclick="filterAtt('OFF',this)">🌙 OFF</button>
           <button class="adm-filter gray"   id="att-filter-none" onclick="filterAtt('none',this)">⬜ Not In</button>
+        </div>
+        <div class="att-bulk-toolbar">
+          <label style="display:flex;align-items:center;gap:6px;color:var(--text);font-size:0.75rem;font-weight:800;cursor:pointer;">
+            <input class="att-select-box" type="checkbox" id="att-select-all" onchange="toggleSelectAllAttendance(this.checked)"> SELECT VISIBLE
+          </label>
+          <span class="att-selection-count" id="att-selected-count">0 selected</span>
+          <select id="att-bulk-status" aria-label="Bulk attendance status">
+            <option value="">Choose status...</option>
+            <option value="P">✅ Present</option>
+            <option value="L">🟡 Late</option>
+            <option value="A">🔴 Absent</option>
+            <option value="S">🤒 Sick</option>
+            <option value="V">🏖 Vacation</option>
+            <option value="PO">🏠 Personal Out</option>
+            <option value="OFF">🌙 Day Off</option>
+            <option value="H">🎉 Holiday</option>
+          </select>
+          <input id="att-bulk-note" type="text" placeholder="Optional note" aria-label="Bulk attendance note" style="min-width:150px;flex:1;">
+          <button class="att-bulk-update-btn" id="att-bulk-update-btn" onclick="applyBulkAttendance()">UPDATE SELECTED</button>
+          <button class="mark-absent-btn" type="button" onclick="clearAttendanceSelection()">CLEAR</button>
+          <span id="att-bulk-feedback" style="font-size:0.7rem;font-weight:700;color:var(--muted);"></span>
         </div>
         <div style="overflow-x:auto;">
           <table class="adm-table">
-            <thead><tr><th>#</th><th>Agent Name</th><th>Team</th><th>Shift</th><th>Status</th><th>Logged In</th><th>Edit</th></tr></thead>
-            <tbody id="att-tbody"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr></tbody>
+            <thead><tr><th style="text-align:center;">✓</th><th>#</th><th>Agent Name</th><th>Team</th><th>Shift</th><th>Status</th><th>Logged In</th><th>Edit</th></tr></thead>
+            <tbody id="att-tbody"><tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -1953,6 +1992,7 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
           <span class="wk-leg s">S — Sick</span>
           <span class="wk-leg po">PO — Personal Out</span>
           <span class="wk-leg off">OFF — Day Off</span>
+          <span class="wk-leg off">H — Holiday</span>
         </div>
       </div>
     </div>
@@ -1979,6 +2019,7 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
           <span class="wk-leg a">A — Absent</span>
           <span class="wk-leg s">S — Sick</span>
           <span class="wk-leg off">OFF / No data</span>
+          <span class="wk-leg off">H — Holiday</span>
         </div>
         <div style="overflow-x:auto;" id="monthly-table-wrap">
           <div style="text-align:center;color:var(--muted);padding:20px;">Loading monthly data...</div>
@@ -2209,6 +2250,65 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
         </div>
       </div>
     </div>
+    <!-- ── ROSE-ONLY AGENTS MISSING FROM UPLOADED STATS ── -->
+    <div id="admin-unused" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+          <div>
+            <div class="admin-card-title" style="margin-bottom:4px;font-size:0.92rem;">📉 AGENTS MISSING FROM STATS</div>
+            <div style="font-size:0.68rem;color:var(--muted);line-height:1.55;max-width:780px;">
+              Rose-only review. Every Agent Stats upload is saved in Firebase. This tab flags roster profiles whose name or agent ID has been missing from several consecutive uploaded reports.
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="padding:5px 10px;border:1px solid rgba(244,114,182,0.4);border-radius:999px;background:rgba(244,114,182,0.09);color:#f9a8d4;font-size:0.62rem;font-weight:900;letter-spacing:1.4px;">ROSE ONLY</span>
+            <button type="button" onclick="roseRefreshUnusedProfiles()" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:0.76rem;font-weight:900;letter-spacing:1px;cursor:pointer;">↻ REFRESH</button>
+          </div>
+        </div>
+
+        <div id="rose-unused-summary" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px;">
+          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-total" style="color:var(--accent);">—</div><div class="rp-stat-lbl">Roster Profiles</div></div>
+          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-used" style="color:var(--green);">—</div><div class="rp-stat-lbl">In Latest Upload</div></div>
+          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-count" style="color:var(--gold);">—</div><div class="rp-stat-lbl">Flagged Missing</div></div>
+          <div class="rp-stat"><div class="rp-stat-val" id="rose-unused-inactive" style="color:var(--purple);">—</div><div class="rp-stat-lbl">Inactive Profiles</div></div>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <input id="rose-unused-search" type="text" placeholder="🔍 Search name or agent ID..." oninput="roseRenderUnusedProfiles()"
+            style="flex:1;min-width:175px;padding:9px 13px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;">
+          <select id="rose-unused-threshold" onchange="roseBuildUnusedProfiles()"
+            style="padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;outline:none;">
+            <option value="2">Flag after 2 uploads</option>
+            <option value="3" selected>Flag after 3 uploads</option>
+            <option value="5">Flag after 5 uploads</option>
+            <option value="7">Flag after 7 uploads</option>
+            <option value="10">Flag after 10 uploads</option>
+          </select>
+          <select id="rose-unused-team" onchange="roseRenderUnusedProfiles()"
+            style="padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;outline:none;">
+            <option value="all">All Teams</option>
+            <option value="BB">🏠 Berbice</option>
+            <option value="PR">🌴 Providence</option>
+          </select>
+          <select id="rose-unused-status" onchange="roseRenderUnusedProfiles()"
+            style="padding:9px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;outline:none;">
+            <option value="all">All Statuses</option>
+            <option value="active">Active only</option>
+            <option value="inactive">Inactive only</option>
+          </select>
+        </div>
+
+        <div id="rose-unused-status-message" style="font-size:0.7rem;color:var(--muted);min-height:20px;margin-bottom:6px;" aria-live="polite"></div>
+        <div id="rose-unused-list" style="display:flex;flex-direction:column;gap:8px;">
+          <div style="text-align:center;color:var(--muted);padding:26px;">Open this tab as Rose to compare the roster with Firebase stats uploads.</div>
+        </div>
+
+        <div style="margin-top:14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(96,165,250,0.05);font-size:0.65rem;color:var(--muted);line-height:1.55;">
+          <strong style="color:var(--accent);">How it works:</strong> a profile is flagged only after it is absent from the selected number of consecutive Agent Stats uploads. “Archive &amp; Delete” backs up the roster profile in <code>deleted_agent_profiles</code> before removing it from the live roster.
+        </div>
+      </div>
+    </div>
+
     <!-- ── COACHING ── -->
     <div id="admin-coaching" class="admin-section" style="display:none;">
       <div class="admin-card">
@@ -4163,8 +4263,122 @@ async function loadRoster() {
 
 const ADMIN_ID = '0000';
 const ADMIN_PW = 'admin';
+
+// Firebase-backed administrator accounts. Passwords are stored as SHA-256 hashes,
+// never as plain text. Existing Firestore records are never overwritten by this seed.
+const FIREBASE_ADMIN_SEEDS = Object.freeze({
+  rose: Object.freeze({
+    username: 'rose',
+    displayName: 'Rose',
+    role: 'admin',
+    active: true,
+    passwordHash: '3be0720614ed8e339ee3a55e4f740982829dcaf9e0e47e1d9dadb04441db923f',
+    passwordVersion: 1,
+    hashAlgorithm: 'SHA-256'
+  })
+});
+
 let currentUser = null;
 let midnightTimer = null;
+
+function normalizeAdminUsername(value){
+  return String(value || '').trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
+}
+
+function isFirebaseAdminUsername(value){
+  const username = normalizeAdminUsername(value);
+  return username.length > 0 && /[a-z]/.test(username);
+}
+
+async function hashAdminPassword(username, password){
+  if(!window.crypto || !window.crypto.subtle){
+    throw new Error('Secure password verification requires HTTPS or localhost.');
+  }
+  const normalized = normalizeAdminUsername(username);
+  const bytes = new TextEncoder().encode(`bds-admin-v1:${normalized}:${String(password || '')}`);
+  const digest = await window.crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+async function seedConfiguredAdminAccounts(){
+  await ensureFirebaseAuth();
+  const tasks = Object.entries(FIREBASE_ADMIN_SEEDS).map(async ([username, seed]) => {
+    const ref = db.collection('admin_accounts').doc(username);
+    const snap = await ref.get();
+    if(snap.exists) return;
+    await ref.set({
+      ...seed,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: 'dashboard-seed'
+    });
+  });
+  await Promise.all(tasks);
+}
+
+async function authenticateFirebaseAdmin(username, password){
+  const normalized = normalizeAdminUsername(username);
+  if(!normalized || !password) return {ok:false, message:'Incorrect admin username or password.'};
+
+  await ensureFirebaseAuth();
+
+  // Create the configured Rose account once if it is not already in Firestore.
+  if(FIREBASE_ADMIN_SEEDS[normalized]){
+    const seedRef = db.collection('admin_accounts').doc(normalized);
+    const seedSnap = await seedRef.get();
+    if(!seedSnap.exists){
+      const seed = FIREBASE_ADMIN_SEEDS[normalized];
+      await seedRef.set({
+        ...seed,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        createdBy: 'dashboard-seed'
+      });
+    }
+  }
+
+  const ref = db.collection('admin_accounts').doc(normalized);
+  const snap = await ref.get();
+  if(!snap.exists) return {ok:false, message:'Incorrect admin username or password.'};
+
+  const account = snap.data() || {};
+  if(account.active === false) return {ok:false, message:'This administrator account is disabled.'};
+  if(String(account.role || '').toLowerCase() !== 'admin' && String(account.role || '').toLowerCase() !== 'superadmin'){
+    return {ok:false, message:'This account does not have administrator access.'};
+  }
+
+  const submittedHash = await hashAdminPassword(normalized, password);
+  if(submittedHash !== String(account.passwordHash || '')){
+    return {ok:false, message:'Incorrect admin username or password.'};
+  }
+
+  return {ok:true, username:normalized, account, ref};
+}
+
+async function recordFirebaseAdminLogin(authResult){
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+  const uid = auth.currentUser ? auth.currentUser.uid : null;
+  const batch = db.batch();
+
+  batch.set(authResult.ref, {
+    lastLoginAt: now,
+    lastLoginUid: uid,
+    loginCount: firebase.firestore.FieldValue.increment(1),
+    updatedAt: now
+  }, {merge:true});
+
+  const historyRef = db.collection('admin_login_history').doc();
+  batch.set(historyRef, {
+    username: authResult.username,
+    displayName: authResult.account.displayName || authResult.username,
+    role: authResult.account.role || 'admin',
+    authUid: uid,
+    loginAt: now,
+    source: 'dashboard'
+  });
+
+  await batch.commit();
+}
 
 // ── GREETINGS ──
 function getGreeting(name){
@@ -4175,9 +4389,11 @@ function getGreeting(name){
   return `Good evening, ${name}! Finish the shift strong. ⚡`;
 }
 
-// ── ID INPUT — show password for admin ──
+// ── ID INPUT — show password for legacy or Firebase administrators ──
 function onIdInput(val){
-  document.getElementById('pw-wrap').style.display = val === ADMIN_ID ? 'block' : 'none';
+  const raw = String(val || '').trim();
+  const showPassword = raw === ADMIN_ID || isFirebaseAdminUsername(raw);
+  document.getElementById('pw-wrap').style.display = showPassword ? 'block' : 'none';
   document.getElementById('login-err').textContent = '';
 }
 
@@ -4188,13 +4404,13 @@ async function doLogin(){
   const errEl = document.getElementById('login-err');
   errEl.textContent = '';
 
-  if(!id){ errEl.textContent = '⚠ Please enter your Ytel ID.'; return; }
+  if(!id){ errEl.textContent = '⚠ Please enter your Ytel ID or admin username.'; return; }
 
   const btn = document.querySelector('.login-btn');
   btn.innerHTML = '<span class="spinner"></span>CONNECTING...';
   btn.disabled = true;
 
-  // ── ADMIN LOGIN ──
+  // ── LEGACY ADMIN LOGIN ──
   if(id === ADMIN_ID){
     if(pw !== ADMIN_PW){
       errEl.textContent = '⚠ Incorrect password.';
@@ -4204,13 +4420,49 @@ async function doLogin(){
     }
     try{
       await ensureFirebaseAuth();
-      currentUser = {id:'0000', name:'Admin', isAdmin:true, team:'ADMIN'};
+      currentUser = {id:'0000', username:'0000', name:'Admin', isAdmin:true, role:'superadmin', team:'ADMIN', authSource:'legacy'};
       sessionStorage.setItem('bds_user_'+getTodayGY(), JSON.stringify(currentUser));
       btn.innerHTML = 'ENTER DASHBOARD';
       btn.disabled = false;
       showDashboard();
     }catch(e){
       errEl.textContent = '⚠ Firebase error: ' + e.message;
+      btn.innerHTML = 'ENTER DASHBOARD';
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  // ── FIREBASE ADMIN LOGIN ──
+  if(isFirebaseAdminUsername(id)){
+    try{
+      btn.innerHTML = '<span class="spinner"></span>VERIFYING ADMIN...';
+      const result = await authenticateFirebaseAdmin(id, pw);
+      if(!result.ok){
+        errEl.textContent = '⚠ ' + result.message;
+        btn.innerHTML = 'ENTER DASHBOARD';
+        btn.disabled = false;
+        return;
+      }
+
+      currentUser = {
+        id: 'admin:' + result.username,
+        username: result.username,
+        name: result.account.displayName || result.username,
+        isAdmin: true,
+        role: result.account.role || 'admin',
+        team: 'ADMIN',
+        authSource: 'firebase'
+      };
+
+      await recordFirebaseAdminLogin(result);
+      sessionStorage.setItem('bds_user_'+getTodayGY(), JSON.stringify(currentUser));
+      btn.innerHTML = 'ENTER DASHBOARD';
+      btn.disabled = false;
+      showDashboard();
+    }catch(e){
+      console.error('Firebase admin login failed:', e);
+      errEl.textContent = '⚠ ' + (e.message || 'Firebase administrator login failed.');
       btn.innerHTML = 'ENTER DASHBOARD';
       btn.disabled = false;
     }
@@ -4435,6 +4687,7 @@ function showDashboard(){
   } else {
     document.getElementById('admin-badge-wrap').innerHTML = '<div class="admin-badge">⚡ ADMIN</div>';
     showAdminUI();
+    applyRoseOnlyAdminUI();
   }
 
   startRosterPolling();
@@ -4685,6 +4938,7 @@ function doLogout(auto=false){
   clearTimeout(midnightTimer);
   stopRosterPolling(); // stop background sync on logout
   stopRebuttalSync();
+  stopRoseUnusedWatch();
   sessionStorage.removeItem('bds_user_'+getTodayGY());
   currentUser = null;
   auth.signOut();
@@ -4706,8 +4960,9 @@ function doLogout(auto=false){
 
 // ── CHECK EXISTING SESSION ──
 async function checkSession(){
-  // Pre-load the Firebase roster in background
+  // Pre-load the Firebase roster and create configured Firebase admin accounts in background.
   loadRoster();
+  seedConfiguredAdminAccounts().catch(error => console.warn('Firebase admin seed failed:', error));
   const today = getTodayGY();
   const saved = sessionStorage.getItem('bds_user_'+today);
   if(saved){
@@ -5650,6 +5905,428 @@ async function saveProfileEdits(){
   }
 }
 
+
+// ══════════════════════════════════════════════
+//  ROSE-ONLY MISSING-FROM-STATS PROFILE REVIEW
+//  Compares the Firebase roster with consecutive Agent Stats uploads.
+// ══════════════════════════════════════════════
+let roseUnusedProfiles = [];
+let roseUnusedSummary = {total:0, used:0, unused:0, inactive:0};
+let roseUnusedUnsubs = [];
+let roseUnusedSnapshots = {roster:null, reports:null, presence:null};
+let roseStatsReports = [];
+
+function isRoseAdmin(){
+  return !!(currentUser && currentUser.isAdmin && normalizeAdminUsername(currentUser.username || '') === 'rose');
+}
+
+function applyRoseOnlyAdminUI(){
+  const button = document.getElementById('atab-unused');
+  if(button) button.style.display = isRoseAdmin() ? '' : 'none';
+  const badge = document.querySelector('#admin-badge-wrap .admin-badge');
+  if(badge && isRoseAdmin()) badge.textContent = '🌹 ROSE ADMIN';
+}
+
+function roseEscape(value){
+  return String(value == null ? '' : value)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function roseStatsNameKey(value){
+  return String(value == null ? '' : value)
+    .toLowerCase()
+    .replace(/^guy[pb]?\s*[-_#]*\s*\d*\s*/i,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+function roseTimestampMillis(value){
+  if(!value) return 0;
+  if(typeof value.toMillis === 'function') return value.toMillis();
+  if(value.seconds) return Number(value.seconds) * 1000;
+  const parsed = new Date(value).getTime();
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function roseFormatDateOnly(value){
+  const raw = String(value || '').trim();
+  if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){
+    const parts = raw.split('-').map(Number);
+    return new Date(parts[0],parts[1]-1,parts[2]).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+  }
+  const millis = roseTimestampMillis(value);
+  if(!millis) return 'Unknown';
+  return new Date(millis).toLocaleDateString('en-US',{timeZone:'America/Guyana',year:'numeric',month:'short',day:'numeric'});
+}
+
+function roseSetStatus(message, type='normal'){
+  const el = document.getElementById('rose-unused-status-message');
+  if(!el) return;
+  el.textContent = message || '';
+  el.style.color = type==='error' ? 'var(--red)' : type==='success' ? 'var(--green)' : 'var(--muted)';
+}
+
+function stopRoseUnusedWatch(){
+  roseUnusedUnsubs.forEach(unsub=>{ try{ unsub(); }catch(e){} });
+  roseUnusedUnsubs = [];
+  roseUnusedSnapshots = {roster:null, reports:null, presence:null};
+  roseStatsReports = [];
+}
+
+async function startRoseUnusedWatch(){
+  if(!isRoseAdmin()) return;
+  if(roseUnusedUnsubs.length) return;
+  await ensureFirebaseAuth();
+  roseSetStatus('Connecting to Firebase roster and stats uploads...');
+
+  const watch = (key, collectionName) => db.collection(collectionName).onSnapshot(snapshot=>{
+    roseUnusedSnapshots[key] = snapshot;
+    roseBuildUnusedProfiles();
+  }, error=>{
+    console.error('Rose stats-presence listener failed for '+collectionName, error);
+    roseSetStatus('Could not read '+collectionName+': '+(error.message||error), 'error');
+  });
+
+  roseUnusedUnsubs = [
+    watch('roster','roster'),
+    watch('reports','reports'),
+    watch('presence','stats_presence')
+  ];
+}
+
+function roseReadReportRows(doc){
+  const data = doc.data ? (doc.data() || {}) : (doc || {});
+  let rows = [];
+  if(Array.isArray(data.agents)) rows = data.agents;
+  else if(Array.isArray(data.stats)) rows = data.stats;
+  else if(data.statsJSON){
+    try{
+      const parsed = typeof data.statsJSON === 'string' ? JSON.parse(data.statsJSON) : data.statsJSON;
+      if(Array.isArray(parsed)) rows = parsed;
+    }catch(error){ console.warn('Could not parse stats report', doc.id, error); }
+  }
+  return rows;
+}
+
+function roseBuildReportHistory(){
+  const reportMap = new Map();
+  const reportsSnap = roseUnusedSnapshots.reports;
+  const presenceSnap = roseUnusedSnapshots.presence;
+
+  if(reportsSnap){
+    reportsSnap.forEach(doc=>{
+      const data = doc.data() || {};
+      const date = String(data.date || doc.id || '').trim();
+      const rows = roseReadReportRows(doc);
+      if(!date || !rows.length) return;
+      const ids = new Set();
+      const names = new Set();
+      rows.forEach(row=>{
+        const id = String(row.ytelId || row.userId || row.userid || row.agentId || row.id || '').trim();
+        const name = roseStatsNameKey(row.name || row.nameRaw || row.agentName || row.ytelName || '');
+        if(id) ids.add(id);
+        if(name) names.add(name);
+      });
+      reportMap.set(date,{
+        date,
+        uploadedAt:data.uploadedAt || null,
+        filename:data.filename || '',
+        ids,
+        names,
+        source:'reports'
+      });
+    });
+  }
+
+  if(presenceSnap){
+    presenceSnap.forEach(doc=>{
+      const data = doc.data() || {};
+      const date = String(data.date || doc.id || '').trim();
+      if(!date) return;
+      const ids = new Set((Array.isArray(data.agentIds)?data.agentIds:[]).map(v=>String(v).trim()).filter(Boolean));
+      const names = new Set((Array.isArray(data.agentNames)?data.agentNames:[]).map(roseStatsNameKey).filter(Boolean));
+      if(!ids.size && !names.size) return;
+      reportMap.set(date,{
+        date,
+        uploadedAt:data.uploadedAt || null,
+        filename:data.filename || '',
+        ids,
+        names,
+        source:'stats_presence'
+      });
+    });
+  }
+
+  return [...reportMap.values()].sort((a,b)=>{
+    if(a.date !== b.date) return b.date.localeCompare(a.date);
+    return roseTimestampMillis(b.uploadedAt)-roseTimestampMillis(a.uploadedAt);
+  });
+}
+
+function roseReportContainsAgent(report, agent){
+  const id = String(agent.id || '').trim();
+  if(id && report.ids.has(id)) return true;
+  const keys = [agent.name, agent.ytelName].map(roseStatsNameKey).filter(Boolean);
+  return keys.some(key=>report.names.has(key));
+}
+
+function roseBuildUnusedProfiles(){
+  if(!isRoseAdmin()) return;
+  const snaps = roseUnusedSnapshots;
+  if(!snaps.roster || !snaps.reports || !snaps.presence){
+    roseSetStatus('Scanning Firebase roster and Agent Stats uploads...');
+    return;
+  }
+
+  roseStatsReports = roseBuildReportHistory();
+  const threshold = Math.max(1, Number((document.getElementById('rose-unused-threshold')||{}).value || 3));
+  const all = [];
+
+  snaps.roster.forEach(doc=>{
+    const data = doc.data() || {};
+    const id = String(data.userId || data.userid || data.id || doc.id || '').trim();
+    const name = String(data.name || data.Name || data.agentName || '').trim();
+    if(!id || !name) return;
+    const status = String(data.status || data.Status || 'Agent').trim();
+    const inactive = data.inactive === true || status.toLowerCase()==='inactive';
+    const agent = {
+      id,
+      name,
+      ytelName:String(data.ytelName || data.ytelname || data['Ytel Name'] || '').trim(),
+      team:normalizeTeam(data.team || data.Team || 'BB'),
+      shift:String(data.shift || data.Shift || '').trim(),
+      status,
+      inactive,
+      raw:data
+    };
+
+    let missingStreak = 0;
+    let lastSeenReport = null;
+    let seenCount = 0;
+    roseStatsReports.forEach((report,index)=>{
+      const seen = roseReportContainsAgent(report,agent);
+      if(seen){
+        seenCount++;
+        if(!lastSeenReport) lastSeenReport = report;
+      }
+      if(index===missingStreak && !seen && !lastSeenReport) missingStreak++;
+    });
+
+    const inLatest = roseStatsReports.length ? roseReportContainsAgent(roseStatsReports[0],agent) : false;
+    const flagged = roseStatsReports.length >= threshold && missingStreak >= threshold;
+    all.push({
+      ...agent,
+      inLatest,
+      flagged,
+      missingStreak,
+      seenCount,
+      reportCount:roseStatsReports.length,
+      lastSeenDate:lastSeenReport ? lastSeenReport.date : '',
+      lastSeenUpload:lastSeenReport,
+      latestDate:roseStatsReports[0] ? roseStatsReports[0].date : ''
+    });
+  });
+
+  roseUnusedSummary = {
+    total:all.length,
+    used:all.filter(item=>item.inLatest).length,
+    unused:all.filter(item=>item.flagged).length,
+    inactive:all.filter(item=>item.inactive).length
+  };
+  roseUnusedProfiles = all.filter(item=>item.flagged).sort((a,b)=>{
+    if(a.lastSeenDate==='' && b.lastSeenDate!=='') return -1;
+    if(a.lastSeenDate!=='' && b.lastSeenDate==='') return 1;
+    if(b.missingStreak!==a.missingStreak) return b.missingStreak-a.missingStreak;
+    return a.name.localeCompare(b.name);
+  });
+
+  const totalEl=document.getElementById('rose-unused-total');
+  const usedEl=document.getElementById('rose-unused-used');
+  const unusedEl=document.getElementById('rose-unused-count');
+  const inactiveEl=document.getElementById('rose-unused-inactive');
+  if(totalEl) totalEl.textContent=roseUnusedSummary.total;
+  if(usedEl) usedEl.textContent=roseUnusedSummary.used;
+  if(unusedEl) unusedEl.textContent=roseUnusedSummary.unused;
+  if(inactiveEl) inactiveEl.textContent=roseUnusedSummary.inactive;
+
+  if(!roseStatsReports.length){
+    roseSetStatus('No Agent Stats uploads were found in Firebase. Upload a CSV in Agent Stats first.', 'error');
+  }else if(roseStatsReports.length < threshold){
+    roseSetStatus(`Only ${roseStatsReports.length} stats upload${roseStatsReports.length===1?' is':'s are'} available. At least ${threshold} are needed before profiles are flagged.`);
+  }else{
+    roseSetStatus(`Latest upload: ${roseStatsReports[0].date} · ${roseUnusedSummary.unused} profile${roseUnusedSummary.unused===1?' is':'s are'} missing from ${threshold}+ consecutive uploads.`, 'success');
+  }
+  roseRenderUnusedProfiles();
+}
+
+function roseRenderUnusedProfiles(){
+  const container = document.getElementById('rose-unused-list');
+  if(!container) return;
+  if(!isRoseAdmin()){
+    container.innerHTML='<div style="text-align:center;color:var(--red);padding:24px;">Rose administrator access is required.</div>';
+    return;
+  }
+
+  const search = String((document.getElementById('rose-unused-search')||{}).value || '').toLowerCase().trim();
+  const team = String((document.getElementById('rose-unused-team')||{}).value || 'all');
+  const status = String((document.getElementById('rose-unused-status')||{}).value || 'all');
+  const filtered = roseUnusedProfiles.filter(item=>{
+    if(team!=='all' && item.team!==team) return false;
+    if(status==='active' && item.inactive) return false;
+    if(status==='inactive' && !item.inactive) return false;
+    if(search && !(`${item.name} ${item.id} ${item.ytelName}`.toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  if(!roseStatsReports.length){
+    container.innerHTML='<div style="text-align:center;color:var(--muted);padding:28px;border:1px dashed var(--border);border-radius:10px;">No uploaded Agent Stats reports are available yet.</div>';
+    return;
+  }
+  if(!filtered.length){
+    container.innerHTML='<div style="text-align:center;color:var(--muted);padding:28px;border:1px dashed var(--border);border-radius:10px;">No profiles have been missing long enough to match these settings.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(item=>{
+    const teamColor = item.team==='PR' ? 'var(--purple)' : 'var(--accent)';
+    const lastSeen = item.lastSeenDate ? roseFormatDateOnly(item.lastSeenDate) : 'Never found in saved stats';
+    const latest = item.latestDate ? roseFormatDateOnly(item.latestDate) : 'Unknown';
+    return `<div style="border:1px solid var(--border);border-radius:12px;background:var(--card);padding:12px 14px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+        <div style="min-width:220px;flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+            <span style="font-size:0.62rem;font-weight:900;color:${teamColor};">${roseEscape(item.team)}</span>
+            <strong style="font-size:0.9rem;color:var(--text);">${roseEscape(item.name)}</strong>
+            <span style="font-size:0.58rem;padding:3px 7px;border-radius:999px;border:1px solid ${item.inactive?'rgba(167,139,250,0.45)':'rgba(251,191,36,0.45)'};color:${item.inactive?'var(--purple)':'var(--gold)'};">${item.inactive?'INACTIVE':'ACTIVE'}</span>
+          </div>
+          <div style="font-size:0.66rem;color:var(--muted);line-height:1.55;">
+            ID: <strong style="color:var(--text);">${roseEscape(item.id)}</strong>
+            ${item.ytelName?' · '+roseEscape(item.ytelName):''}
+            ${item.shift?' · Shift '+roseEscape(item.shift):''}
+          </div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;">
+            <span style="font-size:0.6rem;padding:4px 7px;border-radius:7px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:var(--gold);">Missing ${item.missingStreak} consecutive upload${item.missingStreak===1?'':'s'}</span>
+            <span style="font-size:0.6rem;padding:4px 7px;border-radius:7px;background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.25);color:var(--accent);">Last seen: ${roseEscape(lastSeen)}</span>
+            <span style="font-size:0.6rem;padding:4px 7px;border-radius:7px;background:rgba(148,163,184,0.06);border:1px solid var(--border);color:var(--muted);">Seen in ${item.seenCount}/${item.reportCount} uploads</span>
+          </div>
+          <div style="font-size:0.61rem;color:var(--muted);margin-top:7px;">Latest saved stats upload: ${roseEscape(latest)}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+          <button type="button" onclick="roseOpenUnusedProfile('${roseEscape(item.id)}')" style="padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.66rem;font-weight:800;cursor:pointer;">VIEW</button>
+          <button type="button" onclick="roseSetUnusedProfileActive('${roseEscape(item.id)}',${item.inactive?'true':'false'})" style="padding:7px 10px;border-radius:7px;border:1px solid ${item.inactive?'rgba(52,211,153,0.45)':'rgba(167,139,250,0.45)'};background:${item.inactive?'rgba(52,211,153,0.08)':'rgba(167,139,250,0.08)'};color:${item.inactive?'var(--green)':'var(--purple)'};font-size:0.66rem;font-weight:900;cursor:pointer;">${item.inactive?'REACTIVATE':'MARK INACTIVE'}</button>
+          <button type="button" onclick="roseDeleteUnusedProfile('${roseEscape(item.id)}')" style="padding:7px 10px;border-radius:7px;border:1px solid rgba(248,113,113,0.5);background:rgba(248,113,113,0.08);color:var(--red);font-size:0.66rem;font-weight:900;cursor:pointer;">ARCHIVE &amp; DELETE</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadRoseUnusedProfiles(){
+  if(!isRoseAdmin()){
+    roseSetStatus('Rose administrator access is required.', 'error');
+    return;
+  }
+  applyRoseOnlyAdminUI();
+  const list=document.getElementById('rose-unused-list');
+  if(list) list.innerHTML='<div style="text-align:center;color:var(--muted);padding:28px;">Comparing Firebase roster with stats uploads...</div>';
+  try{
+    await startRoseUnusedWatch();
+  }catch(error){
+    roseSetStatus('Firebase scan failed: '+(error.message||error), 'error');
+  }
+}
+
+function roseRefreshUnusedProfiles(){
+  if(!isRoseAdmin()) return;
+  stopRoseUnusedWatch();
+  roseUnusedProfiles=[];
+  loadRoseUnusedProfiles();
+}
+
+function roseOpenUnusedProfile(id){
+  const item=roseUnusedProfiles.find(row=>row.id===String(id));
+  if(!item) return;
+  openRepProfile(item.id,item.name,item.team,item.shift||'');
+}
+
+async function roseSetUnusedProfileActive(id, currentlyInactive){
+  if(!isRoseAdmin()) return alert('Rose administrator access is required.');
+  const item=roseUnusedProfiles.find(row=>row.id===String(id));
+  if(!item) return alert('Refresh the list and try again.');
+  const makeActive=!!currentlyInactive;
+  const action=makeActive?'reactivate':'mark inactive';
+  if(!confirm(`${action.charAt(0).toUpperCase()+action.slice(1)} ${item.name} (ID ${item.id})?`)) return;
+  try{
+    await ensureFirebaseAuth();
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const batch=db.batch();
+    batch.set(db.collection('roster').doc(item.id),{
+      status:makeActive?'Agent':'Inactive',
+      inactive:!makeActive,
+      updatedAt:now,
+      missingStatsReviewedBy:'rose',
+      missingStatsReviewedAt:now
+    },{merge:true});
+    batch.set(db.collection('unused_profile_actions').doc(),{
+      agentId:item.id, agentName:item.name,
+      action:makeActive?'reactivated':'marked_inactive',
+      performedBy:'rose', performedAt:now,
+      reason:`Missing from ${item.missingStreak} consecutive Agent Stats uploads`
+    });
+    await batch.commit();
+    roseSetStatus(`✅ ${item.name} was ${makeActive?'reactivated':'marked inactive'} in Firebase.`, 'success');
+  }catch(error){
+    roseSetStatus('Could not update profile: '+(error.message||error), 'error');
+  }
+}
+
+async function roseDeleteUnusedProfile(id){
+  if(!isRoseAdmin()) return alert('Rose administrator access is required.');
+  const item=roseUnusedProfiles.find(row=>row.id===String(id));
+  if(!item) return alert('This profile is no longer in the missing-stats list. Refresh and try again.');
+  if(!confirm(`Archive and delete ${item.name} (ID ${item.id}) from the live roster?\n\nThe profile has been missing from ${item.missingStreak} consecutive stats uploads. Attendance and report history will remain in Firebase.`)) return;
+  const typed=prompt(`Type the agent ID ${item.id} to confirm deletion:`,'');
+  if(String(typed||'').trim()!==item.id) return alert('Deletion cancelled because the ID did not match.');
+
+  try{
+    await ensureFirebaseAuth();
+    const rosterRef=db.collection('roster').doc(item.id);
+    const fresh=await rosterRef.get();
+    if(!fresh.exists) return alert('This roster profile was already removed.');
+    const archiveRef=db.collection('deleted_agent_profiles').doc(item.id+'_'+Date.now());
+    const auditRef=db.collection('unused_profile_actions').doc();
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const batch=db.batch();
+    batch.set(archiveRef,{
+      agentId:item.id,
+      agentName:item.name,
+      profile:fresh.data(),
+      deletedBy:'rose',
+      deletedAt:now,
+      missingStatsUploads:item.missingStreak,
+      lastSeenStatsDate:item.lastSeenDate || null,
+      reason:`Missing from ${item.missingStreak} consecutive Agent Stats uploads`
+    });
+    batch.set(auditRef,{
+      agentId:item.id, agentName:item.name,
+      action:'archived_and_deleted',
+      archiveDocument:archiveRef.id,
+      performedBy:'rose', performedAt:now,
+      missingStatsUploads:item.missingStreak,
+      lastSeenStatsDate:item.lastSeenDate || null,
+      reason:'Missing from Agent Stats uploads'
+    });
+    batch.delete(rosterRef);
+    await batch.commit();
+    delete ROSTER[item.id];
+    roseSetStatus(`✅ ${item.name} was archived and removed from the live roster.`, 'success');
+  }catch(error){
+    roseSetStatus('Delete failed: '+(error.message||error), 'error');
+  }
+}
+
 function switchTab(tab){
   document.querySelectorAll('.tab-page').forEach(p=>{
     p.classList.remove('active');
@@ -5719,6 +6396,9 @@ let selectedExpiryDays = 7;
 let dailyGoal = 300;
 let attFilter     = 'all';
 let attTeamFilter = 'all'; // 'all', 'BB', 'PR'
+let attendanceSelectedDate = '';
+let selectedAttendanceAgents = new Set();
+let currentAttVisibleIds = [];
 
 function switchAttTeam(team, btn){
   attTeamFilter = team;
@@ -5823,6 +6503,12 @@ function showAdminUI(){
 
 // ── SWITCH ADMIN SUBTAB ──
 function switchAdminTab(tab, btn){
+  if(tab==='unused' && !isRoseAdmin()){
+    alert('This tab is available only to Rose.');
+    tab='profiles';
+    btn=document.getElementById('atab-profiles');
+  }
+  if(tab!=='unused') stopRoseUnusedWatch();
   // Hide all regular tab pages
   document.querySelectorAll('.tab-page').forEach(p=>{
     p.classList.remove('active');
@@ -5836,13 +6522,14 @@ function switchAdminTab(tab, btn){
   const adminBtn = document.getElementById('tab-admin');
   if(adminBtn) adminBtn.classList.add('active');
   // Show correct sub-section
-  ['overview','attendance','weekly','monthly','stats','profiles','coaching','monitoring','rebuttal','rebuttals','weekperf','targetboard','quotes'].forEach(t=>{
+  ['overview','attendance','weekly','monthly','stats','profiles','unused','coaching','monitoring','rebuttal','rebuttals','weekperf','targetboard','quotes'].forEach(t=>{
     const el=document.getElementById('admin-'+t);
     if(el) el.style.display = t===tab?'':'none';
     const b=document.getElementById('atab-'+t);
     if(b) b.classList.toggle('active',t===tab);
   });
   if(tab==='profiles')    loadAgentProfiles();
+  if(tab==='unused')     loadRoseUnusedProfiles();
   if(tab==='overview')    loadAdminOverview();
   if(tab==='attendance')  loadAdminAttendance();
   if(tab==='weekly')      loadWeeklyAttendance('BB');
@@ -6120,22 +6807,35 @@ async function loadAdminOverview(){
 // ── LOAD DAILY ATTENDANCE ──
 async function loadAdminAttendance(){
   const today = getTodayGY();
-  const dateEl = document.getElementById('att-date');
-  if(dateEl) dateEl.textContent = new Date().toLocaleDateString('en-US',{timeZone:'America/Guyana',weekday:'long',month:'long',day:'numeric'});
+  const picker = document.getElementById('att-date-picker');
+  if(picker && !picker.value) picker.value = today;
+  attendanceSelectedDate = (picker && picker.value) ? picker.value : today;
 
-  // Make sure roster is loaded first
+  const dateEl = document.getElementById('att-date');
+  if(dateEl){
+    const selected = new Date(attendanceSelectedDate+'T12:00:00');
+    dateEl.textContent = selected.toLocaleDateString('en-US',{
+      timeZone:'America/Guyana', weekday:'long', month:'long', day:'numeric', year:'numeric'
+    });
+  }
+
   if(!rosterLoaded) await loadRoster();
 
   try{
-    const snap = await db.collection('attendance').where('date','==',today).get();
+    await ensureFirebaseAuth();
+    const snap = await db.collection('attendance').where('date','==',attendanceSelectedDate).get();
     allAttRecords=[];
-    snap.forEach(doc=>allAttRecords.push(doc.data()));
+    snap.forEach(doc=>allAttRecords.push({...doc.data(), _docId:doc.id}));
     renderAttTable();
   }catch(e){
     console.error('Attendance load error:',e);
-    // Still render with roster even if Firebase fails
     renderAttTable();
   }
+}
+
+function changeAttendanceDate(){
+  clearAttendanceSelection(false);
+  loadAdminAttendance();
 }
 
 function filterAtt(f,btn){
@@ -6145,92 +6845,200 @@ function filterAtt(f,btn){
   renderAttTable();
 }
 
+function attendanceStatusLabel(status){
+  const code = normalizeStatus(status);
+  return ({P:'Present',L:'Late',A:'Absent',S:'Sick',V:'Vacation',PO:'Personal Out',OFF:'Day Off',H:'Holiday'})[code] || (status || 'Not In');
+}
+
+function attendanceStatusBadge(status){
+  const code = normalizeStatus(status);
+  if(code==='P') return '<span class="att-badge att-p">Present</span>';
+  if(code==='L') return '<span class="att-badge att-l">Late</span>';
+  if(code==='A') return '<span class="att-badge att-a">Absent</span>';
+  if(code==='S') return '<span class="att-badge att-a">Sick</span>';
+  if(code==='PO') return '<span class="att-badge att-a">Personal Out</span>';
+  if(code==='V') return '<span class="att-badge att-l">Vacation</span>';
+  if(code==='OFF') return '<span class="att-badge att-pending">Day Off</span>';
+  if(code==='H') return '<span class="att-badge att-l">Holiday</span>';
+  return '<span class="att-badge att-pending">Not In</span>';
+}
+
+function formatAttendanceLoginTime(value){
+  if(!value) return '—';
+  try{
+    const date = value.toDate ? value.toDate()
+      : value.seconds ? new Date(value.seconds*1000)
+      : new Date(value);
+    if(Number.isNaN(date.getTime())) return '—';
+    return date.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',timeZone:'America/Guyana'});
+  }catch(e){ return '—'; }
+}
+
 function renderAttTable(){
   const tbody=document.getElementById('att-tbody');
   if(!tbody) return;
 
-  // Get ALL agents from roster sorted alphabetically — apply team filter
   const allAgents = Object.values(ROSTER)
     .filter(a => attTeamFilter === 'all' || a.team === attTeamFilter)
     .sort((a,b)=>a.name.localeCompare(b.name));
 
   if(!allAgents.length){
-    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Loading roster... please wait a moment and try again.</td></tr>';
+    currentAttVisibleIds=[];
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Loading roster... please wait a moment and try again.</td></tr>';
+    updateAttendanceSelectionUI();
     return;
   }
 
-  // Build a lookup map from attendance records — match by name AND by id
   const attByName = {};
   const attById   = {};
   allAttRecords.forEach(r=>{
-    if(r.name) attByName[r.name.toLowerCase().trim()] = r;
+    if(r.name) attByName[String(r.name).toLowerCase().trim()] = r;
     if(r.id)   attById[String(r.id).trim()] = r;
   });
 
-  // Build rows — one per agent from roster
   let rows = allAgents.map(agent=>{
-    // Try to find their attendance record by ID first, then by name
     const rec = attById[String(agent.userId||'').trim()]
-             || attByName[agent.name.toLowerCase().trim()]
+             || attByName[String(agent.name||'').toLowerCase().trim()]
              || null;
     return {
-      id:     agent.userId,
-      name:   agent.name,
-      team:   agent.team,
-      shift:  agent.shift,
-      status: rec ? rec.status : 'none',
-      loginTime: rec ? rec.loginTime : null,
-      hasRecord: !!rec
+      id:String(agent.userId||''), name:agent.name, team:agent.team, shift:agent.shift,
+      status:rec ? normalizeStatus(rec.status) : '', loginTime:rec ? rec.loginTime : null,
+      hasRecord:!!rec
     };
   });
 
-  // Apply filter
   if(attFilter !== 'all'){
-    if(attFilter === 'none'){
-      rows = rows.filter(r => !r.hasRecord);
-    } else if(attFilter === 'P'){
-      rows = rows.filter(r => r.status==='P' || r.status==='Present');
-    } else if(attFilter === 'L'){
-      rows = rows.filter(r => r.status==='L' || r.status==='Late');
-    } else if(attFilter === 'A'){
-      rows = rows.filter(r => r.status==='A' || r.status==='Absent' || r.status==='S' || r.status==='PO');
-    }
+    if(attFilter === 'none') rows = rows.filter(r => !r.hasRecord || !r.status);
+    else rows = rows.filter(r => r.status === attFilter);
   }
 
+  currentAttVisibleIds = rows.map(r=>String(r.id));
+
   if(!rows.length){
-    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">No records match this filter.</td></tr>';
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:16px;">No records match this filter.</td></tr>';
+    updateAttendanceSelectionUI();
     return;
   }
 
   tbody.innerHTML = rows.map((r,i)=>{
-    const s = r.status;
-    const badge =
-        s==='Present'||s==='P'  ? `<span class="att-badge att-p">Present</span>`
-      : s==='Late'   ||s==='L'  ? `<span class="att-badge att-l">Late</span>`
-      : s==='Absent' ||s==='A'  ? `<span class="att-badge att-a">Absent</span>`
-      : s==='S'                  ? `<span class="att-badge att-a">Sick</span>`
-      : s==='PO'                 ? `<span class="att-badge att-a">Personal Out</span>`
-      : s==='V'                  ? `<span class="att-badge att-l">Vacation</span>`
-      :                            `<span class="att-badge att-pending">Not In</span>`;
-
-    const loginTime = r.loginTime
-      ? new Date(r.loginTime.seconds*1000).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',timeZone:'America/Guyana'})
-      : '—';
-
+    const checked = selectedAttendanceAgents.has(String(r.id));
     const team = r.team==='BB'
       ? '<span style="color:var(--accent);font-weight:800;font-size:0.78rem;">BB</span>'
       : '<span style="color:var(--purple);font-weight:800;font-size:0.78rem;">PR</span>';
 
-    return `<tr onclick="openRepProfile('${r.id||''}','${r.name}','${r.team||''}','${r.shift||''}')">
+    return `<tr class="${checked?'att-row-selected':''}" data-att-row-id="${r.id}" onclick="openRepProfile('${r.id||''}','${r.name}','${r.team||''}','${r.shift||''}')">
+      <td style="text-align:center;"><input class="att-select-box att-agent-checkbox" type="checkbox" data-agent-id="${r.id}" ${checked?'checked':''} onclick="event.stopPropagation()" onchange="toggleAttendanceSelection(this.dataset.agentId,this.checked)"></td>
       <td style="color:var(--muted);font-size:0.72rem;">${i+1}</td>
       <td style="font-weight:700;color:var(--text);">${r.name||'—'}</td>
       <td>${team}</td>
       <td style="color:var(--muted);font-size:0.72rem;">${r.shift||'—'}</td>
-      <td>${badge}</td>
-      <td style="color:var(--muted);">${loginTime}</td>
+      <td>${attendanceStatusBadge(r.status)}</td>
+      <td style="color:var(--muted);">${formatAttendanceLoginTime(r.loginTime)}</td>
       <td><button class="mark-absent-btn" onclick="event.stopPropagation();markAgentAbsentDirect('${r.id||''}','${r.name}','${r.team||''}')">Edit</button></td>
     </tr>`;
   }).join('');
+
+  updateAttendanceSelectionUI();
+}
+
+function toggleAttendanceSelection(id, checked){
+  id=String(id||'');
+  if(!id) return;
+  if(checked) selectedAttendanceAgents.add(id);
+  else selectedAttendanceAgents.delete(id);
+  const row=document.querySelector(`[data-att-row-id="${CSS.escape(id)}"]`);
+  if(row) row.classList.toggle('att-row-selected',checked);
+  updateAttendanceSelectionUI();
+}
+
+function toggleSelectAllAttendance(checked){
+  currentAttVisibleIds.forEach(id=>{
+    if(checked) selectedAttendanceAgents.add(String(id));
+    else selectedAttendanceAgents.delete(String(id));
+  });
+  renderAttTable();
+}
+
+function updateAttendanceSelectionUI(){
+  const countEl=document.getElementById('att-selected-count');
+  if(countEl) countEl.textContent=selectedAttendanceAgents.size+' selected';
+
+  const master=document.getElementById('att-select-all');
+  if(master){
+    const visibleSelected=currentAttVisibleIds.filter(id=>selectedAttendanceAgents.has(String(id))).length;
+    master.checked=!!currentAttVisibleIds.length && visibleSelected===currentAttVisibleIds.length;
+    master.indeterminate=visibleSelected>0 && visibleSelected<currentAttVisibleIds.length;
+  }
+}
+
+function clearAttendanceSelection(render=true){
+  selectedAttendanceAgents.clear();
+  const feedback=document.getElementById('att-bulk-feedback');
+  if(feedback) feedback.textContent='';
+  if(render) renderAttTable();
+  else updateAttendanceSelectionUI();
+}
+
+async function applyBulkAttendance(){
+  const ids=Array.from(selectedAttendanceAgents);
+  const statusEl=document.getElementById('att-bulk-status');
+  const noteEl=document.getElementById('att-bulk-note');
+  const btn=document.getElementById('att-bulk-update-btn');
+  const feedback=document.getElementById('att-bulk-feedback');
+  const status=normalizeStatus(statusEl ? statusEl.value : '');
+  const note=String(noteEl ? noteEl.value : '').trim();
+  const date=attendanceSelectedDate || getTodayGY();
+  const allowed=['P','L','A','S','V','PO','OFF','H'];
+
+  if(!ids.length){ alert('Select at least one agent first.'); return; }
+  if(!allowed.includes(status)){ alert('Choose an attendance status first.'); return; }
+
+  const label=attendanceStatusLabel(status);
+  if(!confirm(`Update ${ids.length} selected agent${ids.length===1?'':'s'} as ${label} for ${date}?`)) return;
+
+  try{
+    await ensureFirebaseAuth();
+    if(btn){ btn.disabled=true; btn.textContent='UPDATING...'; }
+    if(feedback){ feedback.style.color='var(--gold)'; feedback.textContent='Saving to Firebase...'; }
+
+    const chunks=[];
+    for(let i=0;i<ids.length;i+=400) chunks.push(ids.slice(i,i+400));
+    for(const chunk of chunks){
+      const batch=db.batch();
+      chunk.forEach(id=>{
+        const agent=ROSTER[id] || Object.values(ROSTER).find(a=>String(a.userId||a.id||'')===String(id)) || {};
+        const data={
+          id:String(id), userId:String(id), name:agent.name||'', team:normalizeTeam(agent.team||'BB'),
+          shift:agent.shift||'', date, status, statusLabel:label,
+          markedBy:(currentUser&&currentUser.name)||'Admin', markedById:String((currentUser&&currentUser.id)||'0000'),
+          source:'admin-bulk', manualAttendance:true,
+          markedAt:firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        };
+        if(note) data.comments=note;
+        batch.set(db.collection('attendance').doc(String(id)+'_'+date),data,{merge:true});
+      });
+      await batch.commit();
+    }
+
+    await db.collection('attendance_bulk_updates').add({
+      date, status, statusLabel:label, agentIds:ids, count:ids.length, note,
+      markedBy:(currentUser&&currentUser.name)||'Admin', markedById:String((currentUser&&currentUser.id)||'0000'),
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    selectedAttendanceAgents.clear();
+    if(noteEl) noteEl.value='';
+    if(feedback){ feedback.style.color='var(--green)'; feedback.textContent=`Updated ${ids.length} agent${ids.length===1?'':'s'} in Firebase.`; }
+    await loadAdminAttendance();
+    setTimeout(()=>{ if(feedback) feedback.textContent=''; },5000);
+  }catch(e){
+    console.error('Bulk attendance update failed:',e);
+    if(feedback){ feedback.style.color='var(--red)'; feedback.textContent='Update failed.'; }
+    alert('Could not update attendance: '+(e.message||e));
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent='UPDATE SELECTED'; }
+  }
 }
 
 // ── WEEKLY ATTENDANCE — FIREBASE ──
@@ -6308,13 +7116,14 @@ function normalizeStatus(raw){
   if(s==='s'||s==='sick')           return 'S';
   if(s==='po'||s==='personal out')  return 'PO';
   if(s==='v'||s==='vacation')       return 'V';
-  if(s==='off')                     return 'OFF';
+  if(s==='off'||s==='day off')      return 'OFF';
+  if(s==='h'||s==='holiday')         return 'H';
   return String(raw).toUpperCase().trim();
 }
 
 function statusClass(code){
   return code==='P'?'wk-p':code==='L'?'wk-l':code==='A'?'wk-a'
-    :code==='S'?'wk-s':code==='PO'?'wk-po':(code==='V'||code==='OFF')?'wk-off'
+    :code==='S'?'wk-s':code==='PO'?'wk-po':(code==='V'||code==='OFF'||code==='H')?'wk-off'
     :code?'wk-off':'wk-blank';
 }
 
@@ -6540,14 +7349,14 @@ async function exportMonthlyAttendanceCSV(){
   if(btn){ btn.disabled=true; btn.textContent='⏳ EXPORTING...'; }
   try{
     const dayHeaders = Array.from({length:daysInMonth},(_,i)=>String(i+1).padStart(2,'0'));
-    const headers = ['Agent ID','Agent Name','Team','Shift',...dayHeaders,'Present','Late','Absent','Sick','Personal Out','Vacation','Off','Recorded Days','Attendance Rate'];
+    const headers = ['Agent ID','Agent Name','Team','Shift',...dayHeaders,'Present','Late','Absent','Sick','Personal Out','Vacation','Off','Holiday','Recorded Days','Attendance Rate'];
     const rows = [headers];
 
     agents.forEach(agent=>{
       const idKey = agent.userId ? 'id:'+agent.userId : '';
       const nameKey = agent.name.toLowerCase().trim();
       const att = monthlyCache[idKey] || monthlyCache[nameKey] || {};
-      const counts = {P:0,L:0,A:0,S:0,PO:0,V:0,OFF:0};
+      const counts = {P:0,L:0,A:0,S:0,PO:0,V:0,OFF:0,H:0};
       const dayValues = [];
 
       for(let d=1;d<=daysInMonth;d++){
@@ -6557,13 +7366,13 @@ async function exportMonthlyAttendanceCSV(){
         if(Object.prototype.hasOwnProperty.call(counts,status)) counts[status]++;
       }
 
-      const recorded = counts.P+counts.L+counts.A+counts.S+counts.PO+counts.V+counts.OFF;
+      const recorded = counts.P+counts.L+counts.A+counts.S+counts.PO+counts.V+counts.OFF+counts.H;
       const accountable = counts.P+counts.L+counts.A+counts.S+counts.PO;
       const rate = accountable ? Math.round(((counts.P+counts.L)/accountable)*100)+'%' : '0%';
       rows.push([
         agent.userId || '', agent.name, agent.team || '', agent.shift || '',
         ...dayValues,
-        counts.P, counts.L, counts.A, counts.S, counts.PO, counts.V, counts.OFF,
+        counts.P, counts.L, counts.A, counts.S, counts.PO, counts.V, counts.OFF, counts.H,
         recorded, rate
       ]);
     });
@@ -6791,6 +7600,7 @@ function renderMonthly(attMap, monthStart, year, monthIdx){
       else if(status==='PO'){cls='mcal-a';lbl='PO';a++;}
       else if(status==='V'){cls='mcal-l';lbl='V';}
       else if(status==='OFF'){cls='mcal-off';lbl='OFF';}
+      else if(status==='H'){cls='mcal-off';lbl='H';}
       else if(isFuture){cls='mcal-off';lbl='';}
       else if(isSun && !status){cls='mcal-off';lbl='·';}
       else{cls='mcal-off';lbl='';}
@@ -6885,6 +7695,61 @@ function updateExpiryDisplay(){
   document.getElementById('expiry-date-display').textContent=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 }
 
+
+function statsPresenceNameKey(value){
+  return String(value == null ? '' : value)
+    .toLowerCase()
+    .replace(/^guy[pb]?\s*[-_#]*\s*\d*\s*/i,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+async function saveStatsPresenceSnapshot(reportDate, filename, rows){
+  const rosterEntries = Object.entries(ROSTER || {});
+  const agentIds = new Set();
+  const agentNames = new Set();
+
+  (rows || []).forEach(row=>{
+    const rawId = String(row.ytelId || row.userId || row.userid || row.agentId || row.id || '').trim();
+    const rowKeys = [row.name,row.nameRaw,row.ytelName].map(statsPresenceNameKey).filter(Boolean);
+    let matchedId = rawId && ROSTER[rawId] ? rawId : '';
+    if(!matchedId){
+      const match = rosterEntries.find(([id,agent])=>{
+        const keys=[agent.name,agent.ytelName].map(statsPresenceNameKey).filter(Boolean);
+        return rowKeys.some(key=>keys.includes(key));
+      });
+      if(match) matchedId=String(match[0]);
+    }
+    if(matchedId) agentIds.add(matchedId);
+    rowKeys.forEach(key=>agentNames.add(key));
+  });
+
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+  const batch = db.batch();
+  batch.set(db.collection('stats_presence').doc(reportDate),{
+    date:reportDate,
+    filename:filename || '',
+    agentIds:[...agentIds],
+    agentNames:[...agentNames],
+    agentCount:(rows || []).length,
+    matchedRosterCount:agentIds.size,
+    uploadedAt:now,
+    updatedAt:now
+  },{merge:true});
+
+  agentIds.forEach(id=>{
+    batch.set(db.collection('roster').doc(id),{
+      lastStatsSeenDate:reportDate,
+      lastStatsSeenAt:now,
+      lastStatsFilename:filename || '',
+      updatedAt:now
+    },{merge:true});
+  });
+  await batch.commit();
+  console.log('Stats presence saved to Firebase:', reportDate, agentIds.size, 'matched agents');
+}
+
 async function confirmCSVUpload(){
   if(!pendingCSVData) return;
 
@@ -6914,7 +7779,8 @@ async function confirmCSVUpload(){
       // Store parsed data for reload
       statsJSON: JSON.stringify(statsData)
     });
-    console.log('Report saved to Firebase — date:', pendingCSVData.date);
+    await saveStatsPresenceSnapshot(pendingCSVData.date, pendingCSVData.filename, statsData);
+    console.log('Report and stats presence saved to Firebase — date:', pendingCSVData.date);
   }catch(e){ console.error('Report save error:',e); }
 
   document.getElementById('expiry-picker').style.display='none';
@@ -7629,6 +8495,8 @@ function renderAgentCalendar(elId, year, monthIdx, attMap, todayStr){
       cls='ap-cal-a'; lbl='PO';
     } else if(status==='OFF'){
       cls='ap-cal-off'; lbl='—';
+    } else if(status==='H'){
+      cls='ap-cal-off'; lbl='H';
     } else {
       cls='ap-cal-off'; lbl='';
     }
@@ -7950,18 +8818,29 @@ async function markAgentAbsent(status){
 }
 
 async function markAgentAbsentDirect(id,name,team){
-  const status=prompt('Mark '+name+' as:\nP = Present  L = Late  A = Absent  S = Sick  PO = Personal Out\n\nType the code:','A');
-  if(!status) return;
-  const today=getTodayGY();
+  const date=attendanceSelectedDate || getTodayGY();
+  const entered=prompt(
+    'Mark '+name+' for '+date+' as:\n'+
+    'P = Present\nL = Late\nA = Absent\nS = Sick\nV = Vacation\nPO = Personal Out\nOFF = Day Off\nH = Holiday\n\nType the code:',
+    'A'
+  );
+  if(!entered) return;
+  const status=normalizeStatus(entered);
+  if(!['P','L','A','S','V','PO','OFF','H'].includes(status)){
+    alert('Invalid status. Use P, L, A, S, V, PO, OFF or H.');
+    return;
+  }
   try{
-    await db.collection('attendance').doc(id+'_'+today).set({
-      id:String(id),name,team:normalizeTeam(team),date:today,status:status.toUpperCase().trim(),
-      markedBy:'admin',source:'admin',
+    const agent=ROSTER[String(id)]||{};
+    await db.collection('attendance').doc(String(id)+'_'+date).set({
+      id:String(id),userId:String(id),name,team:normalizeTeam(team),shift:agent.shift||'',date,status,
+      statusLabel:attendanceStatusLabel(status),markedBy:(currentUser&&currentUser.name)||'Admin',
+      markedById:String((currentUser&&currentUser.id)||'0000'),source:'admin',manualAttendance:true,
       markedAt:firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     },{merge:true});
     loadAdminAttendance();
-  }catch(e){alert('Could not save.');}
+  }catch(e){alert('Could not save: '+(e.message||e));}
 }
 
 
