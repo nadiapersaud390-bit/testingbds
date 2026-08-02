@@ -28,7 +28,7 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-01-rebuttal-library-r5';
+const APP_VERSION = '2026-08-02-new-lead-live-30s-r7';
 
 // Apply the saved appearance before the page paints to prevent a theme flash.
 (function applySavedThemeEarly(){
@@ -345,60 +345,178 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 #app-update-banner .upd-dismiss:hover{border-color:var(--red);color:var(--red);}
 
-/* ── TRANSFER CELEBRATION BANNER ── */
+/* ── NEW LEAD CELEBRATION POPUP ── */
+body.lead-alert-open{overflow:hidden;}
 #xfer-banner{
-  position:fixed;top:0;left:0;right:0;z-index:99999;
-  transform:translateY(-110%);
-  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events:none;
+  position:fixed;inset:0;z-index:999999;
+  display:grid;place-items:center;padding:16px;
+  background:rgba(2,6,18,.58);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+  backdrop-filter:blur(18px) saturate(125%);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .32s ease,visibility .32s ease;
 }
-#xfer-banner.show{transform:translateY(0);pointer-events:all;}
+#xfer-banner.show{opacity:1;visibility:visible;pointer-events:auto;}
 .xfer-banner-inner{
-  background:linear-gradient(135deg,#060b18 0%,#0d1a2e 50%,#080d1a 100%);
-  border-bottom:2px solid transparent;
-  border-image:linear-gradient(90deg,transparent 0%,#fbbf24 20%,#34d399 50%,#60a5fa 80%,transparent 100%) 1;
-  padding:14px 20px 12px;
-  display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;
-  box-shadow:0 4px 32px rgba(0,0,0,0.7);
+  position:relative;isolation:isolate;overflow:hidden;
+  width:min(560px,calc(100vw - 32px),calc(100vh - 32px));
+  aspect-ratio:1/1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:34px 38px 28px;text-align:center;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 50% 20%,rgba(52,211,153,.20),transparent 31%),
+    radial-gradient(circle at 15% 90%,rgba(96,165,250,.15),transparent 34%),
+    linear-gradient(145deg,rgba(13,26,46,.98),rgba(5,10,23,.99));
+  border-radius:30px;
+  box-shadow:0 30px 90px rgba(0,0,0,.72),0 0 55px rgba(52,211,153,.16);
+  transform:scale(.78) rotate(-2deg) translateY(24px);
+  transition:transform .62s cubic-bezier(.16,1,.3,1);
 }
-.xfer-banner-icon{font-size:1.6rem;line-height:1;flex-shrink:0;margin-top:2px;}
-.xfer-banner-body{flex:1;min-width:200px;}
+#xfer-banner.show .xfer-banner-inner{
+  transform:scale(1) rotate(0deg) translateY(0);
+  animation:lead-square-float 4.8s ease-in-out .7s infinite;
+}
+.xfer-banner-inner::before{
+  content:"";position:absolute;inset:-3px;z-index:0;border-radius:32px;
+  background:conic-gradient(from 0deg,var(--green),var(--cyan),var(--accent),var(--gold),var(--green));
+  animation:lead-border-spin 4.5s linear infinite;
+}
+.xfer-banner-inner::after{
+  content:"";position:absolute;inset:3px;z-index:1;border-radius:27px;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(52,211,153,.18),transparent 31%),
+    radial-gradient(circle at 15% 88%,rgba(96,165,250,.13),transparent 35%),
+    linear-gradient(145deg,#0d1a2e,#050a17 82%);
+}
+.xfer-banner-inner > :not(.xfer-banner-glow):not(.xfer-confetti){position:relative;z-index:2;}
+@keyframes lead-border-spin{to{transform:rotate(360deg);}}
+@keyframes lead-square-float{0%,100%{translate:0 0;}50%{translate:0 -7px;}}
+.xfer-banner-glow{
+  position:absolute;inset:auto 50% -150px auto;translate:50% 0;
+  width:340px;height:340px;border-radius:50%;pointer-events:none;
+  z-index:1;background:rgba(52,211,153,.14);filter:blur(55px);
+  animation:lead-glow-pulse 2.2s ease-in-out infinite;
+}
+@keyframes lead-glow-pulse{50%{transform:scale(1.18);opacity:.68;}}
+.xfer-banner-close{
+  position:absolute;top:18px;right:18px;z-index:4;
+  width:38px;height:38px;border-radius:12px;
+  border:1px solid rgba(148,163,184,.25);background:rgba(4,9,20,.58);
+  color:#cbd5e1;cursor:pointer;font-size:1rem;font-weight:900;
+  display:grid;place-items:center;transition:transform .18s ease,border-color .18s,color .18s;
+}
+.xfer-banner-close:hover{transform:rotate(8deg) scale(1.06);border-color:var(--red);color:var(--red);}
+.xfer-banner-kicker{
+  font-family:'Barlow Condensed',sans-serif;font-size:.63rem;font-weight:900;
+  letter-spacing:3.6px;text-transform:uppercase;color:var(--green);margin-bottom:7px;
+}
+.xfer-banner-icon{
+  width:72px;height:72px;border-radius:22px;display:grid;place-items:center;
+  font-size:2.05rem;line-height:1;margin:0 auto 10px;
+  background:linear-gradient(145deg,rgba(52,211,153,.2),rgba(96,165,250,.16));
+  border:1px solid rgba(52,211,153,.46);
+  box-shadow:0 0 0 8px rgba(52,211,153,.055),0 12px 35px rgba(0,0,0,.3);
+  animation:lead-icon-pop 1.25s cubic-bezier(.16,1,.3,1) infinite alternate;
+}
+@keyframes lead-icon-pop{from{transform:scale(.94) rotate(-3deg);}to{transform:scale(1.06) rotate(3deg);}}
 .xfer-banner-title{
-  font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;
-  font-weight:800;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:6px;
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3.15rem);
+  letter-spacing:4px;line-height:.96;text-transform:uppercase;
+  background:linear-gradient(90deg,#fff,var(--green),#fff);
+  background-size:220% auto;-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;animation:lead-title-shine 2.6s linear infinite;
 }
+@keyframes lead-title-shine{to{background-position:220% center;}}
+.xfer-banner-total{
+  margin-top:4px;font-family:'Bebas Neue',sans-serif;font-size:clamp(3.3rem,11vw,6rem);
+  line-height:.88;letter-spacing:1px;color:#fff;text-shadow:0 0 28px rgba(52,211,153,.45);
+}
+.xfer-banner-total-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:900;
+  letter-spacing:3px;text-transform:uppercase;color:#94a3b8;margin-top:3px;
+}
+.xfer-agent-stage{
+  width:100%;margin-top:14px;padding:13px 14px 12px;border-radius:17px;
+  border:1px solid rgba(96,165,250,.22);background:rgba(6,14,29,.56);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.xfer-agent-stage.swap{animation:lead-agent-swap .42s cubic-bezier(.16,1,.3,1);}
+@keyframes lead-agent-swap{from{opacity:.1;transform:translateY(10px) scale(.97);}to{opacity:1;transform:none;}}
+.xfer-hero-name{
+  font-family:'Barlow Condensed',sans-serif;font-size:1.38rem;font-weight:900;
+  letter-spacing:1.2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.xfer-hero-meta{font-size:.73rem;color:#93a4bc;margin-top:2px;}
+.xfer-hero-meta strong{color:var(--green);font-size:.85rem;}
 .xfer-banner-agents{
-  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;
+  width:100%;display:flex;justify-content:center;flex-wrap:wrap;gap:6px;
+  margin:10px 0 0;max-height:58px;overflow:hidden;
 }
 .xfer-banner-chip{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:4px 12px;border-radius:20px;
-  font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1px;
-  border:1.5px solid rgba(52,211,153,0.5);
-  background:rgba(52,211,153,0.1);color:var(--green);
-  animation:chip-pop 0.3s ease both;
+  display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;
+  font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:.6px;
+  border:1px solid rgba(52,211,153,.36);background:rgba(52,211,153,.09);color:#bfffea;
+  animation:chip-pop .34s ease both;
 }
-.xfer-banner-chip.top{border-color:rgba(251,191,36,0.6);background:rgba(251,191,36,0.12);color:var(--gold);}
-@keyframes chip-pop{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
+.xfer-banner-chip.top{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.1);color:#ffe7a1;}
+@keyframes chip-pop{from{opacity:0;transform:scale(.7) translateY(5px);}to{opacity:1;transform:none;}}
 .xfer-banner-quote{
-  font-size:0.8rem;color:#94a3b8;font-style:italic;line-height:1.5;
-  border-left:2px solid rgba(251,191,36,0.4);padding-left:10px;
-  max-width:600px;
+  width:100%;font-size:.72rem;color:#94a3b8;font-style:italic;line-height:1.4;
+  margin-top:9px;min-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.xfer-banner-close{
-  flex-shrink:0;background:none;border:1px solid #1e2d4a;border-radius:8px;
-  color:var(--muted);cursor:pointer;padding:6px 10px;font-size:0.75rem;
-  font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:1px;
-  transition:all 0.15s;align-self:flex-start;
+.xfer-banner-action{
+  margin-top:12px;min-width:170px;padding:10px 22px;border:none;border-radius:12px;
+  cursor:pointer;background:linear-gradient(90deg,var(--green),var(--cyan));color:#03120d;
+  font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:900;
+  letter-spacing:1.8px;text-transform:uppercase;box-shadow:0 10px 28px rgba(52,211,153,.2);
+  transition:transform .18s ease,filter .18s ease;
 }
-.xfer-banner-close:hover{border-color:var(--red);color:var(--red);}
+.xfer-banner-action:hover{transform:translateY(-2px);filter:brightness(1.1);}
 .xfer-banner-progress{
-  position:absolute;bottom:0;left:0;height:2px;
+  position:absolute;bottom:0;left:0;height:4px;border-radius:0 4px 4px 0;
   background:linear-gradient(90deg,var(--gold),var(--green),var(--accent));
-  animation:banner-countdown 600s linear forwards;
+  box-shadow:0 0 12px rgba(52,211,153,.6);
+  animation:banner-countdown 30s linear forwards;
 }
 @keyframes banner-countdown{from{width:100%;}to{width:0%;}}
+.xfer-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3;}
+.xfer-confetti-piece{
+  position:absolute;top:-12%;width:8px;height:14px;border-radius:2px;
+  background:var(--confetti-color,var(--green));opacity:.88;
+  animation:lead-confetti-fall var(--fall-time,3s) linear var(--fall-delay,0s) infinite;
+}
+@keyframes lead-confetti-fall{
+  0%{transform:translate3d(0,-20px,0) rotate(0deg);opacity:0;}
+  12%{opacity:.9;}
+  100%{transform:translate3d(var(--drift,30px),650px,0) rotate(620deg);opacity:0;}
+}
+html[data-theme="light"] #xfer-banner{background:rgba(226,232,240,.62);}
+html[data-theme="light"] .xfer-banner-inner{color:#0f172a;box-shadow:0 30px 80px rgba(15,23,42,.28),0 0 50px rgba(5,150,105,.14);}
+html[data-theme="light"] .xfer-banner-inner::after{
+  background:radial-gradient(circle at 50% 18%,rgba(5,150,105,.15),transparent 31%),linear-gradient(145deg,#ffffff,#eef5fb 85%);
+}
+html[data-theme="light"] .xfer-banner-title{background:linear-gradient(90deg,#0f172a,#059669,#0f172a);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+html[data-theme="light"] .xfer-banner-total,html[data-theme="light"] .xfer-hero-name{color:#0f172a;}
+html[data-theme="light"] .xfer-agent-stage{background:rgba(255,255,255,.72);border-color:rgba(37,99,235,.18);}
+html[data-theme="light"] .xfer-banner-close{background:rgba(255,255,255,.78);color:#475569;border-color:#cbd5e1;}
+html[data-theme="light"] .xfer-banner-chip{color:#047857;}
+html[data-theme="light"] .xfer-banner-chip.top{color:#92400e;}
+@media(max-width:620px){
+  .xfer-banner-inner{padding:28px 20px 22px;border-radius:24px;}
+  .xfer-banner-inner::before{border-radius:26px}.xfer-banner-inner::after{border-radius:21px}
+  .xfer-banner-close{top:12px;right:12px;width:34px;height:34px;}
+  .xfer-banner-icon{width:60px;height:60px;border-radius:18px;font-size:1.7rem;margin-bottom:8px;}
+  .xfer-agent-stage{margin-top:10px;padding:10px 12px;}
+  .xfer-hero-name{font-size:1.13rem;}
+  .xfer-banner-agents{max-height:48px;margin-top:7px;}
+  .xfer-banner-quote{margin-top:6px;font-size:.65rem;}
+  .xfer-banner-action{margin-top:8px;padding:9px 18px;}
+}
+@media(prefers-reduced-motion:reduce){
+  #xfer-banner.show .xfer-banner-inner,.xfer-banner-inner::before,.xfer-banner-icon,.xfer-banner-title,.xfer-confetti-piece{animation:none!important;}
+}
+
 .tab-btn.t-dbs.active{background:#0a1a10;border-color:#4ade80;color:#4ade80;box-shadow:0 0 14px rgba(74,222,128,0.25);}
 #tab-lenders.active,.tab-btn.t-lenders.active{background:#0a1224;border-color:#3b82f6;color:#60a5fa;box-shadow:0 0 14px rgba(59,130,246,0.25);}
 .tab-btn.t-lenders{background:#0d1a2e;border-color:#3b82f6;color:#60a5fa;}
@@ -1060,19 +1178,35 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
   <span class="theme-toggle-icon" id="theme-toggle-icon">☀️</span>
   <span class="theme-toggle-label" id="theme-toggle-label">Light Theme</span>
 </button>
-<!-- ── TRANSFER CELEBRATION BANNER ── -->
-<div id="xfer-banner">
-  <div class="xfer-banner-inner" style="position:relative;">
-    <div class="xfer-banner-icon">🎉</div>
-    <div class="xfer-banner-body">
-      <div class="xfer-banner-title">🔥 Transfers on the board!</div>
-      <div class="xfer-banner-agents" id="xfer-banner-agents"></div>
-      <div class="xfer-banner-quote" id="xfer-banner-quote"></div>
+<!-- ── NEW LEAD CELEBRATION POPUP ── -->
+<div id="xfer-banner" role="dialog" aria-modal="true" aria-labelledby="xfer-banner-title" aria-hidden="true">
+  <div class="xfer-banner-inner">
+    <div class="xfer-banner-glow"></div>
+    <div class="xfer-confetti" id="xfer-confetti" aria-hidden="true"></div>
+    <button class="xfer-banner-close" type="button" onclick="closeXferBanner()" aria-label="Close new lead alert">✕</button>
+
+    <div class="xfer-banner-kicker">Live performance update</div>
+    <div class="xfer-banner-icon">🚀</div>
+    <div class="xfer-banner-title" id="xfer-banner-title">New Lead On Board!</div>
+    <div class="xfer-banner-total" id="xfer-banner-total">+1</div>
+    <div class="xfer-banner-total-label" id="xfer-banner-total-label">New lead added</div>
+
+    <div class="xfer-agent-stage" id="xfer-agent-stage">
+      <div class="xfer-hero-name" id="xfer-hero-name">Agent Name</div>
+      <div class="xfer-hero-meta">
+        <strong id="xfer-hero-delta">+1 new</strong>
+        <span aria-hidden="true"> · </span>
+        <span id="xfer-hero-total">1 total lead</span>
+      </div>
     </div>
-    <button class="xfer-banner-close" onclick="closeXferBanner()">✕ CLOSE</button>
+
+    <div class="xfer-banner-agents" id="xfer-banner-agents"></div>
+    <div class="xfer-banner-quote" id="xfer-banner-quote"></div>
+    <button class="xfer-banner-action" type="button" onclick="closeXferBanner()">LET'S GO! 🔥</button>
     <div class="xfer-banner-progress" id="xfer-banner-progress"></div>
   </div>
 </div>
+
 
 <!-- ── COMPANY NAME EDIT MODAL (Admin only) ── -->
 <div id="company-name-modal">
@@ -4245,13 +4379,36 @@ function showDashboard(){
     // This listener fires for all logged-in agents automatically,
     // populates statsData, and refreshes the leaderboard + open profile popup.
     if(_agentStatsListener) _agentStatsListener(); // detach any previous listener
+    _agentStatsLiveInitialized = false;
+    _agentStatsLivePrevious = [];
     const _agentToday = getTodayGY();
     _agentStatsListener = db.collection('reports').doc(_agentToday)
       .onSnapshot(snap => {
-        if(!snap.exists || !snap.data().statsJSON) return;
+        // The first callback establishes a baseline. If no report exists yet,
+        // remember an empty baseline so the first report created later will alert.
+        if(!snap.exists || !snap.data().statsJSON){
+          if(!_agentStatsLiveInitialized){
+            _agentStatsLiveInitialized = true;
+            _agentStatsLivePrevious = [];
+          }
+          return;
+        }
         try {
-          statsData     = JSON.parse(snap.data().statsJSON);
+          const liveStats = JSON.parse(snap.data().statsJSON);
+          const previousForAlert = _agentStatsLivePrevious;
+          const shouldAlert = _agentStatsLiveInitialized;
+
+          statsData     = liveStats;
           statsDataDate = _agentToday;
+
+          // Every increase received while this tab remains open triggers the large
+          // Firebase lead alert and restarts its full 30-second countdown.
+          if(shouldAlert){
+            showTransferBanner(liveStats, previousForAlert);
+          }
+          _agentStatsLivePrevious = snapshotLeadTotals(liveStats);
+          _agentStatsLiveInitialized = true;
+
           // Refresh leaderboard if it's currently visible
           const lbPage = document.getElementById('page-leaderboard');
           if(lbPage && lbPage.classList.contains('active') && typeof renderLeaderboard === 'function'){
@@ -5574,6 +5731,22 @@ let allAttRecords = [];
 let _todayReportListener = null; // holds the Firestore unsubscribe fn
 let _agentStatsListener  = null; // real-time stats listener for agents
 
+// Live report baselines used to detect NEW lead increases after the first snapshot.
+// The first Firestore snapshot only establishes the current totals, so agents do not
+// receive an alert for leads that already existed before they opened the dashboard.
+let _agentStatsLiveInitialized = false;
+let _agentStatsLivePrevious = [];
+let _adminStatsLiveInitialized = false;
+let _adminStatsLivePrevious = [];
+
+function snapshotLeadTotals(rows){
+  return (Array.isArray(rows) ? rows : []).map(a => ({
+    name: a.name || a.nameRaw || '',
+    nameRaw: a.nameRaw || a.name || '',
+    xfer: Number(a.xfer) || 0
+  }));
+}
+
 function showAdminUI(){
   document.body.classList.add('is-admin');
   // Force fresh Firebase roster load immediately so all admin views have correct data
@@ -5595,19 +5768,42 @@ function showAdminUI(){
   // When any admin uploads a CSV, this fires on ALL open admin sessions
   // so the Daily Overview goal bars update automatically without a page reload.
   if(_todayReportListener) _todayReportListener(); // detach previous listener if any
+  _adminStatsLiveInitialized = false;
+  _adminStatsLivePrevious = [];
   const todayStr = getTodayGY();
   _todayReportListener = db.collection('reports').doc(todayStr)
     .onSnapshot(snap=>{
-      if(!snap.exists || !snap.data().statsJSON) return;
+      // Establish the initial baseline without announcing old leads. If today's
+      // report does not exist yet, use zero as the baseline for its later creation.
+      if(!snap.exists || !snap.data().statsJSON){
+        if(!_adminStatsLiveInitialized){
+          _adminStatsLiveInitialized = true;
+          _adminStatsLivePrevious = [];
+        }
+        return;
+      }
       try{
         const d = snap.data();
-        // Only apply if this is newer than what we have (avoid no-op re-renders)
+        // Only apply today's report.
         if(d.statsJSON && d.date === todayStr){
-          statsData = JSON.parse(d.statsJSON);
+          const liveStats = JSON.parse(d.statsJSON);
+          const previousForAlert = _adminStatsLivePrevious;
+          const shouldAlert = _adminStatsLiveInitialized;
+
+          statsData = liveStats;
+          statsDataDate = todayStr;
+
+          // This Firestore listener remains active while the tab is open. Every
+          // genuine lead increase opens the popup for a fresh 30 seconds.
+          if(shouldAlert){
+            showTransferBanner(liveStats, previousForAlert);
+          }
+          _adminStatsLivePrevious = snapshotLeadTotals(liveStats);
+          _adminStatsLiveInitialized = true;
+
           // Team was already resolved correctly at upload time — do NOT re-resolve here.
           // Re-running resolveAgentTeam on reload causes BB/PR to swap when the ROSTER
           // is stale or an agent isn't found, because it falls back to 'BB' for everyone.
-          statsDataDate = todayStr;
           updateGoalBars();
           // If the Daily Overview tab is currently open, refresh the overview too
           const ovEl = document.getElementById('admin-overview');
@@ -6702,10 +6898,8 @@ async function confirmCSVUpload(){
   const expiryDate=new Date();
   expiryDate.setDate(expiryDate.getDate()+selectedExpiryDays);
 
-  // Snapshot previous stats BEFORE parsing new CSV — used for banner diff
-  const prevStats = statsData.map(a=>({name:a.name||a.nameRaw||'', xfer:a.xfer||0}));
-
-  // Parse CSV first
+  // Parse CSV first. The open Firestore listener detects increases and shows
+  // the popup on every connected dashboard, including the admin who uploads it.
   parseStatsCSV(pendingCSVData.text);
 
   // Save to Firebase — same date = overwrite (set not add)
@@ -6745,7 +6939,6 @@ async function confirmCSVUpload(){
 
   updateGoalBars();
   renderStatsTable();
-  showTransferBanner(statsData, prevStats);
 
   // Reload report history so the new upload appears in the buttons immediately
   await loadReportHistory();
@@ -9274,78 +9467,186 @@ function escHtml(s){
 }
 
 // ══════════════════════════════════════════════
-//  TRANSFER CELEBRATION BANNER
+//  NEW LEAD CELEBRATION POPUP + BROWSER TAB ALERT
 // ══════════════════════════════════════════════
 let _xferBannerTimer = null;
+let _leadCardTimer = null;
+let _leadTabTimer = null;
+let _leadOriginalTitle = document.title;
+let _leadTabMessage = '';
+let _leadTabPosition = 0;
+let _leadCelebrationAgents = [];
+let _leadCelebrationIndex = 0;
+
+function stopLeadTabAnimation(){
+  clearInterval(_leadTabTimer);
+  _leadTabTimer = null;
+  _leadTabMessage = '';
+  _leadTabPosition = 0;
+  document.title = _leadOriginalTitle || 'BDS LOAN CR DASHBOARD';
+}
+
+function startLeadTabAnimation(agents,totalNew){
+  stopLeadTabAnimation();
+  _leadOriginalTitle = document.title || 'BDS LOAN CR DASHBOARD';
+
+  const names = agents.slice(0,3).map(a => (a.name||a.nameRaw||'Agent').split(' ')[0]);
+  const extra = agents.length > 3 ? ` +${agents.length-3} more` : '';
+  _leadTabMessage = `🚨 NEW LEAD ON BOARD! +${totalNew} • ${names.join(', ')}${extra} • `;
+
+  const paint = () => {
+    if(!_leadTabMessage) return;
+    const text = _leadTabMessage;
+    const pos = _leadTabPosition % text.length;
+    document.title = text.slice(pos) + text.slice(0,pos);
+    _leadTabPosition = (pos + 1) % text.length;
+  };
+
+  paint();
+  _leadTabTimer = setInterval(paint, 260);
+}
+
+function buildLeadConfetti(){
+  const box = document.getElementById('xfer-confetti');
+  if(!box) return;
+  const colors = ['#34d399','#22d3ee','#60a5fa','#fbbf24','#a78bfa','#fb7185'];
+  box.innerHTML = Array.from({length:28},(_,i)=>{
+    const left = Math.round(Math.random()*100);
+    const delay = (Math.random()*2.5).toFixed(2);
+    const time = (2.6 + Math.random()*2.2).toFixed(2);
+    const drift = Math.round(-70 + Math.random()*140);
+    const color = colors[i % colors.length];
+    const width = 5 + Math.round(Math.random()*6);
+    const height = 8 + Math.round(Math.random()*10);
+    return `<span class="xfer-confetti-piece" style="left:${left}%;width:${width}px;height:${height}px;--fall-delay:${delay}s;--fall-time:${time}s;--drift:${drift}px;--confetti-color:${color};"></span>`;
+  }).join('');
+}
+
+function renderLeadCelebrationAgent(index){
+  if(!_leadCelebrationAgents.length) return;
+  _leadCelebrationIndex = index % _leadCelebrationAgents.length;
+  const agent = _leadCelebrationAgents[_leadCelebrationIndex];
+  const name = agent.name || agent.nameRaw || 'Agent';
+  const delta = Math.max(1,Number(agent._newLeadDelta)||1);
+  const total = Math.max(delta,Number(agent.xfer)||delta);
+
+  const stage = document.getElementById('xfer-agent-stage');
+  const nameEl = document.getElementById('xfer-hero-name');
+  const deltaEl = document.getElementById('xfer-hero-delta');
+  const totalEl = document.getElementById('xfer-hero-total');
+
+  if(stage){
+    stage.classList.remove('swap');
+    void stage.offsetWidth;
+    stage.classList.add('swap');
+  }
+  if(nameEl) nameEl.textContent = name;
+  if(deltaEl) deltaEl.textContent = `+${delta} new ${delta===1?'lead':'leads'}`;
+  if(totalEl) totalEl.textContent = `${total} total ${total===1?'lead':'leads'}`;
+}
 
 async function showTransferBanner(newStatsData, prevStatsData){
-  const newData = newStatsData || statsData;
+  const newData = newStatsData || statsData || [];
   const prevData = prevStatsData || [];
 
-  // Build a lookup of previous xfer counts by agent name (normalized)
   const prevMap = {};
   prevData.forEach(a => {
-    const key = (a.name||'').toLowerCase().trim();
-    if(key) prevMap[key] = a.xfer || 0;
+    const key = (a.name||a.nameRaw||'').toLowerCase().trim();
+    if(key) prevMap[key] = Number(a.xfer)||0;
   });
 
-  // Only show agents whose xfer count INCREASED vs previous upload
   const agents = newData
-    .filter(a => {
-      const newXfer = a.xfer || 0;
-      if(newXfer === 0) return false;
+    .map(a => {
       const key = (a.name||a.nameRaw||'').toLowerCase().trim();
-      const prevXfer = prevMap[key] !== undefined ? prevMap[key] : 0;
-      return newXfer > prevXfer; // only show if they gained new transfers
+      const current = Number(a.xfer)||0;
+      const previous = prevMap[key] !== undefined ? prevMap[key] : 0;
+      return {...a,_newLeadDelta:Math.max(0,current-previous)};
     })
-    .sort((a,b) => (b.xfer||0) - (a.xfer||0));
+    .filter(a => a._newLeadDelta > 0)
+    .sort((a,b) => (b._newLeadDelta-a._newLeadDelta) || ((b.xfer||0)-(a.xfer||0)));
 
-  if(!agents.length) return; // no new transfers — don't show banner
+  if(!agents.length) return;
 
-  // Pick a random motivational quote
+  const totalNew = agents.reduce((sum,a)=>sum+(Number(a._newLeadDelta)||0),0);
   let quote = '';
   try{
     const snap = await db.collection('settings').doc('motd_quotes').get();
-    const qs = (snap.exists && snap.data().quotes) ? snap.data().quotes : [];
-    if(qs.length){
-      const idx = Math.floor(Math.random() * qs.length);
-      quote = qs[idx];
-    }
-  }catch(e){}
+    const qs = (snap.exists && Array.isArray(snap.data().quotes)) ? snap.data().quotes : [];
+    if(qs.length) quote = qs[Math.floor(Math.random()*qs.length)];
+  }catch(e){ console.warn('Lead alert quote:',e); }
 
-  // Build chips HTML
-  const chipsHtml = agents.map((a,i)=>{
-    const name = (a.name||a.nameRaw||'Agent').split(' ')[0];
-    const isTop = i === 0;
-    return `<span class="xfer-banner-chip${isTop?' top':''}" style="animation-delay:${i*0.07}s;">
-      ${isTop?'🥇':'🔥'} ${escHtml(name)} <strong style="font-size:1rem;">(${a.xfer})</strong>
-    </span>`;
-  }).join('');
+  _leadCelebrationAgents = agents;
+  _leadCelebrationIndex = 0;
 
+  const banner = document.getElementById('xfer-banner');
+  const totalEl = document.getElementById('xfer-banner-total');
+  const totalLabel = document.getElementById('xfer-banner-total-label');
   const agentsEl = document.getElementById('xfer-banner-agents');
-  const quoteEl  = document.getElementById('xfer-banner-quote');
-  const banner   = document.getElementById('xfer-banner');
+  const quoteEl = document.getElementById('xfer-banner-quote');
   const progress = document.getElementById('xfer-banner-progress');
   if(!banner) return;
 
-  if(agentsEl) agentsEl.innerHTML = chipsHtml;
-  if(quoteEl)  quoteEl.innerHTML  = quote ? `"${escHtml(sanitizeQuote(quote))}"` : '';
+  if(totalEl) totalEl.textContent = `+${totalNew}`;
+  if(totalLabel) totalLabel.textContent = totalNew===1 ? 'New lead added' : 'New leads added';
 
-  // Reset progress bar animation
-  if(progress){ progress.style.animation='none'; void progress.offsetWidth; progress.style.animation=''; }
+  if(agentsEl){
+    agentsEl.innerHTML = agents.map((a,i)=>{
+      const first = (a.name||a.nameRaw||'Agent').split(' ')[0];
+      const delta = Number(a._newLeadDelta)||1;
+      return `<span class="xfer-banner-chip${i===0?' top':''}" style="animation-delay:${i*.06}s;">${i===0?'🏆':'🔥'} ${escHtml(first)} <strong>+${delta}</strong></span>`;
+    }).join('');
+  }
+  if(quoteEl) quoteEl.textContent = quote ? `“${sanitizeQuote(quote)}”` : 'Every lead is another opportunity on the board.';
+
+  renderLeadCelebrationAgent(0);
+  buildLeadConfetti();
+
+  clearInterval(_leadCardTimer);
+  if(agents.length > 1){
+    _leadCardTimer = setInterval(()=>{
+      renderLeadCelebrationAgent((_leadCelebrationIndex+1)%agents.length);
+    },2800);
+  }
+
+  if(progress){
+    progress.style.animation = 'none';
+    void progress.offsetWidth;
+    progress.style.animation = 'banner-countdown 30s linear forwards';
+  }
 
   banner.classList.add('show');
+  banner.setAttribute('aria-hidden','false');
+  document.body.classList.add('lead-alert-open');
+  startLeadTabAnimation(agents,totalNew);
 
-  // Auto-dismiss after 8s
   clearTimeout(_xferBannerTimer);
-  _xferBannerTimer = setTimeout(closeXferBanner, 600000); // 10 minutes
+  _xferBannerTimer = setTimeout(closeXferBanner,30000);
 }
 
 function closeXferBanner(){
   clearTimeout(_xferBannerTimer);
+  clearInterval(_leadCardTimer);
+  _xferBannerTimer = null;
+  _leadCardTimer = null;
+
   const banner = document.getElementById('xfer-banner');
-  if(banner) banner.classList.remove('show');
+  if(banner){
+    banner.classList.remove('show');
+    banner.setAttribute('aria-hidden','true');
+  }
+  document.body.classList.remove('lead-alert-open');
+  stopLeadTabAnimation();
 }
+
+// Close the lead popup with Escape, or by clicking the blurred area outside the square.
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape' && document.getElementById('xfer-banner')?.classList.contains('show')) closeXferBanner();
+});
+document.addEventListener('click',event=>{
+  const banner = document.getElementById('xfer-banner');
+  if(banner && event.target===banner) closeXferBanner();
+});
+
 
 // ── Open goal popup (called on login for agents, or via Edit button) ──
 function openGoalPopup(isEdit){

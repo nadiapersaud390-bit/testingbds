@@ -27,3 +27,15 @@ All changes are stored in Firestore and appear on open agent dashboards through 
 - The complete Firebase rebuttal library is always visible at the bottom and every rebuttal can be opened directly.
 - Smart Match begins scoring as the agent types, previews the closest answer, and keeps the full library visible.
 - Quick Search filters suggestions while the full sectioned library remains available.
+
+## New lead alert (r7)
+
+- Replaces the thin transfer banner with a centered animated square alert.
+- Blurs the dashboard behind the alert.
+- Uses a Firestore real-time listener to detect each increase in an agent's lead/transfer count while the dashboard tab remains open.
+- Displays the total number of new leads and rotates through the agents who gained them.
+- Keeps the full list of affected agents visible as chips.
+- Every new lead update restarts a full 30-second popup countdown and animates the browser-tab title with `NEW LEAD ON BOARD`.
+- The alert can be dismissed with the close button, **LET'S GO**, Escape, or by clicking the blurred background.
+
+Deploy version: `2026-08-02-new-lead-live-30s-r7`
