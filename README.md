@@ -69,7 +69,7 @@ Open **Admin Panel → Missing From Stats** while logged in as Rose.
 
 Deploy version: `2026-08-02-rose-missing-stats-r11`
 
-## Rose archive manager and theme repair (r12)
+## Rose archive manager and dark-only interface (r13)
 
 The Rose-only **Missing From Stats** area now includes two internal views: **Missing Profiles** and **Archive**.
 
@@ -82,6 +82,6 @@ The Rose-only **Missing From Stats** area now includes two internal views: **Mis
 - Legacy backups in `deleted_agent_profiles` also appear in the Archive view and can be restored.
 - Archive, restore and permanent-delete actions are audited in `unused_profile_actions`.
 
-The light theme has broader coverage for the admin navigation, forms, tables, modal panels and remaining dark inline surfaces. Native date/month/select controls now switch their browser color scheme correctly.
+The light-theme toggle, saved appearance preference and light-theme CSS overrides have been removed. The login page, agent dashboard and both admin panels now use the dark interface only. Native form controls are also forced to the dark browser color scheme.
 
-Deploy version: `2026-08-02-rose-archive-theme-r12`
+Deploy version: `2026-08-03-rose-archive-dark-r13`

@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#060b18">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -28,20 +29,10 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-02-rose-archive-theme-r12';
+const APP_VERSION = '2026-08-03-rose-archive-dark-r13';
 
-// Apply the saved appearance before the page paints to prevent a theme flash.
-(function applySavedThemeEarly(){
-  try{
-    const saved = localStorage.getItem('bds_theme');
-    const theme = saved === 'light' || saved === 'dark'
-      ? saved
-      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-    document.documentElement.setAttribute('data-theme', theme);
-  }catch(e){
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
-})();
+// Dark theme only.
+document.documentElement.setAttribute('data-theme', 'dark');
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -68,112 +59,12 @@ const APP_VERSION = '2026-08-02-rose-archive-theme-r12';
   --shadow-md:0 4px 24px rgba(0,0,0,0.5);
 }
 
-/* ── USER APPEARANCE: LIGHT / DARK ── */
-html[data-theme="light"]{
-  color-scheme:light;
-  --bg:#eef3f9;
-  --surface:#ffffff;
-  --card:#ffffff;
-  --border:#cbd5e1;
-  --accent:#2563eb;
-  --accent2:#0891b2;
-  --green:#059669;
-  --green-light:rgba(5,150,105,.12);
-  --red:#dc2626;
-  --red-light:rgba(220,38,38,.10);
-  --gold:#b45309;
-  --gold-light:rgba(180,83,9,.12);
-  --purple:#7c3aed;
-  --purple-light:rgba(124,58,237,.11);
-  --orange:#c2410c;
-  --cyan:#0891b2;
-  --text:#172033;
-  --muted:#64748b;
-  --shadow:0 2px 12px rgba(15,23,42,.10);
-  --shadow-md:0 8px 28px rgba(15,23,42,.14);
-}
-html[data-theme="light"] body{background:var(--bg);color:var(--text);}
-html[data-theme="light"] .hero{background:linear-gradient(180deg,#f8fafc 0%,#eef2ff 52%,#f1f5f9 100%);border-bottom-color:#cbd5e1;}
-html[data-theme="light"] .hero::before{background:radial-gradient(ellipse,rgba(124,58,237,.12) 0%,transparent 70%);}
-html[data-theme="light"] .login-screen{background:linear-gradient(180deg,#f8fafc,#eaf0f8);}
-html[data-theme="light"] .tabs-wrap,
-html[data-theme="light"] .top-tabs,
-html[data-theme="light"] .tab-page,
-html[data-theme="light"] .admin-panel,
-html[data-theme="light"] .admin-section{background:var(--bg);}
-html[data-theme="light"] :is(.tz-card,.login-card,.rb-smart-card,.admin-card,.ap-card,.rbm-panel,.rbm-form-card,.script-view,.dispo-grid .dsec,.dsec,.modal-card,.rep-card,.stat-card,.leader-card,.tips-card){
-  background:#fff !important;border-color:var(--border) !important;box-shadow:var(--shadow);
-}
-html[data-theme="light"] :is(input,textarea,select,.login-input,.rb-smart-textarea,.rb-quick-wrap,.rb-quick-input,.rbm-input,.rbm-editor){
-  background:#f8fafc !important;color:var(--text) !important;border-color:#b8c5d8 !important;color-scheme:light;
-}
-html[data-theme="light"] :is(.tab-btn,.admin-tab-btn,.adm-tab,.ap-tab,.sub-tab,.rb-lib-btn,.rb-clear-btn,.rb-auto-badge,.rbm-btn,.rbm-mini){
-  color:var(--text);
-}
-html[data-theme="light"] .rb-search-results{background:#fff;border-color:#b8c5d8;box-shadow:0 14px 30px rgba(15,23,42,.16);}
-html[data-theme="light"] .rb-search-item{background:#fff;border-color:#d8e0eb;}
-html[data-theme="light"] .rb-search-item:hover,
-html[data-theme="light"] .rb-search-item.active{background:#eef2ff;}
-html[data-theme="light"] .rbm-rebuttal-item{background:#f8fafc;border-color:#d3dce9;}
-html[data-theme="light"] .rbm-rebuttal-item:hover{background:#eef2ff;border-color:#94a3b8;}
-html[data-theme="light"] .rbm-rebuttal-item.active{background:#ede9fe;border-color:#7c3aed;}
-html[data-theme="light"] .rbm-rebuttal-title{color:var(--text);}
-html[data-theme="light"] [style*="background:#0d1424"],
-html[data-theme="light"] [style*="background: #0d1424"],
-html[data-theme="light"] [style*="background:#0b1324"],
-html[data-theme="light"] [style*="background:#101827"],
-html[data-theme="light"] [style*="background:#0a1020"],
-html[data-theme="light"] [style*="background:#060b18"],
-html[data-theme="light"] [style*="background:#101a30"]{background:#f8fafc !important;}
-html[data-theme="light"] [style*="color:#cbd5e1"],
-html[data-theme="light"] [style*="color: #cbd5e1"],
-html[data-theme="light"] [style*="color:#e2e8f0"],
-html[data-theme="light"] [style*="color:#afbdd2"]{color:var(--text) !important;}
-
-
-/* ── R12: COMPLETE LIGHT THEME + ROSE ARCHIVE MANAGER ── */
+/* ── ROSE ARCHIVE MANAGER ── */
 html,body,.main,.tab-page,.admin-section,.admin-card,.tz-card,.login-card,
 .rb-smart-card,.rbm-panel,.rbm-form-card,.script-view,.dsec,.modal-card,
 .rep-card,.stat-card,.leader-card,.tips-card,.agent-panel,.overlay-card{
   transition:background-color .18s ease,color .18s ease,border-color .18s ease;
 }
-html[data-theme="light"] body,
-html[data-theme="light"] .main,
-html[data-theme="light"] #page-admin,
-html[data-theme="light"] .tab-page,
-html[data-theme="light"] .admin-section{background:var(--bg)!important;color:var(--text)!important;}
-html[data-theme="light"] [style*="background:#0"],
-html[data-theme="light"] [style*="background: #0"],
-html[data-theme="light"] [style*="background:#1"],
-html[data-theme="light"] [style*="background: #1"]{
-  background:var(--surface)!important;
-}
-html[data-theme="light"] [style*="border-bottom:2px solid #1"],
-html[data-theme="light"] [style*="border:1px solid #1"],
-html[data-theme="light"] [style*="border:1.5px solid #2"],
-html[data-theme="light"] [style*="border:2px solid #1"]{
-  border-color:var(--border)!important;
-}
-html[data-theme="light"] input,
-html[data-theme="light"] textarea,
-html[data-theme="light"] select{
-  background:#fff!important;color:#172033!important;border-color:#b8c5d8!important;
-  color-scheme:light!important;
-}
-html[data-theme="light"] option{background:#fff;color:#172033;}
-html[data-theme="light"] table{color:var(--text);}
-html[data-theme="light"] th{background:#e8eef7!important;color:#334155!important;border-color:#cbd5e1!important;}
-html[data-theme="light"] td{border-color:#d8e0eb!important;}
-html[data-theme="light"] tr:hover td{background:#f3f6fb;}
-html[data-theme="light"] .agent-panel,
-html[data-theme="light"] .modal-card,
-html[data-theme="light"] .login-card{background:#fff!important;color:var(--text)!important;}
-html[data-theme="light"] .adm-tab.active,
-html[data-theme="light"] .tab-btn.active,
-html[data-theme="light"] .admin-tab-btn.active{background:#e0e7ff!important;color:#3730a3!important;border-color:#818cf8!important;}
-html[data-theme="light"] code{background:#e8eef7;color:#334155;border-radius:5px;padding:1px 4px;}
-html[data-theme="light"] ::placeholder{color:#7c8ba1;opacity:1;}
-
 .rose-review-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px;}
 .rose-view-tab{padding:8px 13px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:.8px;cursor:pointer;}
 .rose-view-tab.active{background:var(--purple-light);border-color:var(--purple);color:var(--purple);}
@@ -198,29 +89,11 @@ html[data-theme="light"] ::placeholder{color:#7c8ba1;opacity:1;}
 .rose-page-info{font-size:.67rem;color:var(--muted);min-width:170px;text-align:center;}
 .rose-empty{text-align:center;color:var(--muted);padding:28px;border:1px dashed var(--border);border-radius:10px;}
 .rose-help{margin-top:14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(96,165,250,.05);font-size:.65rem;color:var(--muted);line-height:1.55;}
-html[data-theme="light"] .rose-bulkbar{background:#f8fafc;}
-html[data-theme="light"] .rose-profile-card{background:#fff;}
-html[data-theme="light"] .rose-profile-card.selected{background:#faf5ff;}
-html[data-theme="light"] .rose-help{background:#eff6ff;}
 @media(max-width:760px){
   .rose-profile-card{grid-template-columns:auto minmax(0,1fr);}
   .rose-profile-actions{grid-column:1/-1;justify-content:flex-start;padding-left:27px;}
   .rose-selected-count{width:100%;margin-right:0;}
 }
-
-.theme-toggle{
-  position:fixed;top:14px;right:14px;z-index:12000;
-  display:flex;align-items:center;gap:8px;padding:8px 11px;
-  border:1px solid rgba(148,163,184,.32);border-radius:999px;
-  background:rgba(8,13,28,.88);color:#e2e8f0;
-  box-shadow:0 6px 24px rgba(0,0,0,.22);backdrop-filter:blur(12px);
-  cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:800;
-  font-size:.72rem;letter-spacing:1px;text-transform:uppercase;transition:.18s ease;
-}
-.theme-toggle:hover{transform:translateY(-1px);border-color:var(--accent2);}
-.theme-toggle-icon{font-size:1rem;line-height:1;}
-html[data-theme="light"] .theme-toggle{background:rgba(255,255,255,.92);color:#172033;border-color:#cbd5e1;box-shadow:0 6px 24px rgba(15,23,42,.13);}
-@media(max-width:620px){.theme-toggle{top:8px;right:8px;padding:7px 9px}.theme-toggle-label{display:none}}
 
 /* Rebuttal details stay hidden until the agent searches or selects a result. */
 .rb-interaction-panel{display:block;}
@@ -569,17 +442,6 @@ body.lead-alert-open{overflow:hidden;}
   12%{opacity:.9;}
   100%{transform:translate3d(var(--drift,30px),650px,0) rotate(620deg);opacity:0;}
 }
-html[data-theme="light"] #xfer-banner{background:rgba(226,232,240,.62);}
-html[data-theme="light"] .xfer-banner-inner{color:#0f172a;box-shadow:0 30px 80px rgba(15,23,42,.28),0 0 50px rgba(5,150,105,.14);}
-html[data-theme="light"] .xfer-banner-inner::after{
-  background:radial-gradient(circle at 50% 18%,rgba(5,150,105,.15),transparent 31%),linear-gradient(145deg,#ffffff,#eef5fb 85%);
-}
-html[data-theme="light"] .xfer-banner-title{background:linear-gradient(90deg,#0f172a,#059669,#0f172a);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-html[data-theme="light"] .xfer-banner-total,html[data-theme="light"] .xfer-hero-name{color:#0f172a;}
-html[data-theme="light"] .xfer-agent-stage{background:rgba(255,255,255,.72);border-color:rgba(37,99,235,.18);}
-html[data-theme="light"] .xfer-banner-close{background:rgba(255,255,255,.78);color:#475569;border-color:#cbd5e1;}
-html[data-theme="light"] .xfer-banner-chip{color:#047857;}
-html[data-theme="light"] .xfer-banner-chip.top{color:#92400e;}
 @media(max-width:620px){
   .xfer-banner-inner{padding:28px 20px 22px;border-radius:24px;}
   .xfer-banner-inner::before{border-radius:26px}.xfer-banner-inner::after{border-radius:21px}
@@ -1217,11 +1079,6 @@ body.is-admin #agent-target-widget{display:none !important;}
 .rb-smart-match-choice:hover{border-color:#8b68ff;color:#fff;background:#151f38;transform:translateY(-1px);}
 .rb-smart-match-choice.best{border-color:rgba(139,104,255,.6);background:rgba(112,76,255,.16);color:#fff;}
 .rb-smart-match-score{opacity:.55;font-size:.56rem;margin-left:4px;}
-html[data-theme="light"] .rb-smart-feedback{background:#f7f5ff;border-color:#c7b8ff;}
-html[data-theme="light"] .rb-smart-match-choice{background:#fff;color:var(--text);border-color:#cbd5e1;}
-html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .rb-smart-match-choice.best{background:#ede9fe;border-color:#7c3aed;color:#3b1d85;}
-
-
 /* Admin rebuttal manager */
 .rbm-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
 .rbm-actions{display:flex;gap:7px;flex-wrap:wrap;}
@@ -1260,12 +1117,12 @@ html[data-theme="light"] .rb-smart-match-choice:hover,html[data-theme="light"] .
 .rbm-check{display:flex;align-items:center;gap:6px;font-size:.72rem;color:#aeb9cc;font-weight:700;}
 .rbm-check input{accent-color:#8b68ff;width:16px;height:16px;}
 @media(max-width:900px){.rb-smart-grid{grid-template-columns:1fr}.rbm-layout{grid-template-columns:1fr}.rbm-rebuttal-list{max-height:260px}.rbm-form-grid{grid-template-columns:1fr}.rbm-field.full{grid-column:1}.rb-smart-card{min-height:auto}.rebuttal-page-shell{padding:12px}}
+
+html { color-scheme: dark; }
+input, textarea, select { color-scheme: dark; }
+
 </style>
 <body>
-<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch light or dark theme" title="Switch light or dark theme">
-  <span class="theme-toggle-icon" id="theme-toggle-icon">☀️</span>
-  <span class="theme-toggle-label" id="theme-toggle-label">Light Theme</span>
-</button>
 <!-- ── NEW LEAD CELEBRATION POPUP ── -->
 <div id="xfer-banner" role="dialog" aria-modal="true" aria-labelledby="xfer-banner-title" aria-hidden="true">
   <div class="xfer-banner-inner">
@@ -5244,45 +5101,6 @@ function stopRosterPolling() {
 }
 
 // ── END ROSTER REAL-TIME SYNC ──
-
-// ── LIGHT / DARK THEME TOGGLE ──
-function getCurrentTheme(){
-  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-}
-
-function updateThemeToggle(){
-  const current=getCurrentTheme();
-  const icon=document.getElementById('theme-toggle-icon');
-  const label=document.getElementById('theme-toggle-label');
-  const button=document.getElementById('theme-toggle');
-  const next=current==='dark'?'light':'dark';
-  if(icon) icon.textContent=current==='dark'?'☀️':'🌙';
-  if(label) label.textContent=current==='dark'?'Light Theme':'Dark Theme';
-  if(button){
-    button.setAttribute('aria-label',`Switch to ${next} theme`);
-    button.title=`Switch to ${next} theme`;
-  }
-}
-
-function setTheme(theme){
-  const next=theme==='light'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next);
-  if(document.body) document.body.setAttribute('data-theme',next);
-  document.documentElement.style.colorScheme=next;
-  document.querySelectorAll('input,textarea,select').forEach(el=>{ el.style.colorScheme=next; });
-  let meta=document.querySelector('meta[name=\"theme-color\"]');
-  if(!meta){ meta=document.createElement('meta'); meta.name='theme-color'; document.head.appendChild(meta); }
-  meta.content=next==='light'?'#eef3f9':'#060b18';
-  try{localStorage.setItem('bds_theme',next);}catch(e){}
-  updateThemeToggle();
-  window.dispatchEvent(new CustomEvent('bds-theme-change',{detail:{theme:next}}));
-}
-
-function toggleTheme(){
-  setTheme(getCurrentTheme()==='dark'?'light':'dark');
-}
-
-window.addEventListener('DOMContentLoaded',()=>{ setTheme(getCurrentTheme()); });
 
 window.addEventListener('load',()=>{ checkSession(); });
 
