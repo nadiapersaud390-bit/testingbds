@@ -29,7 +29,7 @@ const auth = firebase.auth();
 // Update this string every time you deploy a new version.
 // The Firestore doc settings/app_version { v: "..." } must match.
 // When they differ, a reload banner appears for all logged-in users.
-const APP_VERSION = '2026-08-03-rose-archive-dark-r13';
+const APP_VERSION = '2026-08-05-access-guide-r14';
 
 // Dark theme only.
 document.documentElement.setAttribute('data-theme', 'dark');
@@ -1120,6 +1120,155 @@ body.is-admin #agent-target-widget{display:none !important;}
 
 html { color-scheme: dark; }
 input, textarea, select { color-scheme: dark; }
+
+
+/* ── ACCESS GUIDE — ELIGIBILITY DECISION CENTER ── */
+#page-dbs{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(96,165,250,.08),transparent 28%),
+    radial-gradient(circle at 92% 12%,rgba(167,139,250,.06),transparent 24%),
+    var(--bg);
+}
+.access-guide-shell{
+  width:100%;max-width:1180px;margin:0 auto;padding:24px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.access-guide-hero{
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.75fr);gap:22px;align-items:center;
+  padding:24px 26px;border:1px solid #263754;border-radius:18px;
+  background:linear-gradient(145deg,rgba(17,28,48,.98),rgba(9,16,31,.98));
+  box-shadow:0 16px 40px rgba(0,0,0,.22);
+}
+.access-guide-hero::after{
+  content:'';position:absolute;inset:auto -80px -110px auto;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(96,165,250,.12),transparent 68%);pointer-events:none;
+}
+.access-guide-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:5px 10px;
+  border:1px solid rgba(96,165,250,.35);border-radius:999px;background:rgba(96,165,250,.08);
+  color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:900;
+  letter-spacing:2.2px;text-transform:uppercase;
+}
+.access-guide-title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(2.35rem,4.5vw,4rem);line-height:.95;
+  letter-spacing:4px;color:#f8fafc;text-transform:uppercase;
+}
+.access-guide-subtitle{max-width:650px;margin-top:11px;color:#9aa9bf;font-size:.82rem;line-height:1.65;font-weight:600;}
+.access-guide-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1;}
+.access-guide-step{
+  min-height:92px;padding:13px 12px;border:1px solid #263754;border-radius:12px;background:rgba(6,11,24,.68);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.access-guide-step-num{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;line-height:1;color:var(--accent);letter-spacing:1px;}
+.access-guide-step-label{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:#e5edf8;}
+.access-guide-step-copy{font-size:.59rem;line-height:1.4;color:#71829b;font-weight:700;}
+.access-state-alert{
+  display:grid;grid-template-columns:minmax(260px,.75fr) minmax(0,1.25fr);gap:18px;align-items:center;
+  padding:18px 20px;border:1px solid rgba(248,113,113,.62);border-left:5px solid var(--red);border-radius:16px;
+  background:linear-gradient(100deg,rgba(248,113,113,.13),rgba(248,113,113,.035));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.access-alert-heading{display:flex;align-items:flex-start;gap:12px;}
+.access-alert-icon{
+  width:40px;height:40px;flex:0 0 40px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:rgba(248,113,113,.13);border:1px solid rgba(248,113,113,.35);font-size:1.15rem;
+}
+.access-alert-title{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:2px;color:#ff8e8e;text-transform:uppercase;}
+.access-alert-copy{margin-top:3px;color:#8fa0b7;font-size:.7rem;line-height:1.5;font-weight:650;}
+.access-state-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
+.access-state-chip{
+  min-height:52px;padding:9px 10px;border:1px solid rgba(248,113,113,.28);border-radius:11px;
+  background:rgba(4,9,20,.55);display:flex;align-items:center;gap:9px;
+}
+.access-state-code{
+  width:30px;height:30px;flex:0 0 30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  background:rgba(248,113,113,.14);color:#ff9b9b;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:1px;
+}
+.access-state-name{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;letter-spacing:1px;color:#f2f5f9;text-transform:uppercase;}
+.access-decision-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.access-decision-card{
+  overflow:hidden;border:1px solid #24334e;border-radius:16px;background:linear-gradient(155deg,rgba(17,28,48,.96),rgba(9,15,29,.96));
+  box-shadow:0 12px 30px rgba(0,0,0,.16);
+}
+.access-decision-card.is-yes{border-top:4px solid var(--green);}
+.access-decision-card.is-no{border-top:4px solid var(--red);}
+.access-decision-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 18px 14px;border-bottom:1px solid #1f2d46;}
+.access-decision-heading{display:flex;align-items:center;gap:11px;}
+.access-decision-mark{
+  width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;
+}
+.is-yes .access-decision-mark{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.32);color:var(--green);}
+.is-no .access-decision-mark{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.32);color:var(--red);}
+.access-decision-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#f0f5fb;}
+.access-decision-caption{margin-top:2px;font-size:.62rem;color:#72839d;font-weight:700;}
+.access-decision-badge{padding:5px 9px;border-radius:999px;font-size:.56rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap;}
+.is-yes .access-decision-badge{color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);}
+.is-no .access-decision-badge{color:var(--red);background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);}
+.access-status-list{display:flex;flex-direction:column;padding:7px 10px 11px;}
+.access-status-row{
+  display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;
+  min-height:54px;padding:9px 8px;border-bottom:1px solid rgba(36,51,78,.72);
+}
+.access-status-row:last-child{border-bottom:0;}
+.access-status-index{
+  width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:.67rem;font-weight:900;
+}
+.is-yes .access-status-index{background:rgba(52,211,153,.1);color:var(--green);}
+.is-no .access-status-index{background:rgba(248,113,113,.1);color:var(--red);}
+.access-status-name{font-size:.78rem;font-weight:800;color:#e3eaf4;line-height:1.35;}
+.access-status-note{margin-top:3px;font-size:.62rem;line-height:1.45;color:#8291a7;font-weight:650;}
+.access-status-note strong{color:var(--gold);}
+.access-status-action{
+  justify-self:end;padding:5px 8px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:900;
+  letter-spacing:1px;text-transform:uppercase;white-space:nowrap;
+}
+.is-yes .access-status-action{color:var(--green);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);}
+.is-no .access-status-action{color:var(--red);background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.22);}
+.access-timing-card{
+  padding:18px 19px;border:1px solid rgba(251,191,36,.38);border-radius:16px;
+  background:linear-gradient(145deg,rgba(251,191,36,.075),rgba(9,15,29,.92));
+}
+.access-section-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px;}
+.access-section-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);}
+.access-section-subtitle{font-size:.64rem;color:#7e8da4;font-weight:700;}
+.access-timing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.access-timing-rule{padding:14px;border:1px solid rgba(251,191,36,.22);border-radius:12px;background:rgba(6,11,24,.62);}
+.access-timing-status{font-size:.76rem;font-weight:850;color:#edf2f8;line-height:1.35;}
+.access-timing-window{margin:8px 0 5px;font-family:'Bebas Neue',sans-serif;font-size:1.65rem;letter-spacing:2px;color:var(--gold);line-height:1;}
+.access-timing-result{font-size:.65rem;line-height:1.5;color:#8898ae;font-weight:650;}
+.access-timing-result strong{color:var(--green);}
+.access-guide-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;
+  border:1px dashed #314361;border-radius:13px;background:rgba(96,165,250,.045);
+}
+.access-guide-footer-copy{font-size:.7rem;line-height:1.55;color:#91a1b7;font-weight:650;}
+.access-guide-footer-copy strong{color:#dbe7f5;}
+.access-guide-footer-tag{flex:0 0 auto;padding:7px 10px;border-radius:8px;background:rgba(96,165,250,.09);border:1px solid rgba(96,165,250,.24);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;}
+@media(max-width:980px){
+  .access-guide-hero{grid-template-columns:1fr;}
+  .access-state-alert{grid-template-columns:1fr;}
+  .access-state-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:760px){
+  .access-guide-shell{padding:14px;gap:12px;}
+  .access-guide-hero{padding:19px 17px;border-radius:15px;}
+  .access-guide-steps{grid-template-columns:1fr;}
+  .access-guide-step{min-height:68px;}
+  .access-state-alert{padding:15px;}
+  .access-decision-grid{grid-template-columns:1fr;}
+  .access-timing-grid{grid-template-columns:1fr;}
+  .access-section-header{align-items:flex-start;flex-direction:column;gap:4px;}
+  .access-guide-footer{align-items:flex-start;flex-direction:column;}
+}
+@media(max-width:480px){
+  .access-state-grid{grid-template-columns:1fr;}
+  .access-status-row{grid-template-columns:30px minmax(0,1fr);}
+  .access-status-action{grid-column:2;justify-self:start;}
+  .access-decision-header{align-items:flex-start;}
+  .access-decision-badge{display:none;}
+}
 
 </style>
 <body>
@@ -3000,104 +3149,181 @@ input, textarea, select { color-scheme: dark; }
 
   <!-- ACCESS GUIDE -->
   <div class="tab-page" id="page-dbs">
-    <div style="padding:20px 22px;">
+    <div class="access-guide-shell">
 
-      <!-- States DNQ Banner -->
-      <div style="background:linear-gradient(135deg,rgba(248,113,113,0.15),rgba(248,113,113,0.08));border:2px solid var(--red);border-radius:14px;padding:18px 20px;margin-bottom:18px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-          <span style="font-size:1.8rem;">🚫</span>
+      <section class="access-guide-hero" aria-labelledby="access-guide-title">
+        <div>
+          <div class="access-guide-eyebrow">🔐 Agent Decision Reference</div>
+          <h1 class="access-guide-title" id="access-guide-title">Access Eligibility Guide</h1>
+          <p class="access-guide-subtitle">Use this page before granting access. Confirm the customer’s state first, review the current file status, and then verify any required waiting period.</p>
+        </div>
+        <div class="access-guide-steps" aria-label="Three-step eligibility check">
+          <div class="access-guide-step">
+            <span class="access-guide-step-num">01</span>
+            <span class="access-guide-step-label">Check State</span>
+            <span class="access-guide-step-copy">Stop immediately for a DNQ state.</span>
+          </div>
+          <div class="access-guide-step">
+            <span class="access-guide-step-num">02</span>
+            <span class="access-guide-step-label">Check Status</span>
+            <span class="access-guide-step-copy">Match the exact status shown in the file.</span>
+          </div>
+          <div class="access-guide-step">
+            <span class="access-guide-step-num">03</span>
+            <span class="access-guide-step-label">Check Date</span>
+            <span class="access-guide-step-copy">Apply the waiting-period rule where required.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="access-state-alert" aria-labelledby="dnq-states-title">
+        <div class="access-alert-heading">
+          <div class="access-alert-icon">🚫</div>
           <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;color:var(--red);letter-spacing:2px;">STATES DO NOT QUALIFY (DNQ)</div>
-            <div style="font-size:0.72rem;color:var(--muted);font-weight:600;margin-top:2px;">If the customer is in one of these states, do not proceed</div>
+            <div class="access-alert-title" id="dnq-states-title">States Do Not Qualify</div>
+            <div class="access-alert-copy">Do not proceed when the customer resides in any state listed here.</div>
           </div>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <div style="background:var(--red-light);border:1.5px solid var(--red);border-radius:10px;padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--red);letter-spacing:2px;">🧀 WISCONSIN</div>
-          <div style="background:var(--red-light);border:1.5px solid var(--red);border-radius:10px;padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--red);letter-spacing:2px;">❄️ MINNESOTA</div>
-          <div style="background:var(--red-light);border:1.5px solid var(--red);border-radius:10px;padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--red);letter-spacing:2px;">🌲 OREGON</div>
+        <div class="access-state-grid">
+          <div class="access-state-chip"><span class="access-state-code">WI</span><span class="access-state-name">Wisconsin</span></div>
+          <div class="access-state-chip"><span class="access-state-code">MN</span><span class="access-state-name">Minnesota</span></div>
+          <div class="access-state-chip"><span class="access-state-code">OR</span><span class="access-state-name">Oregon</span></div>
+          <div class="access-state-chip"><span class="access-state-code">CO</span><span class="access-state-name">Colorado</span></div>
         </div>
+      </section>
+
+      <div class="access-decision-grid">
+        <section class="access-decision-card is-yes" aria-labelledby="access-yes-title">
+          <header class="access-decision-header">
+            <div class="access-decision-heading">
+              <div class="access-decision-mark">✓</div>
+              <div>
+                <div class="access-decision-title" id="access-yes-title">Give Access</div>
+                <div class="access-decision-caption">Statuses approved to work</div>
+              </div>
+            </div>
+            <span class="access-decision-badge">Proceed</span>
+          </header>
+          <div class="access-status-list">
+            <div class="access-status-row">
+              <span class="access-status-index">01</span>
+              <div><div class="access-status-name">Shark Tank</div></div>
+              <span class="access-status-action">Give Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">02</span>
+              <div><div class="access-status-name">Pending Building File</div></div>
+              <span class="access-status-action">Give Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">03</span>
+              <div><div class="access-status-name">New App Pending</div></div>
+              <span class="access-status-action">Give Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">04</span>
+              <div><div class="access-status-name">Pending Credit</div></div>
+              <span class="access-status-action">Give Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">05</span>
+              <div><div class="access-status-name">ALV UW: Completed</div></div>
+              <span class="access-status-action">Give Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">06</span>
+              <div>
+                <div class="access-status-name">Staging <span style="color:#71829b;font-size:.68rem;">[Hidden]</span></div>
+                <div class="access-status-note"><strong>Check notes first.</strong> Access may be given only when the notes allow it.</div>
+              </div>
+              <span class="access-status-action">Conditional</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">07</span>
+              <div>
+                <div class="access-status-name">Anything Showing in Black</div>
+                <div class="access-status-note"><strong>Only after 90 days</strong> have passed.</div>
+              </div>
+              <span class="access-status-action">After 90 Days</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="access-decision-card is-no" aria-labelledby="access-no-title">
+          <header class="access-decision-header">
+            <div class="access-decision-heading">
+              <div class="access-decision-mark">×</div>
+              <div>
+                <div class="access-decision-title" id="access-no-title">Do Not Give Access</div>
+                <div class="access-decision-caption">Restricted statuses</div>
+              </div>
+            </div>
+            <span class="access-decision-badge">Stop</span>
+          </header>
+          <div class="access-status-list">
+            <div class="access-status-row">
+              <span class="access-status-index">01</span>
+              <div>
+                <div class="access-status-name">Enrollments</div>
+                <div class="access-status-note">Includes ALV.</div>
+              </div>
+              <span class="access-status-action">No Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">02</span>
+              <div>
+                <div class="access-status-name">Archive: Do Not Call</div>
+                <div class="access-status-note"><strong>Exception:</strong> Only when the customer calls in and is actively interested.</div>
+              </div>
+              <span class="access-status-action">Restricted</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">03</span>
+              <div><div class="access-status-name">Disposition | Not Interested | Cross-collateralization</div></div>
+              <span class="access-status-action">No Access</span>
+            </div>
+            <div class="access-status-row">
+              <span class="access-status-index">04</span>
+              <div>
+                <div class="access-status-name">Approved</div>
+                <div class="access-status-note"><strong>This is a NO.</strong> Do not give access to an Approved status.</div>
+              </div>
+              <span class="access-status-action">No Access</span>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <!-- YES — Give Access -->
-      <div style="background:rgba(52,211,153,0.07);border:1.5px solid var(--green);border-radius:14px;padding:18px 20px;margin-bottom:14px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--green);letter-spacing:2px;margin-bottom:12px;">✅ YES — GIVE ACCESS (These statuses are OK to work)</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">1.</span>
-            <div><span style="color:var(--text);font-weight:700;">Shark Tank</span></div>
+      <section class="access-timing-card" aria-labelledby="access-timing-title">
+        <div class="access-section-header">
+          <div>
+            <div class="access-section-title" id="access-timing-title">⏳ Time-Based Status Rules</div>
+            <div class="access-section-subtitle">Confirm the status date before taking action.</div>
           </div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">2.</span>
-            <div><span style="color:var(--text);font-weight:700;">Pending Building File</span></div>
+          <div class="access-guide-footer-tag">Date Check Required</div>
+        </div>
+        <div class="access-timing-grid">
+          <div class="access-timing-rule">
+            <div class="access-timing-status">UW Review: Declined</div>
+            <div class="access-timing-window">60–90 Days</div>
+            <div class="access-timing-result">Wait from the decline date. After the waiting window, <strong>give access.</strong></div>
           </div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">3.</span>
-            <div><span style="color:var(--text);font-weight:700;">New App Pending</span></div>
+          <div class="access-timing-rule">
+            <div class="access-timing-status">ALV Declined</div>
+            <div class="access-timing-window">60–90 Days</div>
+            <div class="access-timing-result">Apply the same waiting rule. After the waiting window, <strong>give access.</strong></div>
           </div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">4.</span>
-            <div><span style="color:var(--text);font-weight:700;">Pending Credit</span></div>
-          </div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">5.</span>
-            <div><span style="color:var(--text);font-weight:700;">ALV UW: Completed</span></div>
-          </div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">6.</span>
-            <div><span style="color:var(--text);font-weight:700;">Staging <span style="color:var(--muted);font-size:0.78rem;">[Hidden]</span></span> <span style="color:var(--gold);font-size:0.8rem;font-weight:600;"> — Check Notes first. Access can be given if notes allow it.</span></div>
-          </div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--green);font-weight:800;font-size:0.75rem;min-width:22px;">7.</span>
-            <div><span style="color:#f8f8f8;font-weight:800;font-size:1rem;letter-spacing:1px;">Anything showing in BLACK</span> <span style="color:var(--gold);font-size:0.8rem;font-weight:600;"> — Only after 90 days have passed.</span></div>
+          <div class="access-timing-rule">
+            <div class="access-timing-status">UW Review: Approved</div>
+            <div class="access-timing-window">After 3 Days</div>
+            <div class="access-timing-result">Wait three full days from the approval date, then <strong>give access.</strong></div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- NO — Do Not Give Access -->
-      <div style="background:rgba(248,113,113,0.07);border:1.5px solid var(--red);border-radius:14px;padding:18px 20px;margin-bottom:14px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--red);letter-spacing:2px;margin-bottom:12px;">🚫 NO — DO NOT GIVE ACCESS</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:var(--red-light);border:1px solid rgba(248,113,113,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--red);font-weight:800;font-size:0.75rem;min-width:22px;">1.</span>
-            <div><span style="color:var(--text);font-weight:700;">Enrollments</span> <span style="color:var(--muted);font-size:0.8rem;">| ALV</span></div>
-          </div>
-          <div style="background:var(--red-light);border:1px solid rgba(248,113,113,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--red);font-weight:800;font-size:0.75rem;min-width:22px;">2.</span>
-            <div><span style="color:var(--text);font-weight:700;">Archive: Do Not Call</span> <span style="color:var(--gold);font-size:0.8rem;font-weight:600;"> — Exception: Only if the customer is calling in and is actively interested.</span></div>
-          </div>
-          <div style="background:var(--red-light);border:1px solid rgba(248,113,113,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--red);font-weight:800;font-size:0.75rem;min-width:22px;">3.</span>
-            <div><span style="color:var(--text);font-weight:700;">Disposition | Not Interested | Cross-collateralization</span></div>
-          </div>
-          <div style="background:var(--red-light);border:1px solid rgba(248,113,113,0.3);border-radius:9px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px;">
-            <span style="color:var(--red);font-weight:800;font-size:0.75rem;min-width:22px;">4.</span>
-            <div><span style="color:var(--text);font-weight:700;">Approved</span> <span style="color:var(--red);font-weight:800;"> — This is a NO.</span> <span style="color:var(--muted);font-size:0.8rem;">Do not give access to Approved status.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- DECLINED — Time-Based Rules -->
-      <div style="background:rgba(251,191,36,0.06);border:1.5px solid var(--gold);border-radius:14px;padding:18px 20px;margin-bottom:14px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--gold);letter-spacing:2px;margin-bottom:6px;">⏳ DECLINED — TIME-BASED RULES</div>
-        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;font-weight:600;">These depend on how much time has passed — check the date carefully.</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:var(--gold-light);border:1px solid rgba(251,191,36,0.35);border-radius:9px;padding:12px 14px;">
-            <div style="font-weight:800;color:var(--text);margin-bottom:4px;">UW Review: Declined</div>
-            <div style="font-size:0.85rem;color:#cbd5e1;">Wait <strong style="color:var(--gold);">60 to 90 days</strong> from the decline date. After that window — <span style="color:var(--green);font-weight:700;">YES, give access.</span></div>
-          </div>
-          <div style="background:var(--gold-light);border:1px solid rgba(251,191,36,0.35);border-radius:9px;padding:12px 14px;">
-            <div style="font-weight:800;color:var(--text);margin-bottom:4px;">ALV Declined</div>
-            <div style="font-size:0.85rem;color:#cbd5e1;">Same rule — wait <strong style="color:var(--gold);">60 to 90 days</strong>. After that — <span style="color:var(--green);font-weight:700;">YES, give access.</span></div>
-          </div>
-          <div style="background:var(--gold-light);border:1px solid rgba(251,191,36,0.35);border-radius:9px;padding:12px 14px;">
-            <div style="font-weight:800;color:var(--text);margin-bottom:4px;">UW Review: Approved</div>
-            <div style="font-size:0.85rem;color:#cbd5e1;">Only a short wait — give access <strong style="color:var(--gold);">after 3 days</strong> from the approval date. <span style="color:var(--green);font-weight:700;">Then YES.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tip" style="background:rgba(96,165,250,0.07);border-color:rgba(96,165,250,0.3);">
-
+      <div class="access-guide-footer">
+        <div class="access-guide-footer-copy"><strong>Final check:</strong> Never rely on color alone. Confirm the exact status wording, review all file notes, and verify the applicable date before proceeding.</div>
+        <div class="access-guide-footer-tag">When Unsure: Stop &amp; Confirm</div>
       </div>
 
     </div>
@@ -3275,7 +3501,7 @@ input, textarea, select { color-scheme: dark; }
       <div style="background:rgba(248,113,113,0.08);border:1.5px solid rgba(248,113,113,0.5);border-radius:8px;padding:12px 16px;margin-bottom:8px;">
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px;color:var(--red);text-align:center;margin-bottom:6px;text-transform:uppercase;">&#128683; DO NOT WORK THE FOLLOWING LEADS:</div>
         <div style="font-size:0.82rem;line-height:1.7;color:var(--text);text-align:center;">
-          <strong style="color:var(--gold);">Ineligible States:</strong> <span style="color:#cbd5e1;">Wisconsin, Oregon, Minnesota</span>
+          <strong style="color:var(--gold);">Ineligible States:</strong> <span style="color:#cbd5e1;">Wisconsin, Oregon, Minnesota, Colorado</span>
         </div>
         <div style="font-size:0.82rem;line-height:1.7;color:var(--text);text-align:center;">
           <strong style="color:var(--gold);">Ineligible Clients:</strong> <span style="color:#94a3b8;">Under age, no SSN or ITIN, under bankruptcy within the last 2 years (must be discharged), Unworkable files, unsecured debt below $10K, no source of income</span>
