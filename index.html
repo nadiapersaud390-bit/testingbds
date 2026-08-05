@@ -1426,6 +1426,97 @@ input, textarea, select { color-scheme: dark; }
   #punch-words{grid-template-columns:1fr 1fr!important;}
 }
 
+
+/* ── SPANISH — PROFESSIONAL TRANSFER PROTOCOL ── */
+#page-spanish{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(251,146,60,.085),transparent 28%),
+    radial-gradient(circle at 94% 8%,rgba(248,113,113,.055),transparent 24%),
+    var(--bg);
+}
+.spanish-pro-shell{width:100%;max-width:1180px;margin:0 auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.spanish-pro-hero{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:22px;align-items:center;
+  padding:24px 26px;border:1px solid #3a3040;border-radius:18px;
+  background:linear-gradient(145deg,rgba(35,22,25,.98),rgba(8,15,29,.98));box-shadow:0 16px 40px rgba(0,0,0,.22);
+}
+.spanish-pro-hero::after{content:'';position:absolute;right:-82px;bottom:-122px;width:290px;height:290px;border-radius:50%;background:radial-gradient(circle,rgba(251,146,60,.15),transparent 68%);pointer-events:none;}
+.spanish-pro-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:5px 10px;border-radius:999px;border:1px solid rgba(251,146,60,.34);background:rgba(251,146,60,.08);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:900;letter-spacing:2.1px;text-transform:uppercase;}
+.spanish-pro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.35rem,4.5vw,4rem);line-height:.95;letter-spacing:4px;color:#f8fafc;text-transform:uppercase;}
+.spanish-pro-subtitle{max-width:660px;margin-top:11px;color:#9aa9bf;font-size:.82rem;line-height:1.65;font-weight:600;}
+.spanish-pro-line-card{position:relative;z-index:1;padding:17px;border:1px solid rgba(251,146,60,.31);border-radius:15px;background:linear-gradient(150deg,rgba(251,146,60,.11),rgba(6,11,24,.78));box-shadow:0 12px 30px rgba(0,0,0,.18);}
+.spanish-pro-line-kicker{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#f6ad75;}
+.spanish-pro-number{margin:8px 0 4px;font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);line-height:1;letter-spacing:3px;color:#fff;white-space:nowrap;}
+.spanish-pro-line-copy{font-size:.61rem;line-height:1.5;color:#8e9caf;font-weight:700;}
+.spanish-pro-call{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:13px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,146,60,.4);background:rgba(251,146,60,.13);color:#ffd5b6;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;transition:.18s ease;}
+.spanish-pro-call:hover{transform:translateY(-1px);background:rgba(251,146,60,.2);border-color:rgba(251,146,60,.62);}
+.spanish-pro-rule{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 17px;border:1px solid rgba(248,113,113,.31);border-left:5px solid var(--red);border-radius:14px;background:linear-gradient(100deg,rgba(248,113,113,.085),rgba(9,15,29,.82));}
+.spanish-pro-rule-main{display:flex;align-items:center;gap:11px;min-width:0;}
+.spanish-pro-rule-mark{width:38px;height:38px;flex:0 0 38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:var(--red);font-weight:900;}
+.spanish-pro-rule-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#f7eeee;}
+.spanish-pro-rule-copy{margin-top:2px;font-size:.66rem;line-height:1.5;color:#8f9bad;font-weight:650;}
+.spanish-pro-rule-copy strong{color:#f5c0c0;}
+.spanish-pro-rule-tag{flex:0 0 auto;padding:6px 10px;border-radius:999px;border:1px solid rgba(248,113,113,.25);background:rgba(248,113,113,.07);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:.59rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;}
+.spanish-pro-step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.spanish-pro-step{position:relative;overflow:hidden;min-height:224px;padding:17px 15px 15px;border:1px solid #2e334a;border-top:4px solid var(--orange);border-radius:15px;background:linear-gradient(155deg,rgba(25,28,45,.96),rgba(9,15,29,.96));box-shadow:0 10px 26px rgba(0,0,0,.15);}
+.spanish-pro-step:nth-child(2){border-top-color:var(--gold)}.spanish-pro-step:nth-child(3){border-top-color:var(--accent)}.spanish-pro-step:nth-child(4){border-top-color:var(--green)}
+.spanish-pro-step-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.spanish-pro-step-num{width:39px;height:39px;flex:0 0 39px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.27);color:var(--orange);font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:1px;}
+.spanish-pro-step:nth-child(2) .spanish-pro-step-num{background:rgba(251,191,36,.09);border-color:rgba(251,191,36,.26);color:var(--gold)}.spanish-pro-step:nth-child(3) .spanish-pro-step-num{background:rgba(96,165,250,.09);border-color:rgba(96,165,250,.25);color:var(--accent)}.spanish-pro-step:nth-child(4) .spanish-pro-step-num{background:rgba(52,211,153,.09);border-color:rgba(52,211,153,.25);color:var(--green)}
+.spanish-pro-step-name{font-family:'Barlow Condensed',sans-serif;font-size:.94rem;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:#eff4fa;}
+.spanish-pro-step-purpose{font-size:.59rem;color:#73839b;font-weight:700;margin-top:2px;}
+.spanish-pro-step-copy{font-size:.68rem;line-height:1.58;color:#8d9cb1;font-weight:650;}
+.spanish-pro-step-cue{margin-top:12px;padding:8px 9px;border-radius:8px;border:1px solid rgba(251,146,60,.2);background:rgba(6,11,24,.58);font-size:.63rem;line-height:1.45;color:#c8d2e0;font-weight:700;}
+.spanish-pro-step:nth-child(2) .spanish-pro-step-cue{border-color:rgba(251,191,36,.2)}.spanish-pro-step:nth-child(3) .spanish-pro-step-cue{border-color:rgba(96,165,250,.2)}.spanish-pro-step:nth-child(4) .spanish-pro-step-cue{border-color:rgba(52,211,153,.2)}
+.spanish-pro-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:16px;align-items:start;}
+.spanish-pro-card{overflow:hidden;border:1px solid #29334a;border-radius:16px;background:linear-gradient(155deg,rgba(17,28,48,.96),rgba(9,15,29,.96));box-shadow:0 12px 30px rgba(0,0,0,.16);}
+.spanish-pro-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 13px;border-bottom:1px solid #1f2d46;}
+.spanish-pro-card-heading{display:flex;align-items:center;gap:10px;}
+.spanish-pro-card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.25);color:var(--orange);}
+.spanish-pro-card-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#eff4fa;}
+.spanish-pro-card-sub{margin-top:2px;font-size:.61rem;color:#72839c;font-weight:700;}
+.spanish-pro-card-badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(251,146,60,.25);background:rgba(251,146,60,.07);color:var(--orange);font-size:.54rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;white-space:nowrap;}
+.spanish-pro-card-body{padding:16px 18px 18px;}
+.spanish-pro-script-label{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:var(--orange);}
+.spanish-pro-script{margin-top:9px;padding:15px 16px;border:1px solid rgba(251,146,60,.23);border-left:4px solid var(--orange);border-radius:11px;background:rgba(251,146,60,.05);font-size:.82rem;line-height:1.78;color:#d6dee9;font-weight:700;}
+.spanish-pro-script strong{color:#fff1e6;}
+.spanish-pro-handoff{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:12px;}
+.spanish-pro-handoff-step{padding:6px 8px;border:1px solid #2c3b55;border-radius:8px;background:rgba(6,11,24,.58);font-family:'Barlow Condensed',sans-serif;font-size:.61rem;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#b9c6d8;}
+.spanish-pro-handoff-arrow{color:#596a83;font-size:.75rem;font-weight:900;}
+.spanish-pro-checklist{display:flex;flex-direction:column;gap:8px;}
+.spanish-pro-check{display:grid;grid-template-columns:30px minmax(0,1fr);gap:9px;align-items:center;padding:10px;border:1px solid #29374f;border-radius:10px;background:rgba(6,11,24,.56);cursor:pointer;}
+.spanish-pro-check input{width:18px;height:18px;margin:0;accent-color:var(--green);cursor:pointer;justify-self:center;}
+.spanish-pro-check span{font-size:.66rem;line-height:1.45;color:#c7d1df;font-weight:700;}
+.spanish-pro-check strong{color:#edf4fb;}
+.spanish-pro-risk{padding:15px 16px;border:1px solid rgba(248,113,113,.25);border-radius:14px;background:rgba(248,113,113,.045);}
+.spanish-pro-risk-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:var(--red);}
+.spanish-pro-risk-list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+.spanish-pro-risk-item{padding:10px;border:1px solid rgba(248,113,113,.18);border-radius:9px;background:rgba(6,11,24,.48);font-size:.62rem;line-height:1.45;color:#aeb9c8;font-weight:700;}
+.spanish-pro-risk-item strong{display:block;margin-bottom:3px;color:#eef2f7;font-size:.65rem;}
+.spanish-pro-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border:1px dashed #3d3f55;border-radius:13px;background:rgba(251,146,60,.035);}
+.spanish-pro-footer-copy{font-size:.7rem;line-height:1.55;color:#91a1b7;font-weight:650;}.spanish-pro-footer-copy strong{color:#f1e1d5;}
+.spanish-pro-footer-tag{flex:0 0 auto;padding:7px 10px;border-radius:8px;background:rgba(251,146,60,.09);border:1px solid rgba(251,146,60,.24);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;}
+@media(max-width:980px){
+  .spanish-pro-hero{grid-template-columns:1fr;}
+  .spanish-pro-step-grid{grid-template-columns:repeat(2,1fr);}
+  .spanish-pro-grid{grid-template-columns:1fr;}
+  .spanish-pro-risk-list{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:760px){
+  .spanish-pro-shell{padding:14px;gap:12px;}
+  .spanish-pro-hero{padding:19px 17px;border-radius:15px;}
+  .spanish-pro-rule{align-items:flex-start;flex-direction:column;}
+  .spanish-pro-step-grid{grid-template-columns:1fr;}.spanish-pro-step{min-height:auto;}
+  .spanish-pro-risk-list{grid-template-columns:1fr;}
+  .spanish-pro-footer{align-items:flex-start;flex-direction:column;}
+}
+@media(max-width:480px){
+  .spanish-pro-card-head{align-items:flex-start;}.spanish-pro-card-badge,.spanish-pro-rule-tag{display:none;}
+  .spanish-pro-number{font-size:2.15rem;letter-spacing:2px;}
+  .spanish-pro-handoff-arrow{display:none;}
+  .spanish-pro-handoff{display:grid;grid-template-columns:1fr;}
+}
+
 </style>
 <body>
 <!-- ── NEW LEAD CELEBRATION POPUP ── -->
@@ -3284,54 +3375,108 @@ input, textarea, select { color-scheme: dark; }
 
   <!-- SPANISH -->
   <div class="tab-page" id="page-spanish">
-    <div class="spanish-view">
-      <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.4);border-left:4px solid var(--red);border-radius:14px;padding:20px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <span style="font-size:2rem;">&#128680;</span>
+    <div class="spanish-pro-shell">
+
+      <section class="spanish-pro-hero" aria-labelledby="spanish-pro-title">
+        <div>
+          <div class="spanish-pro-eyebrow">🇪🇸 Language Support Protocol</div>
+          <h1 class="spanish-pro-title" id="spanish-pro-title">Spanish Transfer Guide</h1>
+          <p class="spanish-pro-subtitle">Use this workflow whenever a customer requests Spanish support. Protect the customer experience with a clear explanation, a warm transfer and a confirmed handoff.</p>
+        </div>
+        <div class="spanish-pro-line-card" aria-label="Dedicated Spanish support line">
+          <div class="spanish-pro-line-kicker">Dedicated Spanish-Speaking Line</div>
+          <div class="spanish-pro-number">951-480-7594</div>
+          <div class="spanish-pro-line-copy">Transfer only to this approved specialist line. Confirm the specialist has received the customer before disconnecting.</div>
+          <a class="spanish-pro-call" href="tel:9514807594">☎ Call Spanish Line</a>
+        </div>
+      </section>
+
+      <section class="spanish-pro-rule">
+        <div class="spanish-pro-rule-main">
+          <div class="spanish-pro-rule-mark">!</div>
           <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--red);letter-spacing:1px;">SPANISH TRANSFER &mdash; CRITICAL PROTOCOL</div>
-            <div style="font-size:0.72rem;color:var(--muted);font-weight:600;">Read before every Spanish call</div>
+            <div class="spanish-pro-rule-title">Do not handle the call in Spanish unless you speak Spanish</div>
+            <div class="spanish-pro-rule-copy">When Spanish support is requested, transfer to the <strong>designated Spanish-speaking line only</strong>. Never guess which queue to use.</div>
           </div>
         </div>
-        <div style="background:var(--card);border-radius:10px;padding:16px;border:1px solid rgba(248,113,113,0.3);margin-bottom:14px;">
-          <div style="font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;">&#9888;&#65039; RULE</div>
-          <div style="font-size:1rem;line-height:1.75;color:#cbd5e1;font-weight:600;">
-            If a customer asks for <strong style="color:var(--red);">Spanish support</strong>, do <strong style="color:var(--red);">NOT</strong> handle the call if you don't speak Spanish.<br>
-            Transfer <strong>ONLY</strong> to the designated Spanish-speaking line.
+        <div class="spanish-pro-rule-tag">Critical Protocol</div>
+      </section>
+
+      <section class="spanish-pro-step-grid" aria-label="Spanish transfer workflow">
+        <article class="spanish-pro-step">
+          <div class="spanish-pro-step-top"><div class="spanish-pro-step-num">01</div><div><div class="spanish-pro-step-name">Confirm</div><div class="spanish-pro-step-purpose">Identify the request</div></div></div>
+          <div class="spanish-pro-step-copy">Confirm that the customer is asking to speak with someone in Spanish. Do not assume based on accent or limited English.</div>
+          <div class="spanish-pro-step-cue">Ask: “Would you prefer a Spanish-speaking specialist?”</div>
+        </article>
+        <article class="spanish-pro-step">
+          <div class="spanish-pro-step-top"><div class="spanish-pro-step-num">02</div><div><div class="spanish-pro-step-name">Explain</div><div class="spanish-pro-step-purpose">Set up the handoff</div></div></div>
+          <div class="spanish-pro-step-copy">Tell the customer you are connecting them with a specialist who can assist clearly in Spanish.</div>
+          <div class="spanish-pro-step-cue">Use the approved handoff script below.</div>
+        </article>
+        <article class="spanish-pro-step">
+          <div class="spanish-pro-step-top"><div class="spanish-pro-step-num">03</div><div><div class="spanish-pro-step-name">Transfer</div><div class="spanish-pro-step-purpose">Make a warm connection</div></div></div>
+          <div class="spanish-pro-step-copy">Place the customer on hold, dial the approved line and introduce the customer using their name and reference number.</div>
+          <div class="spanish-pro-step-cue">Never send the customer into an unconfirmed queue.</div>
+        </article>
+        <article class="spanish-pro-step">
+          <div class="spanish-pro-step-top"><div class="spanish-pro-step-num">04</div><div><div class="spanish-pro-step-name">Confirm</div><div class="spanish-pro-step-purpose">Complete the handoff</div></div></div>
+          <div class="spanish-pro-step-copy">Verify that the Spanish-speaking specialist has accepted the call before you disconnect.</div>
+          <div class="spanish-pro-step-cue">If no specialist answers, ask a supervisor for direction.</div>
+        </article>
+      </section>
+
+      <section class="spanish-pro-grid">
+        <article class="spanish-pro-card">
+          <header class="spanish-pro-card-head">
+            <div class="spanish-pro-card-heading"><div class="spanish-pro-card-icon">💬</div><div><div class="spanish-pro-card-title">Approved Handoff Script</div><div class="spanish-pro-card-sub">Use this before placing the customer on hold</div></div></div>
+            <div class="spanish-pro-card-badge">Say It Clearly</div>
+          </header>
+          <div class="spanish-pro-card-body">
+            <div class="spanish-pro-script-label">English → Spanish Support</div>
+            <div class="spanish-pro-script">“I want to make sure you get the best help possible. Let me connect you with one of our <strong>Spanish-speaking specialists</strong> right now. They will be able to walk you through everything clearly.”</div>
+            <div class="spanish-pro-handoff" aria-label="Warm transfer sequence">
+              <span class="spanish-pro-handoff-step">Place on Hold</span><span class="spanish-pro-handoff-arrow">→</span>
+              <span class="spanish-pro-handoff-step">Dial 951-480-7594</span><span class="spanish-pro-handoff-arrow">→</span>
+              <span class="spanish-pro-handoff-step">Give Name + Reference</span><span class="spanish-pro-handoff-arrow">→</span>
+              <span class="spanish-pro-handoff-step">Confirm Handoff</span>
+            </div>
           </div>
+        </article>
+
+        <article class="spanish-pro-card">
+          <header class="spanish-pro-card-head">
+            <div class="spanish-pro-card-heading"><div class="spanish-pro-card-icon">✓</div><div><div class="spanish-pro-card-title">Transfer Checklist</div><div class="spanish-pro-card-sub">Complete every step before disconnecting</div></div></div>
+            <div class="spanish-pro-card-badge">5 Checks</div>
+          </header>
+          <div class="spanish-pro-card-body">
+            <div class="spanish-pro-checklist">
+              <label class="spanish-pro-check"><input type="checkbox"><span>Customer <strong>requested Spanish support</strong>.</span></label>
+              <label class="spanish-pro-check"><input type="checkbox"><span>You do not speak Spanish and will use the <strong>approved transfer line</strong>.</span></label>
+              <label class="spanish-pro-check"><input type="checkbox"><span>Customer was placed on hold before dialing <strong>951-480-7594</strong>.</span></label>
+              <label class="spanish-pro-check"><input type="checkbox"><span>Specialist received the customer’s <strong>name and reference number</strong>.</span></label>
+              <label class="spanish-pro-check"><input type="checkbox"><span>The handoff was <strong>confirmed before disconnecting</strong>.</span></label>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="spanish-pro-risk" aria-labelledby="spanish-pro-avoid">
+        <div class="spanish-pro-risk-title" id="spanish-pro-avoid">Avoid These Transfer Errors</div>
+        <div class="spanish-pro-risk-list">
+          <div class="spanish-pro-risk-item"><strong>Wrong Queue</strong>Use only the designated Spanish-speaking line.</div>
+          <div class="spanish-pro-risk-item"><strong>Cold Transfer</strong>Introduce the customer before leaving the call.</div>
+          <div class="spanish-pro-risk-item"><strong>Early Disconnect</strong>Wait until the specialist confirms receipt.</div>
+          <div class="spanish-pro-risk-item"><strong>Guessing</strong>Ask a supervisor whenever the correct action is unclear.</div>
         </div>
-        <div style="background:linear-gradient(135deg,#dc2626,#b91c1c);border-radius:12px;padding:22px;text-align:center;box-shadow:0 4px 20px rgba(220,38,38,0.3);margin-bottom:14px;">
-          <div style="font-size:0.55rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:8px;">&#127466;&#127480; SPANISH LINE &mdash; TRANSFER TO</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#fff;letter-spacing:5px;line-height:1;">951-480-7594</div>
-          <div style="font-size:0.65rem;color:rgba(255,255,255,0.65);margin-top:6px;font-weight:700;">DEDICATED SPANISH-SPEAKING SPECIALIST LINE</div>
-          <a href="tel:9514807594" style="display:inline-block;margin-top:14px;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.45);color:#fff;text-decoration:none;padding:9px 28px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:1.5px;">&#128222; TAP TO CALL</a>
-        </div>
-        <div style="background:var(--card);border-radius:10px;padding:14px;border:1px solid rgba(248,113,113,0.3);">
-          <div style="font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;">&#9888;&#65039; WHY THIS MATTERS</div>
-          <div style="font-size:0.9rem;line-height:1.7;color:#cbd5e1;">We have had cases where clients were sent to the <strong style="color:var(--red);">wrong queue</strong>, which creates more issues. If you are <strong style="color:var(--text)">unsure</strong>, ask a <strong style="color:var(--accent);">supervisor</strong> before transferring. Do not guess.</div>
-        </div>
-      </div>
-      <div style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.3);border-radius:14px;padding:18px;margin-bottom:16px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--orange);letter-spacing:1px;margin-bottom:10px;">&#128172; WHAT TO SAY TO THE CLIENT</div>
-        <div class="rb" style="margin-bottom:0;">
-          <div class="rblabel" style="color:var(--orange);">ENGLISH &rarr; SPANISH HANDOFF SCRIPT</div>
-          <div class="rbtext">"I want to make sure you get the best help possible. Let me connect you with one of our <span class="kw">Spanish-speaking specialists</span> right now &mdash; they'll be able to walk you through everything clearly."</div>
-          <div class="pivot" style="color:var(--orange);">&rarr; Place on hold &rarr; Dial 951-480-7594 &rarr; Introduce client with name + reference number</div>
-        </div>
-      </div>
-      <div class="rb">
-        <div class="rblabel">&#128203; TRANSFER CHECKLIST</div>
-        <div style="display:flex;flex-direction:column;gap:9px;margin-top:6px;">
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;"> Confirm client is requesting Spanish support</label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;"> You do NOT speak Spanish (if you do, handle the call)</label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;"> Dial Spanish line: <strong style="color:var(--red);margin-left:4px;">951-480-7594</strong></label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;"> Introduce client with name + reference number</label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;"> Confirm handoff complete before disconnecting</label>
-        </div>
-      </div>
+      </section>
+
+      <section class="spanish-pro-footer">
+        <div class="spanish-pro-footer-copy"><strong>Agent checkpoint:</strong> Did I use the approved line, provide the customer’s identifying information and confirm the specialist accepted the call?</div>
+        <div class="spanish-pro-footer-tag">Confirm · Explain · Transfer · Verify</div>
+      </section>
+
     </div>
   </div>
-
   <!-- SUNDAY -->
   <div class="tab-page" id="page-sunday">
     <div class="sunday-view">
