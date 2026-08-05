@@ -1270,6 +1270,162 @@ input, textarea, select { color-scheme: dark; }
   .access-decision-badge{display:none;}
 }
 
+
+/* ── TIPS — LIVE CALL COACHING CENTER ── */
+#page-tips{
+  background:
+    radial-gradient(circle at 10% 0%,rgba(167,139,250,.08),transparent 27%),
+    radial-gradient(circle at 90% 8%,rgba(34,211,238,.06),transparent 24%),
+    var(--bg);
+}
+.coach-shell{width:100%;max-width:1180px;margin:0 auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.coach-hero{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:22px;align-items:center;
+  padding:24px 26px;border:1px solid #293653;border-radius:18px;
+  background:linear-gradient(145deg,rgba(23,20,48,.98),rgba(8,15,29,.98));box-shadow:0 16px 40px rgba(0,0,0,.22);
+}
+.coach-hero::after{content:'';position:absolute;right:-82px;bottom:-120px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.14),transparent 68%);pointer-events:none;}
+.coach-eyebrow,.asep-pro-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:5px 10px;border-radius:999px;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:900;letter-spacing:2.1px;text-transform:uppercase;}
+.coach-eyebrow{border:1px solid rgba(167,139,250,.36);background:rgba(167,139,250,.08);color:var(--purple);}
+.coach-title,.asep-pro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.35rem,4.5vw,4rem);line-height:.95;letter-spacing:4px;color:#f8fafc;text-transform:uppercase;}
+.coach-subtitle,.asep-pro-subtitle{max-width:650px;margin-top:11px;color:#9aa9bf;font-size:.82rem;line-height:1.65;font-weight:600;}
+.coach-signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:1;}
+.coach-signal{min-height:92px;padding:13px 12px;border:1px solid #2b3855;border-radius:12px;background:rgba(6,11,24,.68);display:flex;flex-direction:column;justify-content:space-between;}
+.coach-signal-icon{width:29px;height:29px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(167,139,250,.1);color:var(--purple);font-size:.86rem;font-weight:900;}
+.coach-signal-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:#e8edf6;}
+.coach-signal-copy{font-size:.58rem;line-height:1.4;color:#75849b;font-weight:700;}
+.coach-rule{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 17px;border:1px solid rgba(34,211,238,.28);border-left:5px solid var(--cyan);border-radius:14px;background:linear-gradient(100deg,rgba(34,211,238,.09),rgba(9,15,29,.8));}
+.coach-rule-main{display:flex;align-items:center;gap:11px;min-width:0;}
+.coach-rule-mark{width:37px;height:37px;flex:0 0 37px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,211,238,.11);border:1px solid rgba(34,211,238,.27);color:var(--cyan);font-weight:900;}
+.coach-rule-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#eef4fa;}
+.coach-rule-copy{margin-top:2px;font-size:.66rem;line-height:1.5;color:#8392a8;font-weight:650;}
+.coach-rule-tag{flex:0 0 auto;padding:6px 10px;border-radius:999px;border:1px solid rgba(34,211,238,.25);background:rgba(34,211,238,.07);color:var(--cyan);font-family:'Barlow Condensed',sans-serif;font-size:.59rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;}
+.coach-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.coach-card{overflow:hidden;border:1px solid #24334e;border-radius:16px;background:linear-gradient(155deg,rgba(17,28,48,.96),rgba(9,15,29,.96));box-shadow:0 12px 30px rgba(0,0,0,.16);}
+.coach-card.full{grid-column:1/-1;}
+.coach-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 13px;border-bottom:1px solid #1f2d46;}
+.coach-card-heading{display:flex;align-items:center;gap:10px;}
+.coach-card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:var(--accent);}
+.coach-card-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#eff4fa;}
+.coach-card-kicker{margin-top:2px;font-size:.61rem;color:#72839c;font-weight:700;}
+.coach-card-badge{padding:5px 9px;border-radius:999px;border:1px solid #2a3b59;background:#0b1426;color:#8291a7;font-size:.54rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;white-space:nowrap;}
+.coach-card-body{padding:16px 18px 18px;}
+.coach-pace-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.coach-pace{min-height:126px;padding:13px 11px;border:1px solid #273650;border-radius:12px;background:rgba(6,11,24,.6);display:flex;flex-direction:column;align-items:center;text-align:center;}
+.coach-pace.is-bad{border-color:rgba(248,113,113,.26);background:rgba(248,113,113,.045);}
+.coach-pace.is-best{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.065);box-shadow:inset 0 0 0 1px rgba(52,211,153,.06);}
+.coach-pace.is-warn{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.045);}
+.coach-pace-meter{height:34px;display:flex;align-items:center;justify-content:center;gap:3px;margin-bottom:8px;}
+.coach-pace-meter span{display:block;width:4px;border-radius:4px;background:#50617b;}
+.coach-pace.is-bad .coach-pace-meter span{background:var(--red);}
+.coach-pace.is-best .coach-pace-meter span{background:var(--green);}
+.coach-pace.is-warn .coach-pace-meter span{background:var(--gold);}
+.coach-pace-meter span:nth-child(1){height:10px}.coach-pace-meter span:nth-child(2){height:20px}.coach-pace-meter span:nth-child(3){height:30px}.coach-pace-meter span:nth-child(4){height:18px}.coach-pace-meter span:nth-child(5){height:26px}
+.coach-pace-name{font-family:'Barlow Condensed',sans-serif;font-size:.76rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:#e7edf6;}
+.coach-pace-copy{margin-top:6px;font-size:.62rem;line-height:1.45;color:#8190a6;font-weight:650;}
+.coach-pace.is-bad .coach-pace-name{color:var(--red)}.coach-pace.is-best .coach-pace-name{color:var(--green)}.coach-pace.is-warn .coach-pace-name{color:var(--gold)}
+.coach-note{margin-top:11px;padding:10px 12px;border-radius:9px;background:rgba(96,165,250,.06);border:1px dashed rgba(96,165,250,.25);font-size:.68rem;line-height:1.55;color:#91a0b6;font-weight:650;}
+.coach-note strong{color:#dce7f5;}
+.coach-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.coach-example{padding:13px;border-radius:11px;border:1px solid #283752;background:rgba(6,11,24,.62);}
+.coach-example.is-wrong{border-color:rgba(248,113,113,.28);}.coach-example.is-right{border-color:rgba(52,211,153,.3);}
+.coach-example-label{font-family:'Barlow Condensed',sans-serif;font-size:.64rem;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:8px;}
+.coach-example.is-wrong .coach-example-label{color:var(--red)}.coach-example.is-right .coach-example-label{color:var(--green)}
+.coach-example-copy{font-size:.72rem;line-height:1.65;color:#a7b3c5;font-weight:650;}
+.coach-pause-mark{display:inline-block;margin:0 3px;padding:2px 6px;border-radius:5px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--gold);font-size:.59rem;font-weight:900;letter-spacing:.8px;}
+.coach-punch-wrap{display:grid;grid-template-columns:minmax(220px,.55fr) minmax(0,1.45fr);gap:18px;align-items:center;}
+.coach-punch-copy{font-size:.7rem;line-height:1.65;color:#8291a8;font-weight:650;}
+.coach-punch-copy strong{color:#dfe7f2;}
+#punch-words{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:7px!important;margin:0!important;}
+#punch-words>div,#punch-words>span{min-height:40px!important;padding:8px 6px!important;border-radius:9px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;background:rgba(167,139,250,.075)!important;border:1px solid rgba(167,139,250,.22)!important;color:#c9bbff!important;font-family:'Barlow Condensed',sans-serif!important;font-size:.62rem!important;font-weight:900!important;letter-spacing:.8px!important;line-height:1.15!important;box-shadow:none!important;}
+.coach-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.coach-check{display:grid;grid-template-columns:28px minmax(0,1fr);gap:9px;align-items:start;padding:10px;border:1px solid #26354f;border-radius:10px;background:rgba(6,11,24,.56);}
+.coach-check-mark{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(52,211,153,.1);color:var(--green);font-weight:900;}
+.coach-check-title{font-size:.7rem;font-weight:850;color:#e5ebf4;line-height:1.35;}
+.coach-check-copy{margin-top:2px;font-size:.59rem;line-height:1.45;color:#75849a;font-weight:650;}
+.coach-trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.coach-trust{min-height:58px;padding:10px 12px;border:1px solid rgba(251,191,36,.23);border-radius:10px;background:rgba(251,191,36,.055);display:flex;align-items:center;gap:9px;color:#f3d27b;font-size:.72rem;font-weight:800;}
+.coach-trust-num{width:24px;height:24px;flex:0 0 24px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:rgba(251,191,36,.1);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:.64rem;font-weight:900;}
+
+/* ── A.S.E.P — OBJECTION CONTROL FRAMEWORK ── */
+#page-asep{background:radial-gradient(circle at 8% 0%,rgba(34,211,238,.075),transparent 28%),radial-gradient(circle at 92% 10%,rgba(52,211,153,.05),transparent 23%),var(--bg);}
+.asep-pro-shell{width:100%;max-width:1180px;margin:0 auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.asep-pro-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:22px;align-items:center;padding:24px 26px;border:1px solid #263754;border-radius:18px;background:linear-gradient(145deg,rgba(7,27,37,.98),rgba(8,15,29,.98));box-shadow:0 16px 40px rgba(0,0,0,.22);}
+.asep-pro-hero::after{content:'';position:absolute;right:-80px;bottom:-120px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.13),transparent 68%);pointer-events:none;}
+.asep-pro-eyebrow{border:1px solid rgba(34,211,238,.34);background:rgba(34,211,238,.075);color:var(--cyan);}
+.asep-pro-formula{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;position:relative;z-index:1;}
+.asep-pro-letter{min-height:92px;padding:12px 10px;border:1px solid #294057;border-radius:12px;background:rgba(6,11,24,.67);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.asep-pro-letter b{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;letter-spacing:2px;color:var(--cyan);}
+.asep-pro-letter span{margin-top:6px;font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#dce6f1;}
+.asep-pro-letter:nth-child(2) b{color:var(--gold)}.asep-pro-letter:nth-child(3) b{color:var(--accent)}.asep-pro-letter:nth-child(4) b{color:var(--green)}
+.asep-pro-rule{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 17px;border:1px solid rgba(52,211,153,.3);border-left:5px solid var(--green);border-radius:14px;background:linear-gradient(100deg,rgba(52,211,153,.085),rgba(9,15,29,.82));}
+.asep-pro-rule-main{display:flex;align-items:center;gap:11px;}
+.asep-pro-rule-mark{width:38px;height:38px;flex:0 0 38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--green);font-weight:900;}
+.asep-pro-rule-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#eff6f4;}
+.asep-pro-rule-copy{margin-top:2px;font-size:.66rem;line-height:1.5;color:#8495a8;font-weight:650;}
+.asep-pro-rule-tag{flex:0 0 auto;padding:6px 10px;border-radius:999px;border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.07);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.59rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;}
+.asep-pro-step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.asep-pro-step{position:relative;overflow:hidden;min-height:280px;padding:17px 15px 15px;border:1px solid #263650;border-top:4px solid var(--cyan);border-radius:15px;background:linear-gradient(155deg,rgba(17,28,48,.96),rgba(9,15,29,.96));box-shadow:0 10px 26px rgba(0,0,0,.15);}
+.asep-pro-step:nth-child(2){border-top-color:var(--gold)}.asep-pro-step:nth-child(3){border-top-color:var(--accent)}.asep-pro-step:nth-child(4){border-top-color:var(--green)}
+.asep-pro-step-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.asep-pro-step-num{width:39px;height:39px;flex:0 0 39px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.27);color:var(--cyan);font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:1px;}
+.asep-pro-step:nth-child(2) .asep-pro-step-num{background:rgba(251,191,36,.09);border-color:rgba(251,191,36,.26);color:var(--gold)}.asep-pro-step:nth-child(3) .asep-pro-step-num{background:rgba(96,165,250,.09);border-color:rgba(96,165,250,.25);color:var(--accent)}.asep-pro-step:nth-child(4) .asep-pro-step-num{background:rgba(52,211,153,.09);border-color:rgba(52,211,153,.25);color:var(--green)}
+.asep-pro-step-name{font-family:'Barlow Condensed',sans-serif;font-size:.94rem;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:#eff4fa;}
+.asep-pro-step-purpose{font-size:.59rem;color:#73839b;font-weight:700;margin-top:2px;}
+.asep-pro-step-copy{font-size:.68rem;line-height:1.58;color:#8d9cb1;font-weight:650;min-height:54px;}
+.asep-pro-phrases{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+.asep-pro-phrase{padding:8px 9px;border-radius:8px;border:1px solid #293954;background:rgba(6,11,24,.58);font-size:.63rem;line-height:1.45;color:#c8d2e0;font-weight:700;}
+.asep-pro-step:nth-child(1) .asep-pro-phrase{border-color:rgba(34,211,238,.2)}.asep-pro-step:nth-child(2) .asep-pro-phrase{border-color:rgba(251,191,36,.2)}.asep-pro-step:nth-child(3) .asep-pro-phrase{border-color:rgba(96,165,250,.2)}.asep-pro-step:nth-child(4) .asep-pro-phrase{border-color:rgba(52,211,153,.2)}
+.asep-pro-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:16px;align-items:start;}
+.asep-pro-card{overflow:hidden;border:1px solid #24334e;border-radius:16px;background:linear-gradient(155deg,rgba(17,28,48,.96),rgba(9,15,29,.96));box-shadow:0 12px 30px rgba(0,0,0,.16);}
+.asep-pro-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 13px;border-bottom:1px solid #1f2d46;}
+.asep-pro-card-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#eff4fa;}
+.asep-pro-card-sub{margin-top:2px;font-size:.61rem;color:#72839c;font-weight:700;}
+.asep-pro-card-body{padding:16px 18px 18px;}
+.asep-pro-objection{padding:12px 14px;border:1px solid rgba(248,113,113,.26);border-left:4px solid var(--red);border-radius:10px;background:rgba(248,113,113,.055);font-size:.74rem;line-height:1.55;color:#d7dde7;font-weight:750;}
+.asep-pro-flow{display:flex;flex-direction:column;margin-top:12px;}
+.asep-pro-flow-row{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;position:relative;padding-bottom:11px;}
+.asep-pro-flow-row:not(:last-child)::after{content:'';position:absolute;left:18px;top:38px;bottom:0;width:1px;background:#2c3d59;}
+.asep-pro-flow-letter{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.25);color:var(--cyan);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;z-index:1;}
+.asep-pro-flow-row:nth-child(2) .asep-pro-flow-letter{background:rgba(251,191,36,.09);border-color:rgba(251,191,36,.24);color:var(--gold)}.asep-pro-flow-row:nth-child(3) .asep-pro-flow-letter{background:rgba(96,165,250,.09);border-color:rgba(96,165,250,.24);color:var(--accent)}.asep-pro-flow-row:nth-child(4) .asep-pro-flow-letter{background:rgba(52,211,153,.09);border-color:rgba(52,211,153,.24);color:var(--green)}
+.asep-pro-flow-copy{padding:8px 10px;border:1px solid #283751;border-radius:9px;background:rgba(6,11,24,.56);font-size:.68rem;line-height:1.55;color:#c5cfdd;font-weight:700;}
+.asep-pro-flow-copy strong{color:#f0f4f8;}
+.asep-pro-do-list{display:flex;flex-direction:column;gap:8px;}
+.asep-pro-do{display:grid;grid-template-columns:29px minmax(0,1fr);gap:9px;align-items:start;padding:10px;border:1px solid #273650;border-radius:10px;background:rgba(6,11,24,.56);}
+.asep-pro-do-mark{width:29px;height:29px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;}
+.asep-pro-do.is-do .asep-pro-do-mark{background:rgba(52,211,153,.1);color:var(--green)}.asep-pro-do.is-dont .asep-pro-do-mark{background:rgba(248,113,113,.1);color:var(--red)}
+.asep-pro-do-title{font-size:.68rem;font-weight:850;color:#e2e9f2;line-height:1.35;}
+.asep-pro-do-copy{margin-top:2px;font-size:.58rem;line-height:1.45;color:#75849a;font-weight:650;}
+.asep-pro-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border:1px dashed #314361;border-radius:13px;background:rgba(96,165,250,.045);}
+.asep-pro-footer-copy{font-size:.7rem;line-height:1.55;color:#91a1b7;font-weight:650;}.asep-pro-footer-copy strong{color:#dbe7f5;}
+.asep-pro-footer-tag{flex:0 0 auto;padding:7px 10px;border-radius:8px;background:rgba(96,165,250,.09);border:1px solid rgba(96,165,250,.24);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;}
+@media(max-width:980px){
+  .coach-hero,.asep-pro-hero{grid-template-columns:1fr;}
+  .coach-punch-wrap{grid-template-columns:1fr;}
+  #punch-words{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+  .asep-pro-step-grid{grid-template-columns:repeat(2,1fr);}
+  .asep-pro-grid{grid-template-columns:1fr;}
+}
+@media(max-width:760px){
+  .coach-shell,.asep-pro-shell{padding:14px;gap:12px;}
+  .coach-hero,.asep-pro-hero{padding:19px 17px;border-radius:15px;}
+  .coach-signal-grid{grid-template-columns:1fr;}.coach-signal{min-height:68px;}
+  .coach-rule,.asep-pro-rule{align-items:flex-start;flex-direction:column;}
+  .coach-grid{grid-template-columns:1fr;}.coach-card.full{grid-column:auto;}
+  .coach-pace-grid{grid-template-columns:1fr;}.coach-pace{min-height:auto;}
+  .coach-compare{grid-template-columns:1fr;}
+  .coach-check-grid,.coach-trust-grid{grid-template-columns:1fr;}
+  #punch-words{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .asep-pro-formula{grid-template-columns:repeat(2,1fr);}
+  .asep-pro-step-grid{grid-template-columns:1fr;}.asep-pro-step{min-height:auto;}
+  .asep-pro-footer{align-items:flex-start;flex-direction:column;}
+}
+@media(max-width:480px){
+  .coach-card-head,.asep-pro-card-head{align-items:flex-start;}.coach-card-badge{display:none;}
+  .coach-rule-tag,.asep-pro-rule-tag{display:none;}
+  #punch-words{grid-template-columns:1fr 1fr!important;}
+}
+
 </style>
 <body>
 <!-- ── NEW LEAD CELEBRATION POPUP ── -->
@@ -2963,81 +3119,168 @@ input, textarea, select { color-scheme: dark; }
 
   <!-- TIPS -->
   <div class="tab-page" id="page-tips">
-    <div class="tips-view">
-      <div class="rb" style="border-left:4px solid var(--accent2);">
-        <div class="rblabel" style="color:var(--accent2);">&#127897;&#65039; SPEAKING PACE</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:8px;padding:10px;text-align:center;"><div style="color:var(--red);font-size:0.62rem;font-weight:800;">TOO FAST &#10060;</div><div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">They zone out or get suspicious.</div></div>
-          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);border-radius:8px;padding:10px;text-align:center;"><div style="color:var(--green);font-size:0.62rem;font-weight:800;">JUST RIGHT &#9989;</div><div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">Calm, clear, confident.</div></div>
-          <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:10px;text-align:center;"><div style="color:var(--gold);font-size:0.62rem;font-weight:800;">TOO SLOW &#9888;&#65039;</div><div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">Sounds unsure. Busy people hang up.</div></div>
+    <div class="coach-shell">
+      <section class="coach-hero">
+        <div>
+          <div class="coach-eyebrow">&#9679; Live Call Coaching</div>
+          <h1 class="coach-title">Control the Call</h1>
+          <p class="coach-subtitle">Professional delivery is not about sounding louder. It is about controlling pace, tone, timing and the next question so the customer can follow you with confidence.</p>
         </div>
-        <div style="font-size:0.8rem;color:var(--muted);">Speak like you're explaining something important to a sharp friend &mdash; not reading a script.</div>
-      </div>
-      <div class="rb" style="border-left:4px solid var(--gold);">
-        <div class="rblabel" style="color:var(--gold);">&#9208;&#65039; THE PAUSE &mdash; YOUR MOST POWERFUL TOOL</div>
-        <div class="rbtext">Pause <strong style="color:var(--gold)">AFTER</strong> your punch word &mdash; not before.<br><br>
-        <span style="color:var(--red);font-weight:700;">WRONG:</span> <em style="color:var(--muted);">"I want to talk to you about&hellip; working capital."</em><br>
-        <span style="color:var(--green);font-weight:700;">RIGHT:</span> "We can get you access to <strong style="color:var(--accent);">working capital.</strong> <span style="color:var(--gold);font-weight:700;">[PAUSE]</span> Does that interest you?"<br><br>
-        Silence after a strong word = confidence.</div>
-      </div>
-      <div class="rb" style="border-left:4px solid var(--purple);">
-        <div class="rblabel" style="color:var(--purple);">&#128074; PUNCH WORDS &mdash; HIT THESE WITH WEIGHT</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;" id="punch-words"></div>
-        <div style="font-size:0.78rem;color:var(--muted);">Slow down slightly on punch words. Drop your voice a touch &mdash; heavier, not louder. Pause 1 beat after.</div>
-      </div>
-      <div class="rb" style="border-left:4px solid var(--green);">
-        <div class="rblabel" style="color:var(--green);">&#129504; MINDSET</div>
-        <div class="rbtext" style="line-height:2;">
-          &#9989; <strong>Speak clearly, calmly</strong> &mdash; they're busy, make it easy to follow<br>
-          &#9989; <strong>Sit up straight</strong> &mdash; posture affects your voice; they hear it<br>
-          &#9989; <strong>Smile while you talk</strong> &mdash; they feel it, they can't see it<br>
-          &#9888;&#65039; <strong style="color:var(--gold);">No filler words</strong> &mdash; no "um", "like" &mdash; silence is better<br>
-          &#9888;&#65039; <strong style="color:var(--gold);">Ask a question &mdash; then WAIT.</strong> First to speak loses.
+        <div class="coach-signal-grid" aria-label="Three call control signals">
+          <div class="coach-signal"><div class="coach-signal-icon">01</div><div><div class="coach-signal-title">Pace</div><div class="coach-signal-copy">Clear enough to follow. Efficient enough to hold attention.</div></div></div>
+          <div class="coach-signal"><div class="coach-signal-icon">02</div><div><div class="coach-signal-title">Tone</div><div class="coach-signal-copy">Warm, calm and certain — never rushed or robotic.</div></div></div>
+          <div class="coach-signal"><div class="coach-signal-icon">03</div><div><div class="coach-signal-title">Pause</div><div class="coach-signal-copy">Use silence after the key point and after every question.</div></div></div>
         </div>
-      </div>
-      <div class="rb" style="border-left:4px solid var(--accent);">
-        <div class="rblabel" style="color:var(--accent);">&#128260; MICRO-TRUST PHRASES &mdash; USE EVERY 2 QUESTIONS</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:10px;text-align:center;font-size:0.85rem;color:var(--gold);font-weight:700;">"Perfect, thank you."</div>
-          <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:10px;text-align:center;font-size:0.85rem;color:var(--gold);font-weight:700;">"Got it, that helps."</div>
-          <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:10px;text-align:center;font-size:0.85rem;color:var(--gold);font-weight:700;">"Great to know."</div>
-          <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:10px;text-align:center;font-size:0.85rem;color:var(--gold);font-weight:700;">"Appreciate that."</div>
+      </section>
+
+      <section class="coach-rule">
+        <div class="coach-rule-main">
+          <div class="coach-rule-mark">&#9733;</div>
+          <div><div class="coach-rule-title">Sound guided — not scripted</div><div class="coach-rule-copy">Know the purpose of each line, speak naturally, and move directly to the next required question.</div></div>
         </div>
+        <div class="coach-rule-tag">Core Delivery Standard</div>
+      </section>
+
+      <div class="coach-grid">
+        <section class="coach-card">
+          <header class="coach-card-head"><div class="coach-card-heading"><div class="coach-card-icon">&#9654;</div><div><div class="coach-card-title">Speaking Pace</div><div class="coach-card-kicker">Keep the customer with you</div></div></div><div class="coach-card-badge">Delivery</div></header>
+          <div class="coach-card-body">
+            <div class="coach-pace-grid">
+              <div class="coach-pace is-bad"><div class="coach-pace-meter"><span></span><span></span><span></span><span></span><span></span></div><div class="coach-pace-name">Too Fast</div><div class="coach-pace-copy">Sounds rushed and makes the customer suspicious or confused.</div></div>
+              <div class="coach-pace is-best"><div class="coach-pace-meter"><span></span><span></span><span></span><span></span><span></span></div><div class="coach-pace-name">Controlled</div><div class="coach-pace-copy">Calm, clear and confident. The customer can process every point.</div></div>
+              <div class="coach-pace is-warn"><div class="coach-pace-meter"><span></span><span></span><span></span><span></span><span></span></div><div class="coach-pace-name">Too Slow</div><div class="coach-pace-copy">Sounds uncertain and gives a busy customer time to disengage.</div></div>
+            </div>
+            <div class="coach-note"><strong>Target:</strong> Speak as if you are explaining something important to a sharp business owner — not reading from a screen.</div>
+          </div>
+        </section>
+
+        <section class="coach-card">
+          <header class="coach-card-head"><div class="coach-card-heading"><div class="coach-card-icon">&#10074;&#10074;</div><div><div class="coach-card-title">Power of the Pause</div><div class="coach-card-kicker">Place silence where it creates confidence</div></div></div><div class="coach-card-badge">Timing</div></header>
+          <div class="coach-card-body">
+            <div class="coach-compare">
+              <div class="coach-example is-wrong"><div class="coach-example-label">&#10005; Weak Delivery</div><div class="coach-example-copy">“We help businesses access… <span class="coach-pause-mark">PAUSE</span> working capital.”<br><br>The pause arrives before the important point and makes the line sound uncertain.</div></div>
+              <div class="coach-example is-right"><div class="coach-example-label">&#10003; Strong Delivery</div><div class="coach-example-copy">“We help businesses access <strong>working capital.</strong> <span class="coach-pause-mark">PAUSE</span> Approximately how much annual revenue does the business generate?”</div></div>
+            </div>
+            <div class="coach-note"><strong>Rule:</strong> Finish the key statement, pause one beat, ask the next required question, then wait.</div>
+          </div>
+        </section>
+
+        <section class="coach-card full">
+          <header class="coach-card-head"><div class="coach-card-heading"><div class="coach-card-icon">&#9670;</div><div><div class="coach-card-title">Punch Words</div><div class="coach-card-kicker">Give the important words more weight — not more volume</div></div></div><div class="coach-card-badge">Vocal Emphasis</div></header>
+          <div class="coach-card-body">
+            <div class="coach-punch-wrap">
+              <div class="coach-punch-copy"><strong>How to deliver them:</strong><br>Slow down slightly, lower your voice a touch, finish the phrase cleanly and pause for one beat. Heavy and controlled is stronger than loud.</div>
+              <div id="punch-words"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="coach-card">
+          <header class="coach-card-head"><div class="coach-card-heading"><div class="coach-card-icon">&#10003;</div><div><div class="coach-card-title">Confidence Checklist</div><div class="coach-card-kicker">Reset before every call</div></div></div><div class="coach-card-badge">Mindset</div></header>
+          <div class="coach-card-body">
+            <div class="coach-check-grid">
+              <div class="coach-check"><div class="coach-check-mark">&#10003;</div><div><div class="coach-check-title">Sit upright</div><div class="coach-check-copy">Posture improves breath support and vocal authority.</div></div></div>
+              <div class="coach-check"><div class="coach-check-mark">&#10003;</div><div><div class="coach-check-title">Smile naturally</div><div class="coach-check-copy">A warmer expression produces a warmer tone.</div></div></div>
+              <div class="coach-check"><div class="coach-check-mark">&#10003;</div><div><div class="coach-check-title">Remove filler words</div><div class="coach-check-copy">Use a brief pause instead of “um,” “like” or repeated wording.</div></div></div>
+              <div class="coach-check"><div class="coach-check-mark">&#10003;</div><div><div class="coach-check-title">Ask — then wait</div><div class="coach-check-copy">Do not answer your own question or talk over the customer.</div></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="coach-card">
+          <header class="coach-card-head"><div class="coach-card-heading"><div class="coach-card-icon">&#8644;</div><div><div class="coach-card-title">Micro-Trust Phrases</div><div class="coach-card-kicker">Use naturally after every few answers</div></div></div><div class="coach-card-badge">Rapport</div></header>
+          <div class="coach-card-body">
+            <div class="coach-trust-grid">
+              <div class="coach-trust"><div class="coach-trust-num">01</div>“Perfect, thank you.”</div>
+              <div class="coach-trust"><div class="coach-trust-num">02</div>“Got it, that helps.”</div>
+              <div class="coach-trust"><div class="coach-trust-num">03</div>“Great, I have that noted.”</div>
+              <div class="coach-trust"><div class="coach-trust-num">04</div>“I appreciate that.”</div>
+            </div>
+            <div class="coach-note"><strong>Keep it natural:</strong> One short acknowledgement is enough. Avoid repeating the same phrase after every answer.</div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
 
+
   <!-- ASEP -->
   <div class="tab-page" id="page-asep">
-    <div class="script-view">
-      <div class="phase-tag" style="background:rgba(34,211,238,0.1);color:var(--cyan);border-color:rgba(34,211,238,0.4);">&#9881;&#65039; Rebuttal Framework</div>
-      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:14px;">Use for <strong style="color:var(--text)">every objection</strong> &mdash; 4-step flow.</div>
-      <div class="asep-box">
-        <div class="asep-step">
-          <div class="asep-num">A</div>
-          <div class="asep-c"><strong>ACKNOWLEDGE</strong> &mdash; Validate the concern.<div class="chips"><span class="chip">"I understand, [Name]"</span><span class="chip">"Thanks for asking"</span><span class="chip">"I'm glad you mentioned that"</span></div></div>
+    <div class="asep-pro-shell">
+      <section class="asep-pro-hero">
+        <div>
+          <div class="asep-pro-eyebrow">&#9679; Objection Control Framework</div>
+          <h1 class="asep-pro-title">A.S.E.P.</h1>
+          <p class="asep-pro-subtitle">A four-step structure for handling objections without arguing, over-explaining or losing control of the call. Keep each response concise and return to the script.</p>
         </div>
-        <div class="asep-step">
-          <div class="asep-num" style="background:var(--gold);">S</div>
-          <div class="asep-c"><strong>SOFTEN</strong> &mdash; Show empathy, don't fight it.<div class="chips"><span class="chip" style="background:var(--gold-light);border-color:#fcd34d;color:var(--gold);">"Most clients had the same question"</span><span class="chip" style="background:var(--gold-light);border-color:#fcd34d;color:var(--gold);">"Totally valid point"</span></div></div>
+        <div class="asep-pro-formula" aria-label="ASEP framework">
+          <div class="asep-pro-letter"><b>A</b><span>Acknowledge</span></div>
+          <div class="asep-pro-letter"><b>S</b><span>Soften</span></div>
+          <div class="asep-pro-letter"><b>E</b><span>Explain</span></div>
+          <div class="asep-pro-letter"><b>P</b><span>Pivot</span></div>
         </div>
-        <div class="asep-step">
-          <div class="asep-num" style="background:var(--cyan);">E</div>
-          <div class="asep-c"><strong>EXPLAIN</strong> &mdash; Give the direct rebuttal. Answer the concern.</div>
-        </div>
-        <div class="asep-step">
-          <div class="asep-num" style="background:var(--green);">P</div>
-          <div class="asep-c"><strong>PIVOT</strong> &mdash; Get back into the script with a question.<div class="chips"><span class="chip" style="background:var(--green-light);border-color:#6ee7b7;color:var(--green);">"So going back&hellip;"</span><span class="chip" style="background:var(--green-light);border-color:#6ee7b7;color:var(--green);">"Let me get that confirmed&hellip;"</span><span class="chip" style="background:var(--green-light);border-color:#6ee7b7;color:var(--green);">"Let's see what you qualify for&hellip;"</span></div></div>
-        </div>
+      </section>
+
+      <section class="asep-pro-rule">
+        <div class="asep-pro-rule-main"><div class="asep-pro-rule-mark">&#8594;</div><div><div class="asep-pro-rule-title">Every rebuttal must return to the next script question</div><div class="asep-pro-rule-copy">The goal is not to win an argument. Resolve the concern briefly, then continue the qualification process.</div></div></div>
+        <div class="asep-pro-rule-tag">Keep Forward Motion</div>
+      </section>
+
+      <section class="asep-pro-step-grid">
+        <article class="asep-pro-step">
+          <div class="asep-pro-step-top"><div class="asep-pro-step-num">A</div><div><div class="asep-pro-step-name">Acknowledge</div><div class="asep-pro-step-purpose">Show that you heard the concern</div></div></div>
+          <div class="asep-pro-step-copy">Confirm the customer’s concern without agreeing with a negative assumption or becoming defensive.</div>
+          <div class="asep-pro-phrases"><div class="asep-pro-phrase">“I understand, [Name].”</div><div class="asep-pro-phrase">“Thank you for letting me know.”</div><div class="asep-pro-phrase">“I’m glad you mentioned that.”</div></div>
+        </article>
+        <article class="asep-pro-step">
+          <div class="asep-pro-step-top"><div class="asep-pro-step-num">S</div><div><div class="asep-pro-step-name">Soften</div><div class="asep-pro-step-purpose">Lower resistance before answering</div></div></div>
+          <div class="asep-pro-step-copy">Use one calm sentence that makes the concern feel reasonable. Do not overdo empathy or sound rehearsed.</div>
+          <div class="asep-pro-phrases"><div class="asep-pro-phrase">“That makes sense.”</div><div class="asep-pro-phrase">“That is a fair question.”</div><div class="asep-pro-phrase">“I can see why you would ask.”</div></div>
+        </article>
+        <article class="asep-pro-step">
+          <div class="asep-pro-step-top"><div class="asep-pro-step-num">E</div><div><div class="asep-pro-step-name">Explain</div><div class="asep-pro-step-purpose">Answer only the concern raised</div></div></div>
+          <div class="asep-pro-step-copy">Give the approved explanation in one or two clear sentences. Avoid guarantees, unnecessary details and unsupported claims.</div>
+          <div class="asep-pro-phrases"><div class="asep-pro-phrase">State the relevant fact.</div><div class="asep-pro-phrase">Keep the wording direct.</div><div class="asep-pro-phrase">Stop once the concern is answered.</div></div>
+        </article>
+        <article class="asep-pro-step">
+          <div class="asep-pro-step-top"><div class="asep-pro-step-num">P</div><div><div class="asep-pro-step-name">Pivot</div><div class="asep-pro-step-purpose">Resume the qualification flow</div></div></div>
+          <div class="asep-pro-step-copy">Move immediately to the next required question. Do not ask whether the customer is interested.</div>
+          <div class="asep-pro-phrases"><div class="asep-pro-phrase">“Approximately how much annual revenue does the business generate?”</div><div class="asep-pro-phrase">“May I have your full legal name?”</div><div class="asep-pro-phrase">“Please hold while I connect you with a senior advisor.”</div></div>
+        </article>
+      </section>
+
+      <div class="asep-pro-grid">
+        <section class="asep-pro-card">
+          <header class="asep-pro-card-head"><div><div class="asep-pro-card-title">Live Flow Example</div><div class="asep-pro-card-sub">One objection handled from start to pivot</div></div></header>
+          <div class="asep-pro-card-body">
+            <div class="asep-pro-objection"><strong>Customer:</strong> “I am not looking for funding right now.”</div>
+            <div class="asep-pro-flow">
+              <div class="asep-pro-flow-row"><div class="asep-pro-flow-letter">A</div><div class="asep-pro-flow-copy"><strong>Acknowledge:</strong> “I understand, [Name].”</div></div>
+              <div class="asep-pro-flow-row"><div class="asep-pro-flow-letter">S</div><div class="asep-pro-flow-copy"><strong>Soften:</strong> “That makes sense — you may not be actively applying today.”</div></div>
+              <div class="asep-pro-flow-row"><div class="asep-pro-flow-letter">E</div><div class="asep-pro-flow-copy"><strong>Explain:</strong> “I am only confirming the basic business details to determine whether the business meets the preliminary requirements.”</div></div>
+              <div class="asep-pro-flow-row"><div class="asep-pro-flow-letter">P</div><div class="asep-pro-flow-copy"><strong>Pivot:</strong> “Approximately how much annual revenue does the business generate?” <span class="coach-pause-mark">WAIT</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="asep-pro-card">
+          <header class="asep-pro-card-head"><div><div class="asep-pro-card-title">Execution Standards</div><div class="asep-pro-card-sub">What professional objection handling looks like</div></div></header>
+          <div class="asep-pro-card-body">
+            <div class="asep-pro-do-list">
+              <div class="asep-pro-do is-do"><div class="asep-pro-do-mark">&#10003;</div><div><div class="asep-pro-do-title">Keep it brief</div><div class="asep-pro-do-copy">A.S.E.P. should sound like one smooth response, not a speech.</div></div></div>
+              <div class="asep-pro-do is-do"><div class="asep-pro-do-mark">&#10003;</div><div><div class="asep-pro-do-title">Use the customer’s name naturally</div><div class="asep-pro-do-copy">Use it once to personalize the response — not in every sentence.</div></div></div>
+              <div class="asep-pro-do is-do"><div class="asep-pro-do-mark">&#10003;</div><div><div class="asep-pro-do-title">Pivot with the required question</div><div class="asep-pro-do-copy">Return to revenue, legal name, business name or the transfer step.</div></div></div>
+              <div class="asep-pro-do is-dont"><div class="asep-pro-do-mark">&#10005;</div><div><div class="asep-pro-do-title">Do not argue or repeat yourself</div><div class="asep-pro-do-copy">If the objection remains unresolved, follow the approved escalation or call-ending process.</div></div></div>
+              <div class="asep-pro-do is-dont"><div class="asep-pro-do-mark">&#10005;</div><div><div class="asep-pro-do-title">Do not ask “Are you interested?”</div><div class="asep-pro-do-copy">That creates an unnecessary yes-or-no exit. Continue with the qualification flow instead.</div></div></div>
+            </div>
+          </div>
+        </section>
       </div>
-      <div class="tip"><strong>&#9889; RULE:</strong> Always end a rebuttal with a qualifying question to keep moving toward transfer.</div>
-      <div class="tip" style="margin-top:12px;background:rgba(34,211,238,0.07);border-color:rgba(34,211,238,0.4);color:#cbd5e1;">
-        <strong style="color:var(--cyan);">&#128260; FLOW EXAMPLE</strong><br>
-        Client: "I don't want to give my SSN."<br>
-        <strong>A</strong> &rarr; "Completely understand." &nbsp;|&nbsp; <strong>S</strong> &rarr; "Most people ask this." &nbsp;|&nbsp; <strong>E</strong> &rarr; "It's a soft pull, won't affect your score." &nbsp;|&nbsp; <strong>P</strong> &rarr; "Go ahead with your social whenever you're ready. [WAIT]"
-      </div>
+
+      <section class="asep-pro-footer"><div class="asep-pro-footer-copy"><strong>Agent checkpoint:</strong> Did I acknowledge the concern, answer only what was asked, and return to the next approved question?</div><div class="asep-pro-footer-tag">Acknowledge · Soften · Explain · Pivot</div></section>
     </div>
   </div>
+
 
   <!-- SPANISH -->
   <div class="tab-page" id="page-spanish">
