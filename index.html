@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -601,38 +600,105 @@ body.lead-alert-open{overflow:hidden;}
   color:var(--muted);
 }
 
-/* ── LEADERBOARD STYLES ── */
-.lb-card{
-  background:var(--card);border:1px solid var(--border);border-radius:12px;
-  padding:12px 16px;display:flex;align-items:center;gap:14px;
-  transition:all 0.15s;cursor:default;
+/* ── LEADERBOARD — PROFESSIONAL PERFORMANCE BOARD ── */
+#page-leaderboard{background:radial-gradient(circle at 12% 0%,rgba(251,191,36,.055),transparent 28%),var(--bg);}
+.lb-shell{padding:18px;overflow-y:auto;flex:1;max-width:1220px;width:100%;margin:0 auto;}
+.lb-hero{position:relative;overflow:hidden;border:1px solid rgba(251,191,36,.22);border-radius:18px;background:linear-gradient(135deg,rgba(17,28,48,.96),rgba(7,14,28,.98));box-shadow:0 18px 48px rgba(0,0,0,.24);padding:20px 22px;margin-bottom:14px;}
+.lb-hero::before{content:'';position:absolute;width:280px;height:280px;border-radius:50%;right:-100px;top:-150px;background:rgba(251,191,36,.08);filter:blur(4px);pointer-events:none;}
+.lb-hero-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+.lb-title-wrap{display:flex;align-items:center;gap:14px;min-width:260px;}
+.lb-title-mark{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(251,191,36,.20),rgba(251,146,60,.09));border:1px solid rgba(251,191,36,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 28px rgba(0,0,0,.22);font-size:1.45rem;}
+.lb-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:4.2px;line-height:1;background:linear-gradient(90deg,#fff4c5,#fbbf24,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lb-subtitle{margin-top:5px;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;color:#71839d;}
+.lb-live-pill{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:5px 9px;border-radius:999px;border:1px solid rgba(52,211,153,.24);background:rgba(52,211,153,.06);color:var(--green);font-size:.58rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;}
+.lb-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(52,211,153,.7);}
+.lb-toolbar{position:relative;z-index:1;display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap;}
+.lb-control-group{display:flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:11px;background:rgba(4,10,22,.62);}
+.lb-control-label{width:100%;font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#60718a;margin:0 0 4px 3px;}
+.lb-seg-btn{appearance:none;border:1px solid transparent;background:transparent;color:#71839d;padding:7px 12px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:900;letter-spacing:1.2px;cursor:pointer;transition:all .18s ease;white-space:nowrap;}
+.lb-seg-btn:hover{color:var(--text);background:rgba(148,163,184,.06);}
+.lb-seg-btn.active{color:#07111e;background:linear-gradient(135deg,#fbbf24,#fb923c);box-shadow:0 7px 18px rgba(251,191,36,.14);}
+.lb-filter-btn.active{color:#dbeafe;background:rgba(59,130,246,.13);border-color:rgba(96,165,250,.38);box-shadow:none;}
+.lb-filter-btn[data-filter="BB"].active{color:#bfdbfe;background:rgba(96,165,250,.11);border-color:rgba(96,165,250,.35);}
+.lb-filter-btn[data-filter="PR"].active{color:#ddd6fe;background:rgba(167,139,250,.11);border-color:rgba(167,139,250,.34);}
+.lb-week-subtabs{display:none;margin:0 0 14px;}
+.lb-week-subtabs.show{display:flex;}
+.lb-week-toggle{display:flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:11px;background:#07101f;}
+.lb-week-btn{border:1px solid transparent;background:transparent;color:#71839d;padding:7px 15px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:1.2px;cursor:pointer;}
+.lb-week-btn.active{color:#fff;background:rgba(167,139,250,.18);border-color:rgba(167,139,250,.36);}
+.lb-week-btn[data-week="prev"].active{color:#fde68a;background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.30);}
+.lb-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.lb-summary-card{position:relative;overflow:hidden;min-height:106px;padding:14px 15px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(145deg,rgba(17,28,48,.92),rgba(9,17,31,.92));box-shadow:0 8px 24px rgba(0,0,0,.14);}
+.lb-summary-card::after{content:'';position:absolute;right:-25px;bottom:-35px;width:90px;height:90px;border-radius:50%;background:rgba(96,165,250,.035);}
+.lb-summary-kicker{font-family:'Barlow Condensed',sans-serif;font-size:.55rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#60718a;}
+.lb-summary-value{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;line-height:1;margin-top:9px;color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-summary-card.primary .lb-summary-value{color:var(--gold);}
+.lb-summary-card.leader .lb-summary-value{font-family:'Barlow Condensed',sans-serif;font-size:1.18rem;font-weight:900;letter-spacing:.5px;color:#fff;margin-top:11px;}
+.lb-summary-note{margin-top:6px;font-size:.63rem;color:#71839d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-section{border:1px solid var(--border);border-radius:16px;background:rgba(8,16,31,.76);box-shadow:0 10px 30px rgba(0,0,0,.14);overflow:hidden;margin-bottom:14px;}
+.lb-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;border-bottom:1px solid rgba(30,45,74,.78);background:rgba(13,20,36,.56);}
+.lb-section-title{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#cbd5e1;}
+.lb-section-meta{font-size:.6rem;color:#60718a;font-weight:800;letter-spacing:.8px;}
+.lb-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:16px;align-items:stretch;}
+.lb-podium-card{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 12px 15px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(160deg,rgba(17,28,48,.95),rgba(7,15,29,.96));min-height:205px;}
+.lb-podium-card.rank-1{transform:translateY(-5px);border-color:rgba(251,191,36,.42);box-shadow:0 16px 34px rgba(251,191,36,.10);}
+.lb-podium-card.rank-2{border-color:rgba(148,163,184,.26);}
+.lb-podium-card.rank-3{border-color:rgba(251,146,60,.28);}
+.lb-podium-rank{position:absolute;top:10px;left:10px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(6,11,24,.72);border:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:#94a3b8;}
+.lb-podium-card.rank-1 .lb-podium-rank{color:#fbbf24;border-color:rgba(251,191,36,.35);}
+.lb-podium-card.rank-3 .lb-podium-rank{color:#fb923c;border-color:rgba(251,146,60,.30);}
+.lb-podium-medal{font-size:1.5rem;line-height:1;margin-bottom:9px;}
+.lb-podium-avatar{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#12213a,#0a1324);border:1px solid #243653;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:1px;color:#dbeafe;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+.lb-podium-name{margin-top:10px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:.6px;color:#f8fafc;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-podium-team{margin-top:5px;}
+.lb-podium-score{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:1;color:#f8fafc;margin-top:12px;}
+.lb-podium-card.rank-1 .lb-podium-score{color:#fbbf24;}
+.lb-podium-score span{display:block;margin-top:4px;font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#60718a;}
+.lb-podium-meta{display:flex;gap:10px;margin-top:10px;font-size:.6rem;color:#71839d;}
+.lb-ranking-head,.lb-ranking-row{display:grid;grid-template-columns:64px minmax(180px,1.5fr) 105px 90px 95px 90px minmax(100px,.8fr);gap:10px;align-items:center;}
+.lb-ranking-head{padding:9px 14px;background:#07101f;border-bottom:1px solid rgba(30,45,74,.72);font-family:'Barlow Condensed',sans-serif;font-size:.52rem;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:#52657f;}
+.lb-ranking-list{display:flex;flex-direction:column;}
+.lb-ranking-row{position:relative;padding:12px 14px;border-bottom:1px solid rgba(30,45,74,.58);transition:background .15s ease,border-color .15s ease;}
+.lb-ranking-row:last-child{border-bottom:none;}
+.lb-ranking-row:hover{background:rgba(96,165,250,.035);}
+.lb-ranking-row.lb-me{background:linear-gradient(90deg,rgba(251,191,36,.07),transparent 72%);box-shadow:inset 3px 0 0 rgba(251,191,36,.65);}
+.lb-rank-cell{display:flex;align-items:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#71839d;}
+.lb-rank-cell.top-1{color:#fbbf24}.lb-rank-cell.top-2{color:#cbd5e1}.lb-rank-cell.top-3{color:#fb923c}
+.lb-agent-cell{min-width:0;display:flex;align-items:center;gap:10px;}
+.lb-mini-avatar{width:34px;height:34px;border-radius:10px;flex:0 0 auto;display:grid;place-items:center;background:#0d1b31;border:1px solid #223451;color:#b9c9df;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:.5px;}
+.lb-agent-info{min-width:0;}
+.lb-agent-name{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;letter-spacing:.4px;color:#eef2ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-agent-sub{margin-top:2px;font-size:.56rem;color:#60718a;font-weight:800;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-team-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;padding:4px 8px;border-radius:999px;font-size:.52rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;}
+.lb-team-bb{background:rgba(96,165,250,.10);color:#93c5fd;border:1px solid rgba(96,165,250,.24);}
+.lb-team-pr{background:rgba(167,139,250,.10);color:#c4b5fd;border:1px solid rgba(167,139,250,.24);}
+.lb-metric{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:#cbd5e1;}
+.lb-metric.muted{color:#8091aa;font-weight:800;}
+.lb-transfer-value{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1;color:#f8fafc;}
+.lb-ranking-row:nth-child(1) .lb-transfer-value{color:#fbbf24;}
+.lb-conv{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:900;color:#cbd5e1;}
+.lb-progress-wrap{width:100%;height:7px;border-radius:999px;background:#07101d;overflow:hidden;border:1px solid rgba(30,45,74,.55);}
+.lb-progress-bar{height:100%;border-radius:inherit;background:linear-gradient(90deg,#3b82f6,#38bdf8);transition:width .55s cubic-bezier(.16,1,.3,1);}
+.lb-ranking-row:nth-child(1) .lb-progress-bar{background:linear-gradient(90deg,#fbbf24,#fb923c);}
+.lb-ranking-row:nth-child(2) .lb-progress-bar{background:linear-gradient(90deg,#94a3b8,#dbeafe);}
+.lb-ranking-row:nth-child(3) .lb-progress-bar{background:linear-gradient(90deg,#fb923c,#fdba74);}
+.lb-empty{display:none;text-align:center;padding:54px 20px;border:1px dashed var(--border);border-radius:16px;background:rgba(13,20,36,.48);color:#71839d;}
+.lb-empty.show{display:block;}
+.lb-empty-icon{font-size:2.2rem;margin-bottom:10px;}
+.lb-empty-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#94a3b8;}
+.lb-empty-note{font-size:.72rem;margin-top:6px;}
+@media(max-width:980px){
+  .lb-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .lb-ranking-head,.lb-ranking-row{grid-template-columns:54px minmax(180px,1.6fr) 92px 80px 85px 85px;}
+  .lb-ranking-head .lb-col-progress,.lb-ranking-row .lb-col-progress{display:none;}
 }
-.lb-card.lb-me{
-  border-color:rgba(251,191,36,0.5);
-  background:rgba(251,191,36,0.05);
-  box-shadow:0 0 14px rgba(251,191,36,0.1);
+@media(max-width:720px){
+  .lb-shell{padding:12px;}.lb-hero{padding:16px}.lb-hero-top{flex-direction:column}.lb-toolbar{width:100%;justify-content:flex-start}.lb-control-group{max-width:100%;overflow-x:auto}
+  .lb-summary-grid{grid-template-columns:1fr 1fr;gap:8px}.lb-summary-card{min-height:94px}.lb-summary-value{font-size:1.7rem}
+  .lb-podium{grid-template-columns:1fr;}.lb-podium-card.rank-1{order:-1;transform:none}.lb-podium-card{min-height:0;display:grid;grid-template-columns:42px 46px minmax(0,1fr) auto;column-gap:10px;align-items:center;text-align:left;padding:12px}.lb-podium-rank{position:static;width:32px;height:32px}.lb-podium-medal{display:none}.lb-podium-avatar{width:42px;height:42px;border-radius:12px}.lb-podium-name{margin:0}.lb-podium-team{margin-top:4px}.lb-podium-score{margin:0;text-align:right;font-size:1.8rem}.lb-podium-meta{display:none}
+  .lb-ranking-head{display:none}.lb-ranking-row{grid-template-columns:42px minmax(0,1fr) auto;gap:9px;padding:12px}.lb-ranking-row .lb-col-team{grid-column:2}.lb-ranking-row .lb-col-transfer{grid-column:3;grid-row:1/3;text-align:right;align-self:center}.lb-ranking-row .lb-col-calls,.lb-ranking-row .lb-col-conv,.lb-ranking-row .lb-col-progress{display:none}
 }
-.lb-rank{
-  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;
-  color:var(--muted);min-width:36px;text-align:center;line-height:1;
-}
-.lb-rank.gold{color:#fbbf24;filter:drop-shadow(0 0 6px rgba(251,191,36,0.5));}
-.lb-rank.silver{color:#94a3b8;}
-.lb-rank.bronze{color:#fb923c;}
-.lb-name{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:1px;color:var(--text);}
-.lb-name .lb-status{font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-top:1px;}
-.lb-team-badge{padding:2px 8px;border-radius:5px;font-size:0.55rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
-.lb-team-bb{background:rgba(96,165,250,0.15);color:var(--accent);border:1px solid rgba(96,165,250,0.3);}
-.lb-team-pr{background:rgba(167,139,250,0.15);color:var(--purple);border:1px solid rgba(167,139,250,0.3);}
-.lb-xfer{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:1;text-align:right;}
-.lb-xfer .lb-xfer-lbl{font-family:'Barlow Condensed',sans-serif;font-size:0.52rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;}
-.lb-bar-wrap{width:80px;height:6px;background:#0d1424;border-radius:20px;overflow:hidden;}
-.lb-bar-fill{height:100%;border-radius:20px;transition:width 0.6s ease;}
-/* Podium */
-.lb-podium-slot{display:flex;flex-direction:column;align-items:center;gap:6px;}
-.lb-podium-block{border-radius:8px 8px 0 0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#fff;min-width:90px;}
-.lb-podium-name{font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;text-align:center;color:var(--text);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.lb-podium-val{font-family:'Bebas Neue',sans-serif;font-size:1rem;}
+@media(max-width:430px){.lb-summary-grid{grid-template-columns:1fr}.lb-title{font-size:1.6rem;letter-spacing:3px}.lb-title-mark{width:42px;height:42px}.lb-seg-btn{padding:6px 9px;font-size:.68rem}}
 
 
 .sub-tab-row{display:flex;flex-wrap:wrap;gap:5px;padding:9px 14px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -849,6 +915,113 @@ body.is-admin #page-admin.admin-page-active{display:flex !important;flex-directi
 .adm-table tbody tr:nth-child(odd){background:#070e1c;}
 .adm-table tbody tr:nth-child(even){background:#060b18;}
 .adm-table tbody tr:hover td{background:#0d1a30;cursor:pointer;}
+/* ── ADMIN AGENT PROFILE CENTER — PROFESSIONAL REDESIGN ── */
+.profile-hub{border:1px solid #1a2b46;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#09111f 0%,#070d19 100%);box-shadow:0 26px 70px rgba(0,0,0,.34);}
+.profile-hub-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 24px;border-bottom:1px solid #182943;background:radial-gradient(circle at 8% 0%,rgba(96,165,250,.16),transparent 34%),linear-gradient(135deg,#0d1a2d 0%,#09111f 58%,#0b1220 100%);}
+.profile-hub-brand{display:flex;align-items:center;gap:15px;min-width:0;}
+.profile-hub-icon{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;flex:0 0 auto;font-size:1.55rem;background:linear-gradient(145deg,rgba(96,165,250,.18),rgba(34,211,238,.08));border:1px solid rgba(96,165,250,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 12px 30px rgba(0,0,0,.2);}
+.profile-hub-kicker{font-family:'Barlow Condensed',sans-serif;font-size:.56rem;font-weight:900;letter-spacing:2.4px;text-transform:uppercase;color:#6c83a2;margin-bottom:3px;}
+.profile-hub-title{font-family:'Bebas Neue',sans-serif;font-size:1.85rem;letter-spacing:2.4px;line-height:1;color:#f3f7fc;}
+.profile-hub-sub{margin-top:6px;max-width:720px;font-size:.7rem;line-height:1.55;color:#71839d;}
+.profile-hub-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+.profile-live-pill{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 12px;border:1px solid rgba(52,211,153,.24);border-radius:10px;background:rgba(52,211,153,.055);color:#7ce7bf;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;white-space:nowrap;}
+.profile-live-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.08),0 0 12px rgba(52,211,153,.55);}
+.profile-top-btn{min-height:38px;padding:0 13px;border-radius:10px;border:1px solid #2a3e60;background:#0b1628;color:#9db0c9;font-family:'Barlow Condensed',sans-serif;font-size:.67rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.16s ease;}
+.profile-top-btn:hover{transform:translateY(-1px);border-color:#4b6489;color:#d9e5f4;background:#0e1b30;}
+.profile-top-btn.primary{border-color:rgba(96,165,250,.42);background:linear-gradient(135deg,rgba(37,99,235,.26),rgba(34,211,238,.12));color:#8ed6ff;box-shadow:0 9px 24px rgba(37,99,235,.10);}
+.profile-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:14px 18px;border-bottom:1px solid #15243c;background:#08101d;}
+.profile-kpi-card{position:relative;overflow:hidden;padding:13px 14px;border:1px solid #1d304d;border-radius:14px;background:linear-gradient(145deg,#0c1728,#09111e);min-height:76px;}
+.profile-kpi-card::after{content:'';position:absolute;inset:auto -18px -28px auto;width:72px;height:72px;border-radius:50%;background:var(--kpi-glow,rgba(96,165,250,.10));filter:blur(3px);}
+.profile-kpi-top{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:1;}
+.profile-kpi-icon{font-size:.9rem;opacity:.9;}
+.profile-kpi-label{font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#657994;}
+.profile-kpi-value{position:relative;z-index:1;margin-top:7px;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;line-height:.9;color:#f4f8ff;}
+.profile-kpi-card.bb{--kpi-glow:rgba(96,165,250,.15)}.profile-kpi-card.bb .profile-kpi-value{color:#6fb6ff}.profile-kpi-card.pr{--kpi-glow:rgba(167,139,250,.15)}.profile-kpi-card.pr .profile-kpi-value{color:#b6a2ff}.profile-kpi-card.trainee{--kpi-glow:rgba(251,191,36,.13)}.profile-kpi-card.trainee .profile-kpi-value{color:#f7c852}
+.profile-workspace{display:grid;grid-template-columns:minmax(440px,.92fr) minmax(520px,1.08fr);min-height:650px;}
+.profile-directory-card{min-width:0;border-right:1px solid #172844;background:#070e1b;}
+.profile-directory-head{padding:16px 17px 13px;border-bottom:1px solid #15253e;background:linear-gradient(180deg,#0a1424,#08101e);}
+.profile-directory-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px;}
+.profile-directory-title{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#dbe8f8;}
+.profile-result-count{padding:4px 8px;border:1px solid #263b5c;border-radius:999px;background:#0b1728;color:#7f94b1;font-size:.56rem;font-weight:900;letter-spacing:.9px;text-transform:uppercase;white-space:nowrap;}
+.profile-toolbar{display:grid;grid-template-columns:minmax(0,1fr) 142px;gap:8px;}
+.profile-control{width:100%;min-height:40px;padding:9px 12px;border:1px solid #263a59;border-radius:10px;background:#060d18;color:#e2e8f0;outline:none;font-family:'Nunito',sans-serif;font-size:.75rem;transition:border-color .15s,box-shadow .15s,background .15s;}
+.profile-control:focus{border-color:#4f8ad0;background:#08111f;box-shadow:0 0 0 3px rgba(96,165,250,.07);}
+.profile-directory-columns{display:grid;grid-template-columns:minmax(190px,1.35fr) 90px 106px 82px 34px;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid #132138;background:#060c17;color:#526780;font-family:'Barlow Condensed',sans-serif;font-size:.5rem;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;}
+.profile-directory-columns span:not(:first-child){text-align:center;}
+.profile-list{max-height:560px;overflow:auto;padding:6px;scrollbar-gutter:stable;}
+.profile-row{display:grid;grid-template-columns:minmax(190px,1.35fr) 90px 106px 82px 34px;gap:8px;align-items:center;min-height:64px;padding:8px 9px;border:1px solid transparent;border-radius:12px;cursor:pointer;transition:background .15s,border-color .15s,transform .15s;margin-bottom:4px;}
+.profile-row:hover{background:#0a1728;border-color:#1b304f;transform:translateX(2px);}
+.profile-row.selected{background:linear-gradient(90deg,rgba(59,130,246,.14),rgba(34,211,238,.035));border-color:#315985;box-shadow:inset 3px 0 0 #60a5fa,0 7px 20px rgba(0,0,0,.12);}
+.profile-agent-cell{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;align-items:center;min-width:0;}
+.profile-avatar-sm{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#12385e,#0a2038);border:1px solid #285781;color:#7bd2ff;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:900;letter-spacing:.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+.profile-row-name{font-size:.79rem;font-weight:900;color:#edf5ff;line-height:1.22;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-row-meta{font-size:.58rem;color:#667c99;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-dir-center{text-align:center;min-width:0;}
+.profile-dir-shift{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:800;color:#8aa0bd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-tag{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:2px 8px;border-radius:999px;font-size:.49rem;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border:1px solid #233451;background:#0a1323;color:#7e91ad;white-space:nowrap;}
+.profile-tag.bb{border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.08);color:#6eb6ff}.profile-tag.pr{border-color:rgba(167,139,250,.36);background:rgba(167,139,250,.08);color:#b19cff}.profile-tag.agent{border-color:rgba(52,211,153,.28);background:rgba(52,211,153,.07);color:#52d9aa}.profile-tag.trainee{border-color:rgba(251,191,36,.32);background:rgba(251,191,36,.07);color:#f4c755}.profile-tag.inactive{border-color:rgba(248,113,113,.28);background:rgba(248,113,113,.07);color:#f88b8b}
+.profile-dir-open{width:30px;height:30px;border-radius:9px;border:1px solid #263b5b;background:#0a1526;color:#7d95b4;display:grid;place-items:center;font-weight:900;cursor:pointer;transition:.15s;}
+.profile-dir-open:hover{border-color:#60a5fa;color:#a7dcff;background:#0d1c30;transform:translateX(1px);}
+.profile-empty-list{text-align:center;color:#637792;padding:38px 18px;font-size:.75rem;}
+.profile-editor-card{min-width:0;background:radial-gradient(circle at 100% 0%,rgba(167,139,250,.07),transparent 26%),#0a111e;}
+.profile-edit-card{position:relative;min-height:650px;}
+.profile-edit-empty{display:grid;place-items:center;min-height:650px;padding:34px;text-align:center;color:#60708b;}
+.profile-edit-empty-wrap{max-width:330px;}
+.profile-edit-empty-icon{width:72px;height:72px;margin:0 auto 15px;border-radius:22px;display:grid;place-items:center;font-size:2rem;background:linear-gradient(145deg,#0d1d31,#0a1422);border:1px solid #1f3654;box-shadow:0 14px 34px rgba(0,0,0,.22);}
+.profile-edit-empty-title{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:2px;color:#9fb0c6;}
+.profile-edit-empty-copy{font-size:.67rem;line-height:1.6;margin-top:6px;color:#657993;}
+.profile-edit-head{position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:20px 21px 18px;border-bottom:1px solid #1a2a45;background:linear-gradient(135deg,#10223a 0%,#0b1728 58%,#0c1423 100%);}
+.profile-edit-head::after{content:'';position:absolute;right:-70px;top:-95px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(96,165,250,.17),transparent 68%);pointer-events:none;}
+.profile-hero-main{position:relative;z-index:1;display:flex;gap:13px;align-items:center;min-width:0;}
+.profile-avatar-lg{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;flex:0 0 auto;background:linear-gradient(145deg,#14436f,#0a2744);border:1px solid #316995;color:#9fe0ff;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:1px;box-shadow:0 8px 24px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.07);}
+.profile-hero-text{min-width:0;}
+.profile-edit-name{font-family:'Barlow Condensed',sans-serif;font-size:1.28rem;font-weight:900;letter-spacing:.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-edit-meta{font-size:.61rem;color:#7790ae;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-hero-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.profile-hero-badge{display:inline-flex;align-items:center;gap:5px;min-height:24px;padding:2px 8px;border:1px solid #29405f;border-radius:999px;background:rgba(5,12,23,.5);font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:900;letter-spacing:.9px;text-transform:uppercase;color:#8ea4c0;}
+.profile-hero-badge.team-bb{border-color:rgba(96,165,250,.35);color:#75c0ff;background:rgba(96,165,250,.08)}.profile-hero-badge.team-pr{border-color:rgba(167,139,250,.35);color:#b7a4ff;background:rgba(167,139,250,.08)}.profile-hero-badge.status-agent{border-color:rgba(52,211,153,.28);color:#58ddb0;background:rgba(52,211,153,.07)}.profile-hero-badge.status-trainee{border-color:rgba(251,191,36,.3);color:#f8c95e;background:rgba(251,191,36,.07)}.profile-hero-badge.status-inactive{border-color:rgba(248,113,113,.3);color:#fa9090;background:rgba(248,113,113,.07)}
+.profile-head-actions{position:relative;z-index:1;display:flex;gap:7px;align-items:center;}
+.profile-close-btn{width:34px;height:34px;border-radius:10px;border:1px solid #2b405f;background:#0a1526;color:#7890ad;cursor:pointer;font-weight:900;transition:.15s;}
+.profile-close-btn:hover{border-color:#f87171;color:#f87171;background:rgba(248,113,113,.06);}
+.profile-edit-body{padding:16px 18px 18px;}
+.profile-sync-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;margin-bottom:13px;border:1px solid #1c3552;border-radius:11px;background:linear-gradient(90deg,rgba(34,211,238,.045),rgba(96,165,250,.025));}
+.profile-sync-left{display:flex;align-items:center;gap:8px;color:#7890ab;font-size:.59rem;line-height:1.45;}
+.profile-sync-dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 10px rgba(52,211,153,.6);flex:0 0 auto;}
+.profile-sync-label{font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;color:#58d9ad;white-space:nowrap;}
+.profile-section-stack{display:grid;gap:10px;}
+.profile-section-card{border:1px solid #1b2d49;border-radius:14px;background:linear-gradient(145deg,#0b1525,#09111f);overflow:hidden;}
+.profile-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-bottom:1px solid #15263f;background:rgba(5,11,20,.38);}
+.profile-section-title{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:.63rem;font-weight:900;letter-spacing:1.35px;text-transform:uppercase;color:#a9bad0;}
+.profile-section-caption{font-size:.52rem;color:#5f728e;}
+.profile-section-body{padding:12px 13px 13px;}
+.profile-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.profile-edit-grid.three{grid-template-columns:1.1fr 1fr 1fr;}
+.profile-field.full{grid-column:1/-1;}
+.profile-label{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;font-size:.5rem;font-weight:900;letter-spacing:1.35px;text-transform:uppercase;color:#657b97;}
+.profile-label-note{font-size:.47rem;font-weight:700;letter-spacing:.4px;text-transform:none;color:#4f627b;}
+.profile-label.blue{color:#67aff8}.profile-label.green{color:#48d5a5}.profile-label.gold{color:#efbd4e}.profile-label.purple{color:#a88cf4}.profile-label.cyan{color:#43cce2}
+.profile-input{width:100%;min-height:40px;padding:9px 11px;border:1px solid #273b59;border-radius:9px;background:#060d19;color:#e7eef8;font-family:'Nunito',sans-serif;font-size:.76rem;outline:none;transition:border-color .15s,box-shadow .15s,background .15s;}
+.profile-input:hover{border-color:#324a6d}.profile-input:focus{border-color:#4e8bcf;background:#07101e;box-shadow:0 0 0 3px rgba(96,165,250,.07)}.profile-input[readonly]{color:#71839e;background:#08101d;cursor:not-allowed;border-style:dashed;}
+.profile-editor-footer{position:sticky;bottom:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:12px;padding:12px;border:1px solid #1c304d;border-radius:13px;background:rgba(7,14,26,.94);backdrop-filter:blur(12px);box-shadow:0 -12px 28px rgba(0,0,0,.16);}
+.profile-save-status{min-height:18px;font-size:.63rem;font-weight:700;color:#687c97;line-height:1.4;}
+.profile-footer-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.profile-save-btn{min-height:40px;padding:0 16px;border:0;border-radius:10px;background:linear-gradient(90deg,#2563eb,#22d3ee);color:#03121b;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 22px rgba(37,99,235,.15);transition:.15s;}.profile-save-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.profile-save-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+.profile-open-btn{min-height:40px;padding:0 13px;border:1px solid #2b405f;border-radius:10px;background:#0a1424;color:#8fa5c1;font-family:'Barlow Condensed',sans-serif;font-size:.67rem;font-weight:900;letter-spacing:.9px;text-transform:uppercase;cursor:pointer;transition:.15s;}.profile-open-btn:hover{border-color:#a78bfa;color:#c3b5ff;background:rgba(167,139,250,.05)}
+.profile-reset-btn{min-height:40px;padding:0 12px;border:1px solid #283a56;border-radius:10px;background:transparent;color:#71859f;font-family:'Barlow Condensed',sans-serif;font-size:.64rem;font-weight:900;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;}.profile-reset-btn:hover{color:#d6e0ec;border-color:#516885;}
+.profile-new-form{display:none;margin:14px 18px 0;padding:17px;border:1px solid rgba(52,211,153,.22);border-radius:15px;background:linear-gradient(145deg,rgba(5,29,24,.76),rgba(7,16,29,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.025);}
+.profile-new-form-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:13px;}
+.profile-new-form-title{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:900;letter-spacing:1.45px;text-transform:uppercase;color:#4ed8a8;}
+.profile-new-form-sub{font-size:.58rem;color:#647b96;margin-top:3px;line-height:1.45;}
+.profile-new-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;}
+.profile-new-grid .profile-field.span2{grid-column:span 2;}
+.profile-new-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(52,211,153,.12);}
+.profile-new-actions .profile-save-status{flex:1;margin:0;}
+.profile-new-action-buttons{display:flex;gap:7px;}
+.ap-header-actions{display:flex;align-items:center;gap:8px;}.ap-edit-profile-btn{display:none;padding:9px 13px;border-radius:9px;border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.08);color:#7cc9ff;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:1px;cursor:pointer;}.ap-edit-profile-btn:hover{border-color:#60a5fa;background:rgba(96,165,250,.13);}
+@media(max-width:1160px){.profile-workspace{grid-template-columns:1fr}.profile-directory-card{border-right:0;border-bottom:1px solid #172844}.profile-list{max-height:430px}.profile-edit-card,.profile-edit-empty{min-height:520px}}
+@media(max-width:820px){.profile-hub-header{align-items:flex-start}.profile-kpi-grid{grid-template-columns:repeat(2,1fr)}.profile-new-grid{grid-template-columns:1fr 1fr}.profile-directory-columns{grid-template-columns:minmax(180px,1fr) 86px 92px 34px}.profile-directory-columns span:nth-child(4){display:none}.profile-row{grid-template-columns:minmax(180px,1fr) 86px 92px 34px}.profile-row>.profile-dir-center:nth-of-type(4){display:none}.profile-edit-grid.three{grid-template-columns:1fr 1fr}.profile-editor-footer{grid-template-columns:1fr}.profile-footer-actions{justify-content:flex-start}}
+@media(max-width:620px){.profile-hub-header{padding:18px;flex-direction:column}.profile-hub-actions{width:100%;justify-content:flex-start}.profile-kpi-grid{padding:12px;gap:7px}.profile-workspace{display:block}.profile-directory-columns{display:none}.profile-toolbar{grid-template-columns:1fr}.profile-row{grid-template-columns:minmax(0,1fr) 34px;gap:7px}.profile-row>.profile-dir-center{display:none!important}.profile-edit-head{padding:17px}.profile-edit-grid,.profile-edit-grid.three,.profile-new-grid{grid-template-columns:1fr}.profile-new-grid .profile-field.span2{grid-column:auto}.profile-new-actions{align-items:stretch;flex-direction:column}.profile-new-action-buttons{width:100%}.profile-new-action-buttons>*{flex:1}.profile-footer-actions{display:grid;grid-template-columns:1fr 1fr}.profile-footer-actions .profile-save-btn{grid-column:1/-1}.profile-avatar-lg{width:52px;height:52px}.profile-edit-body{padding:13px}.profile-live-pill{display:none}}
+
 /* ── TEAM TOGGLE BUTTONS ── */
 .adm-team-btn{padding:10px 24px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;transition:all 0.15s;}
 .adm-team-btn.active[id="wk-bb-btn"]{background:rgba(96,165,250,0.12);border-color:var(--accent);color:var(--accent);}
@@ -1519,6 +1692,8 @@ input, textarea, select { color-scheme: dark; }
 
 </style>
 <body>
+<!-- Agent Profile + Leaderboard professional redesign merged into the 2026-09-08 Access Guide build. -->
+
 <!-- ── NEW LEAD CELEBRATION POPUP ── -->
 <div id="xfer-banner" role="dialog" aria-modal="true" aria-labelledby="xfer-banner-title" aria-hidden="true">
   <div class="xfer-banner-inner">
@@ -1860,7 +2035,7 @@ input, textarea, select { color-scheme: dark; }
           <div style="font-size:0.6rem;color:#64748b;margin-top:4px;" id="rp-meta"></div>
         </div>
       </div>
-      <button class="ap-close" onclick="closeRepProfile()">✕ CLOSE</button>
+      <div class="ap-header-actions"><button id="ap-edit-profile-btn" class="ap-edit-profile-btn" type="button" onclick="editCurrentRepProfileFromOverlay()">✏ EDIT PROFILE</button><button class="ap-close" onclick="closeRepProfile()">✕ CLOSE</button></div>
     </div>
 
     <!-- Nav tabs -->
@@ -2430,157 +2605,156 @@ input, textarea, select { color-scheme: dark; }
     </div>
     <!-- ── AGENT PROFILES ── -->
     <div id="admin-profiles" class="admin-section">
-      <div class="admin-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-          <div class="admin-card-title" style="margin-bottom:0;font-size:0.9rem;">👤 AGENT PROFILES</div>
-          <button onclick="toggleAddRepForm()" id="add-rep-toggle-btn" style="padding:9px 18px;border-radius:9px;border:none;background:linear-gradient(90deg,var(--green),var(--cyan));color:#000;font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">＋ ADD NEW REP</button>
-        </div>
-
-        <!-- ── ADD NEW REP FORM ── -->
-        <div id="add-rep-form" style="display:none;background:#06120a;border:1.5px solid rgba(52,211,153,0.35);border-radius:14px;padding:18px;margin-bottom:16px;">
-          <div style="font-size:0.62rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:14px;">✨ NEW REP — FILL IN DETAILS</div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-            <div>
-              <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Full Name *</div>
-              <input id="nr-name" type="text" placeholder="e.g. Priya Ramkhelawan"
-                style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                oninput="autoFillYtel()" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='#2a3a5a'">
-            </div>
-            <div>
-              <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">User ID *</div>
-              <input id="nr-id" type="text" placeholder="e.g. 1042 (unique number)"
-                style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='#2a3a5a'">
-            </div>
-            <div>
-              <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Team *</div>
-              <select id="nr-team" onchange="autoFillYtel()"
-                style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='#2a3a5a'">
-                <option value="BB">🏠 Berbice (BB)</option>
-                <option value="PR">🌴 Providence (PR)</option>
-              </select>
-            </div>
-            <div>
-              <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Ytel Name *</div>
-              <input id="nr-ytel" type="text" placeholder="e.g. GUYB Kleon Williams or GUYP Priya Sookram"
-                style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#2a3a5a'">
-            </div>
-            <div>
-              <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Shift</div>
-              <select id="nr-shift"
-                style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;box-sizing:border-box;">
-                <option value="">— Select shift —</option>
-                <option value="10:00AM - 7:00PM">10:00AM - 7:00PM</option>
-                <option value="11:00am-8:00pm">11:00am-8:00pm</option>
-                <option value="11:45am-9:00pm">11:45am-9:00pm</option>
-                <option value="13:00pm - 22:00pm">13:00pm - 22:00pm</option>
-              </select>
-            </div>
-            <div>
-              <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Lunch Time</div>
-              <input id="nr-lunch" type="text" placeholder="e.g. 3:30-4:00 pm"
-                style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='#2a3a5a'">
+      <div class="profile-hub">
+        <div class="profile-hub-header">
+          <div class="profile-hub-brand">
+            <div class="profile-hub-icon">👥</div>
+            <div style="min-width:0;">
+              <div class="profile-hub-kicker">ADMIN · FIREBASE ROSTER</div>
+              <div class="profile-hub-title">Agent Directory &amp; Profile Center</div>
+              <div class="profile-hub-sub">Manage identity, branch assignment, Ytel information, schedules and agent status from one controlled workspace. Changes are saved directly to Firebase and synchronized to live dashboard views.</div>
             </div>
           </div>
-
-          <div style="margin-bottom:10px;">
-            <div style="font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Status</div>
-            <select id="nr-status"
-              style="width:100%;padding:9px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;box-sizing:border-box;">
-              <option value="Agent">Agent</option>
-              <option value="Trainee">Trainee</option>
-            </select>
-          </div>
-
-          <div id="nr-status-msg" style="font-size:0.72rem;min-height:20px;margin-bottom:10px;text-align:center;"></div>
-
-          <div style="display:flex;gap:8px;">
-            <button onclick="saveNewRep()" style="flex:1;padding:12px;border-radius:9px;border:none;background:linear-gradient(90deg,var(--green),var(--cyan));color:#000;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">💾 ADD REP TO SYSTEM</button>
-            <button onclick="toggleAddRepForm()" style="padding:12px 18px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;">Cancel</button>
+          <div class="profile-hub-actions">
+            <span class="profile-live-pill"><span class="profile-live-dot"></span>Firebase Live</span>
+            <button type="button" class="profile-top-btn" onclick="refreshAgentProfiles()">↻ Refresh Roster</button>
+            <button id="add-rep-toggle-btn" type="button" class="profile-top-btn primary" onclick="toggleAddRepForm()">＋ New Agent</button>
           </div>
         </div>
 
-        <!-- Search + team filter -->
-        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-          <input type="text" id="profile-search" placeholder="🔍 Search agent name..." oninput="filterProfileList()"
-            style="flex:1;min-width:160px;padding:9px 14px;background:#0d1424;border:1.5px solid #2a3a5a;border-radius:8px;color:#e2e8f0;font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;">
-          <select id="profile-team-filter" onchange="filterProfileList()"
-            style="padding:9px 12px;background:#0d1424;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;">
-            <option value="all">All Teams</option>
-            <option value="BB">🏠 Berbice (BB)</option>
-            <option value="PR">🌴 Providence (PR)</option>
-          </select>
+        <div class="profile-kpi-grid">
+          <div class="profile-kpi-card"><div class="profile-kpi-top"><span class="profile-kpi-label">Active Profiles</span><span class="profile-kpi-icon">👤</span></div><div class="profile-kpi-value" id="profile-total-count">—</div></div>
+          <div class="profile-kpi-card bb"><div class="profile-kpi-top"><span class="profile-kpi-label">Berbice Team</span><span class="profile-kpi-icon">🏠</span></div><div class="profile-kpi-value" id="profile-bb-count">—</div></div>
+          <div class="profile-kpi-card pr"><div class="profile-kpi-top"><span class="profile-kpi-label">Providence Team</span><span class="profile-kpi-icon">🌴</span></div><div class="profile-kpi-value" id="profile-pr-count">—</div></div>
+          <div class="profile-kpi-card trainee"><div class="profile-kpi-top"><span class="profile-kpi-label">Trainees</span><span class="profile-kpi-icon">🎓</span></div><div class="profile-kpi-value" id="profile-trainee-count">—</div></div>
         </div>
 
-        <!-- Agent list -->
-        <div id="profile-list" style="display:flex;flex-direction:column;gap:0;"></div>
-
-        <!-- Edit panel — shown when agent selected -->
-        <div id="profile-edit-panel" style="display:none;margin-top:14px;background:#060d1a;border:1px solid #1a2a45;border-radius:12px;padding:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <!-- CREATE NEW AGENT -->
+        <div id="add-rep-form" class="profile-new-form">
+          <div class="profile-new-form-head">
             <div>
-              <div id="pe-name" style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text);"></div>
-              <div id="pe-meta" style="font-size:0.62rem;color:var(--muted);margin-top:2px;"></div>
-            </div>
-            <button onclick="closeProfileEdit()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:4px 8px;">✕</button>
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-            <!-- Shift -->
-            <div>
-              <div style="font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:5px;">⏰ Shift</div>
-              <select id="pe-shift"
-                style="width:100%;padding:8px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='#2a3a5a'">
-                <option value="">— Select shift —</option>
-                <option value="10:00AM - 7:00PM">10:00AM - 7:00PM</option>
-                <option value="11:00am-8:00pm">11:00am-8:00pm</option>
-                <option value="11:45am-9:00pm">11:45am-9:00pm</option>
-                <option value="13:00pm - 22:00pm">13:00pm - 22:00pm</option>
-              </select>
-            </div>
-            <!-- Lunch -->
-            <div>
-              <div style="font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:5px;">🍽 Lunch</div>
-              <input id="pe-lunch" type="text" placeholder="e.g. 3:30-4:00 pm"
-                style="width:100%;padding:8px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='#2a3a5a'">
-            </div>
-            <!-- Break -->
-            <div>
-              <div style="font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;">☕ Break</div>
-              <input id="pe-break" type="text" placeholder="e.g. 2:00-2:15 pm"
-                style="width:100%;padding:8px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#2a3a5a'">
-            </div>
-            <!-- Status -->
-            <div>
-              <div style="font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple);margin-bottom:5px;">📋 Status</div>
-              <select id="pe-status"
-                style="width:100%;padding:8px 12px;background:#090f1e;border:1.5px solid #2a3a5a;border-radius:8px;color:var(--text);font-size:0.82rem;outline:none;box-sizing:border-box;">
-                <option value="Agent">Agent</option>
-                <option value="Trainee">Trainee</option>
-                <option value="Inactive">Inactive</option>
-              </select>
+              <div class="profile-new-form-title">✨ Create New Agent Profile</div>
+              <div class="profile-new-form-sub">Creates one new Firebase roster record. Agent ID becomes the permanent document key.</div>
             </div>
           </div>
-
-          <div id="pe-save-status" style="font-size:0.7rem;text-align:center;margin-bottom:10px;min-height:18px;"></div>
-
-          <button onclick="saveProfileEdits()" style="width:100%;padding:12px;border-radius:9px;border:none;background:linear-gradient(90deg,var(--accent),var(--cyan));color:#000;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1.5px;cursor:pointer;">
-            💾 SAVE ALL CHANGES TO FIREBASE
-          </button>
-
-          <div style="font-size:0.6rem;color:var(--muted);text-align:center;margin-top:8px;">
-            Shift, Lunch, Break &amp; Status → Firebase · Changes sync across open dashboards
+          <div class="profile-new-grid">
+            <div class="profile-field span2"><label class="profile-label green">Full Name *</label><input id="nr-name" class="profile-input" type="text" placeholder="e.g. Priya Ramkhelawan" oninput="autoFillYtel()"></div>
+            <div class="profile-field"><label class="profile-label green">Agent / User ID *</label><input id="nr-id" class="profile-input" type="text" inputmode="numeric" placeholder="e.g. 1042"></div>
+            <div class="profile-field"><label class="profile-label purple">Team *</label><select id="nr-team" class="profile-input" onchange="autoFillYtel()"><option value="BB">🏠 Berbice (BB)</option><option value="PR">🌴 Providence (PR)</option></select></div>
+            <div class="profile-field span2"><label class="profile-label cyan">Ytel Name *</label><input id="nr-ytel" class="profile-input" type="text" placeholder="GUYB / GUYP Agent Name"></div>
+            <div class="profile-field"><label class="profile-label blue">Shift</label><select id="nr-shift" class="profile-input"><option value="">— Select shift —</option><option value="10:00AM - 7:00PM">10:00AM - 7:00PM</option><option value="11:00am-8:00pm">11:00am-8:00pm</option><option value="11:45am-9:00pm">11:45am-9:00pm</option><option value="13:00pm - 22:00pm">13:00pm - 22:00pm</option></select></div>
+            <div class="profile-field"><label class="profile-label green">Lunch</label><input id="nr-lunch" class="profile-input" type="text" placeholder="e.g. 3:30PM-4:00PM"></div>
+            <div class="profile-field"><label class="profile-label gold">Break</label><input id="nr-break" class="profile-input" type="text" placeholder="e.g. 2:00PM-2:15PM"></div>
+            <div class="profile-field"><label class="profile-label purple">Status</label><select id="nr-status" class="profile-input"><option value="Agent">Agent</option><option value="Trainee">Trainee</option></select></div>
           </div>
+          <div class="profile-new-actions">
+            <div id="nr-status-msg" class="profile-save-status"></div>
+            <div class="profile-new-action-buttons">
+              <button type="button" class="profile-open-btn" onclick="toggleAddRepForm(false)">Cancel</button>
+              <button id="nr-save-btn" type="button" class="profile-save-btn" onclick="saveNewRep()">💾 Create Agent</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-workspace">
+          <!-- DIRECTORY -->
+          <section class="profile-directory-card">
+            <div class="profile-directory-head">
+              <div class="profile-directory-title-row">
+                <div class="profile-directory-title">Agent Directory</div>
+                <div id="profile-result-count" class="profile-result-count">Loading…</div>
+              </div>
+              <div class="profile-toolbar">
+                <input id="profile-search" class="profile-control" type="text" placeholder="🔍 Search by name, ID or Ytel name…" oninput="filterProfileList()">
+                <select id="profile-team-filter" class="profile-control" onchange="filterProfileList()"><option value="all">All Teams</option><option value="BB">🏠 Berbice</option><option value="PR">🌴 Providence</option></select>
+              </div>
+            </div>
+            <div class="profile-directory-columns"><span>Agent</span><span>Team</span><span>Shift</span><span>Status</span><span></span></div>
+            <div id="profile-list" class="profile-list"><div class="profile-empty-list">Loading Firebase roster…</div></div>
+          </section>
+
+          <!-- PROFILE EDITOR -->
+          <section id="profile-editor-card" class="profile-editor-card profile-edit-card">
+            <div id="profile-edit-empty" class="profile-edit-empty">
+              <div class="profile-edit-empty-wrap">
+                <div class="profile-edit-empty-icon">🪪</div>
+                <div class="profile-edit-empty-title">Select an Agent</div>
+                <div class="profile-edit-empty-copy">Choose an agent from the directory to open a complete editable profile. Saved changes go directly to Firebase and refresh the live dashboard.</div>
+              </div>
+            </div>
+
+            <div id="profile-edit-panel" style="display:none;">
+              <div class="profile-edit-head">
+                <div class="profile-hero-main">
+                  <div id="pe-avatar" class="profile-avatar-lg">AG</div>
+                  <div class="profile-hero-text">
+                    <div id="pe-name" class="profile-edit-name">Agent Name</div>
+                    <div id="pe-meta" class="profile-edit-meta">Firebase roster profile</div>
+                    <div class="profile-hero-badges">
+                      <span id="pe-team-badge" class="profile-hero-badge">Team</span>
+                      <span id="pe-status-badge" class="profile-hero-badge">Status</span>
+                      <span id="pe-ytel-display" class="profile-hero-badge">Ytel</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="profile-head-actions"><button type="button" class="profile-close-btn" onclick="closeProfileEdit()" title="Close profile">✕</button></div>
+              </div>
+
+              <div class="profile-edit-body">
+                <div class="profile-sync-strip">
+                  <div class="profile-sync-left"><span class="profile-sync-dot"></span><span>Live Firebase record. Team changes also update today’s attendance, report assignment and team views.</span></div>
+                  <div class="profile-sync-label">Synchronized</div>
+                </div>
+
+                <div class="profile-section-stack">
+                  <div class="profile-section-card">
+                    <div class="profile-section-head"><div class="profile-section-title">🪪 Identity</div><div class="profile-section-caption">Core agent record</div></div>
+                    <div class="profile-section-body">
+                      <div class="profile-edit-grid">
+                        <div class="profile-field full"><label class="profile-label blue">Full Name <span class="profile-label-note">Required</span></label><input id="pe-full-name" class="profile-input" type="text" autocomplete="off"></div>
+                        <div class="profile-field"><label class="profile-label">Agent / User ID <span class="profile-label-note">Locked</span></label><input id="pe-id" class="profile-input" type="text" readonly></div>
+                        <div class="profile-field"><label class="profile-label cyan">Ytel Name</label><input id="pe-ytel" class="profile-input" type="text" placeholder="GUYB / GUYP Agent Name"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="profile-section-card">
+                    <div class="profile-section-head"><div class="profile-section-title">🏢 Assignment &amp; Status</div><div class="profile-section-caption">Controls team placement</div></div>
+                    <div class="profile-section-body">
+                      <div class="profile-edit-grid">
+                        <div class="profile-field"><label class="profile-label purple">Team Assignment</label><select id="pe-team" class="profile-input" onchange="profileTeamChanged();profileMarkDirty()"><option value="BB">🏠 Berbice (BB)</option><option value="PR">🌴 Providence (PR)</option></select></div>
+                        <div class="profile-field"><label class="profile-label purple">Employment Status</label><select id="pe-status" class="profile-input" onchange="profileMarkDirty()"><option value="Agent">Agent</option><option value="Trainee">Trainee</option><option value="Inactive">Inactive</option></select></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="profile-section-card">
+                    <div class="profile-section-head"><div class="profile-section-title">🕒 Work Schedule</div><div class="profile-section-caption">Shift, lunch and break times</div></div>
+                    <div class="profile-section-body">
+                      <div class="profile-edit-grid three">
+                        <div class="profile-field"><label class="profile-label blue">Shift</label><select id="pe-shift" class="profile-input" onchange="profileMarkDirty()"><option value="">— Select shift —</option><option value="10:00AM - 7:00PM">10:00AM - 7:00PM</option><option value="11:00am-8:00pm">11:00am-8:00pm</option><option value="11:45am-9:00pm">11:45am-9:00pm</option><option value="13:00pm - 22:00pm">13:00pm - 22:00pm</option></select></div>
+                        <div class="profile-field"><label class="profile-label green">Lunch Time</label><input id="pe-lunch" class="profile-input" type="text" placeholder="e.g. 3:30PM-4:00PM" oninput="profileMarkDirty()"></div>
+                        <div class="profile-field"><label class="profile-label gold">Break Time</label><input id="pe-break" class="profile-input" type="text" placeholder="e.g. 2:00PM-2:15PM" oninput="profileMarkDirty()"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-editor-footer">
+                  <div id="pe-save-status" class="profile-save-status">Select a field to make changes.</div>
+                  <div class="profile-footer-actions">
+                    <button type="button" class="profile-reset-btn" onclick="resetProfileEditor()">↶ Reset</button>
+                    <button type="button" class="profile-open-btn" onclick="openSelectedProfile()">Open Full Profile</button>
+                    <button id="pe-save-btn" type="button" class="profile-save-btn" onclick="saveProfileEdits()">💾 Save Changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
+
     <!-- ── ROSE-ONLY MISSING-STATS + ARCHIVE MANAGER ── -->
     <div id="admin-unused" class="admin-section" style="display:none;">
       <div class="admin-card">
@@ -3906,55 +4080,68 @@ input, textarea, select { color-scheme: dark; }
 
   <!-- ══ LEADERBOARD TAB ══ -->
   <div class="tab-page" id="page-leaderboard">
-    <div style="padding:14px 18px;overflow-y:auto;flex:1;">
-      <!-- Header -->
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
-        <div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:4px;background:linear-gradient(90deg,#fbbf24,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">🏆 TRANSFER LEADERBOARD</div>
-          <div id="lb-date-lbl" style="font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px;"></div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
-          <!-- Daily / Weekly mode toggle -->
-          <div style="display:flex;gap:4px;background:#080f1e;border:1px solid var(--border);border-radius:9px;padding:3px;">
-            <button onclick="lbSetMode('daily',this)" id="lb-m-daily" style="padding:5px 13px;border-radius:7px;border:none;background:var(--gold);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">📅 DAILY</button>
-            <button onclick="lbSetMode('weekly',this)" id="lb-m-weekly" style="padding:5px 13px;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">📆 WEEKLY</button>
+    <div class="lb-shell">
+      <section class="lb-hero">
+        <div class="lb-hero-top">
+          <div>
+            <div class="lb-title-wrap">
+              <div class="lb-title-mark">🏆</div>
+              <div>
+                <div class="lb-title">TRANSFER LEADERBOARD</div>
+                <div id="lb-date-lbl" class="lb-subtitle">Performance rankings</div>
+              </div>
+            </div>
+            <div class="lb-live-pill"><span class="lb-live-dot"></span><span id="lb-live-lbl">LIVE PERFORMANCE BOARD</span></div>
           </div>
-          <button onclick="lbSetFilter('all',this)" id="lb-f-all" style="padding:6px 14px;border-radius:8px;border:2px solid var(--accent);background:#0b1a38;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;">ALL</button>
-          <button onclick="lbSetFilter('BB',this)" id="lb-f-bb" style="padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;">🏠 BERB</button>
-          <button onclick="lbSetFilter('PR',this)" id="lb-f-pr" style="padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:800;letter-spacing:1px;cursor:pointer;">🌴 PROV</button>
+          <div class="lb-toolbar">
+            <div>
+              <div class="lb-control-label">Period</div>
+              <div class="lb-control-group">
+                <button onclick="lbSetMode('daily',this)" id="lb-m-daily" class="lb-seg-btn active" data-mode="daily">📅 DAILY</button>
+                <button onclick="lbSetMode('weekly',this)" id="lb-m-weekly" class="lb-seg-btn" data-mode="weekly">📆 WEEKLY</button>
+              </div>
+            </div>
+            <div>
+              <div class="lb-control-label">Team</div>
+              <div class="lb-control-group">
+                <button onclick="lbSetFilter('all',this)" id="lb-f-all" class="lb-seg-btn lb-filter-btn active" data-filter="all">ALL</button>
+                <button onclick="lbSetFilter('BB',this)" id="lb-f-bb" class="lb-seg-btn lb-filter-btn" data-filter="BB">🏠 BERBICE</button>
+                <button onclick="lbSetFilter('PR',this)" id="lb-f-pr" class="lb-seg-btn lb-filter-btn" data-filter="PR">🌴 PROVIDENCE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="lb-week-subtabs" class="lb-week-subtabs">
+        <div class="lb-week-toggle">
+          <button onclick="lbSetWeekView('current')" id="lb-wv-current" class="lb-week-btn active" data-week="current">⚡ THIS WEEK</button>
+          <button onclick="lbSetWeekView('prev')" id="lb-wv-prev" class="lb-week-btn" data-week="prev">📅 PREVIOUS WEEK</button>
         </div>
       </div>
 
-      <!-- Weekly sub-tabs (This Week / Prev Week) — only shown in weekly mode -->
-      <div id="lb-week-subtabs" style="display:none;margin-bottom:14px;">
-        <div style="display:flex;gap:5px;background:#060d1a;border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content;">
-          <button onclick="lbSetWeekView('current')" id="lb-wv-current"
-            style="padding:5px 16px;border-radius:7px;border:none;background:var(--purple);color:#fff;
-                   font-family:'Barlow Condensed',sans-serif;font-size:0.76rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">
-            ⚡ THIS WEEK
-          </button>
-          <button onclick="lbSetWeekView('prev')" id="lb-wv-prev"
-            style="padding:5px 16px;border-radius:7px;border:none;background:transparent;color:var(--muted);
-                   font-family:'Barlow Condensed',sans-serif;font-size:0.76rem;font-weight:900;letter-spacing:1.5px;cursor:pointer;">
-            📅 PREV WEEK
-          </button>
-        </div>
+      <div id="lb-summary" class="lb-summary-grid">
+        <div class="lb-summary-card primary"><div class="lb-summary-kicker">Total Transfers</div><div class="lb-summary-value" id="lb-total-transfers">0</div><div class="lb-summary-note" id="lb-total-note">Current view</div></div>
+        <div class="lb-summary-card"><div class="lb-summary-kicker">Agents Ranked</div><div class="lb-summary-value" id="lb-agent-count">0</div><div class="lb-summary-note" id="lb-agent-note">Active performance rows</div></div>
+        <div class="lb-summary-card leader"><div class="lb-summary-kicker">Top Performer</div><div class="lb-summary-value" id="lb-top-name">—</div><div class="lb-summary-note" id="lb-top-note">Waiting for report data</div></div>
+        <div class="lb-summary-card"><div class="lb-summary-kicker">Average / Agent</div><div class="lb-summary-value" id="lb-average-xfer">0.0</div><div class="lb-summary-note" id="lb-average-note">Transfers per ranked agent</div></div>
       </div>
 
-      <!-- No data notice -->
-      <div id="lb-no-data" style="display:none;text-align:center;padding:40px 20px;color:var(--muted);">
-        <div style="font-size:2rem;margin-bottom:10px;">📊</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:2px;color:var(--muted);">NO DATA YET</div>
-        <div style="font-size:0.72rem;margin-top:6px;">Admin uploads the daily CSV and it will appear here automatically.</div>
-      </div>
+      <div id="lb-no-data" class="lb-empty"><div class="lb-empty-icon">📊</div><div class="lb-empty-title">No leaderboard data yet</div><div class="lb-empty-note">Admin uploads the daily CSV and the performance board will update automatically.</div></div>
 
-      <!-- Podium top 3 -->
-      <div id="lb-podium" style="display:none;justify-content:center;align-items:flex-end;gap:10px;margin-bottom:20px;"></div>
+      <section id="lb-podium-section" class="lb-section">
+        <div class="lb-section-head"><div class="lb-section-title">Top Performers</div><div class="lb-section-meta" id="lb-podium-meta">Top 3 by transfers</div></div>
+        <div id="lb-podium" class="lb-podium"></div>
+      </section>
 
-      <!-- Rankings list -->
-      <div id="lb-list" style="display:flex;flex-direction:column;gap:7px;"></div>
+      <section id="lb-ranking-panel" class="lb-section">
+        <div class="lb-section-head"><div class="lb-section-title">Complete Rankings</div><div class="lb-section-meta" id="lb-ranking-count">0 agents</div></div>
+        <div class="lb-ranking-head"><div>Rank</div><div>Agent</div><div>Team</div><div>Transfers</div><div>Calls</div><div>Conv.</div><div class="lb-col-progress">Performance</div></div>
+        <div id="lb-list" class="lb-ranking-list"></div>
+      </section>
     </div>
   </div>
+
 
   <!-- ══ MY LEAD TRACKER TAB ══ -->
   <div class="tab-page" id="page-leads">
@@ -4827,12 +5014,17 @@ function rosterAgentFromDoc(doc){
   if(raw.inactive === true || statusLow === 'inactive') return null;
   if(INACTIVE_AGENTS.some(n => n.toLowerCase() === name.toLowerCase())) return null;
 
-  let team = normalizeTeam(raw.team || raw.Team || 'BB');
-  if(ytelName){
+  // Firebase Team is authoritative. The Ytel prefix is only a fallback when
+  // the roster document does not yet contain a valid BB/PR team value.
+  // This is important because admins can manually move an agent between teams.
+  const explicitTeam = normalizeTeam(raw.team || raw.Team || '');
+  let team = (explicitTeam === 'BB' || explicitTeam === 'PR') ? explicitTeam : '';
+  if(!team && ytelName){
     const yn = ytelName.toUpperCase().replace(/[\s\-_]/g,'');
     if(yn.startsWith('GUYP') || yn.includes('GUYP')) team = 'PR';
     else if(yn.startsWith('GUYB') || yn.includes('GUYB')) team = 'BB';
   }
+  if(!team) team = 'BB';
 
   return {
     userId,
@@ -6229,260 +6421,417 @@ async function loadRepCoach(id){
   }
 }
 let selectedProfileId = null;
+let selectedProfileSnapshot = null;
 
+function profileInitials(name){
+  return String(name||'').trim().split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('') || 'A';
+}
+function profileSafe(value){
+  return String(value == null ? '' : value)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+function profileNormalizeYtel(name, team, current){
+  const cleanName=String(name||'').trim();
+  const prefix=team==='PR'?'GUYP ':'GUYB ';
+  const value=String(current||'').trim();
+  if(!value) return prefix+cleanName;
+  if(/^GUY[BP]\s+/i.test(value)) return value.replace(/^GUY[BP]\s+/i,prefix);
+  return value;
+}
 function autoFillYtel(){
-  const nameVal = document.getElementById('nr-name').value.trim();
-  const team    = document.getElementById('nr-team').value;
-  const ytelEl  = document.getElementById('nr-ytel');
+  const nameEl=document.getElementById('nr-name');
+  const teamEl=document.getElementById('nr-team');
+  const ytelEl=document.getElementById('nr-ytel');
+  if(!nameEl||!teamEl||!ytelEl) return;
+  const nameVal=nameEl.value.trim();
   if(!nameVal) return;
-  // Format: "GUYB First Last" (BB) or "GUYP First Last" (PR)
-  // e.g. "Kleon Williams" + BB → "GUYB Kleon Williams"
-  // e.g. "Priya Sookram"  + PR → "GUYP Priya Sookram"
-  const prefix = team === 'PR' ? 'GUYP ' : 'GUYB ';
-  // Only auto-fill if empty or was previously auto-filled (starts with GUY)
-  if(!ytelEl.value || ytelEl.value.startsWith('GUY')){
-    ytelEl.value = prefix + nameVal;
+  const previous=ytelEl.dataset.autoValue||'';
+  if(!ytelEl.value.trim() || ytelEl.value===previous || /^GUY[BP]\s+/i.test(ytelEl.value)){
+    const next=profileNormalizeYtel(nameVal,normalizeTeam(teamEl.value),ytelEl.value);
+    ytelEl.value=next;
+    ytelEl.dataset.autoValue=next;
   }
 }
+function profileTeamChanged(){
+  const nameEl=document.getElementById('pe-full-name');
+  const teamEl=document.getElementById('pe-team');
+  const ytelEl=document.getElementById('pe-ytel');
+  if(!nameEl||!teamEl||!ytelEl) return;
+  ytelEl.value=profileNormalizeYtel(nameEl.value,normalizeTeam(teamEl.value),ytelEl.value);
+}
 
-function toggleAddRepForm(){
-  const form = document.getElementById('add-rep-form');
-  const btn  = document.getElementById('add-rep-toggle-btn');
-  const open = form.style.display === 'none';
-  form.style.display = open ? '' : 'none';
-  btn.textContent = open ? '✕ CANCEL' : '＋ ADD NEW REP';
-  btn.style.background = open ? 'transparent' : 'linear-gradient(90deg,var(--green),var(--cyan))';
-  btn.style.border = open ? '1px solid var(--border)' : 'none';
-  btn.style.color = open ? 'var(--muted)' : '#000';
+function toggleAddRepForm(forceOpen){
+  const form=document.getElementById('add-rep-form');
+  const btn=document.getElementById('add-rep-toggle-btn');
+  if(!form||!btn) return;
+  const isOpen=form.style.display!=='none' && getComputedStyle(form).display!=='none';
+  const open=typeof forceOpen==='boolean'?forceOpen:!isOpen;
+  form.style.display=open?'block':'none';
+  btn.textContent=open?'✕ CANCEL':'＋ ADD AGENT';
   if(open){
-    document.getElementById('nr-name').value='';
-    document.getElementById('nr-id').value='';
-    document.getElementById('nr-ytel').value='';
-    document.getElementById('nr-lunch').value='';
-    document.getElementById('nr-status-msg').textContent='';
+    ['nr-name','nr-id','nr-ytel','nr-lunch','nr-break'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const shift=document.getElementById('nr-shift'); if(shift) shift.value='';
+    const team=document.getElementById('nr-team'); if(team) team.value='BB';
+    const status=document.getElementById('nr-status'); if(status) status.value='Agent';
+    const msg=document.getElementById('nr-status-msg'); if(msg) msg.textContent='';
+    setTimeout(()=>document.getElementById('nr-name')?.focus(),50);
   }
 }
 
 async function saveNewRep(){
-  const msgEl = document.getElementById('nr-status-msg');
-  const name   = document.getElementById('nr-name').value.trim();
-  const idVal  = document.getElementById('nr-id').value.trim();
-  const team   = normalizeTeam(document.getElementById('nr-team').value);
-  const ytel   = document.getElementById('nr-ytel').value.trim();
-  const shift  = document.getElementById('nr-shift').value;
-  const lunch  = document.getElementById('nr-lunch').value.trim();
-  const status = document.getElementById('nr-status').value;
+  const msgEl=document.getElementById('nr-status-msg');
+  const saveBtn=document.getElementById('nr-save-btn');
+  const name=document.getElementById('nr-name').value.trim();
+  const idVal=document.getElementById('nr-id').value.trim();
+  const team=normalizeTeam(document.getElementById('nr-team').value);
+  let ytel=document.getElementById('nr-ytel').value.trim();
+  const shift=document.getElementById('nr-shift').value.trim();
+  const lunch=document.getElementById('nr-lunch').value.trim();
+  const brk=(document.getElementById('nr-break')?.value||'').trim();
+  const status=document.getElementById('nr-status').value.trim()||'Agent';
 
-  if(!name){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ Full name is required.'; return; }
-  if(!idVal){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ User ID is required.'; return; }
-  if(isNaN(idVal)){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ User ID must be a number.'; return; }
-  if(!ytel){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ Ytel Name is required (e.g. GUYB John Smith or GUYP John Smith).'; return; }
-  if(ROSTER[String(idVal)]){ msgEl.style.color='var(--red)'; msgEl.textContent='⚠️ A rep with ID '+idVal+' already exists: '+ROSTER[String(idVal)].name; return; }
+  const fail=(m)=>{if(msgEl){msgEl.style.color='var(--red)';msgEl.textContent=m;}};
+  if(!name) return fail('⚠ Full name is required.');
+  if(!idVal) return fail('⚠ Agent / User ID is required.');
+  if(!/^\d{3,}$/.test(idVal)) return fail('⚠ Agent / User ID must be a numeric ID.');
+  if(team!=='BB'&&team!=='PR') return fail('⚠ Select Berbice or Providence.');
+  ytel=profileNormalizeYtel(name,team,ytel);
+  document.getElementById('nr-ytel').value=ytel;
 
-  msgEl.style.color='var(--gold)';
-  msgEl.textContent='⏳ Saving to Firebase...';
-
+  if(saveBtn){saveBtn.disabled=true;saveBtn.textContent='⏳ Checking Firebase...';}
+  if(msgEl){msgEl.style.color='var(--muted)';msgEl.textContent='Checking for an existing profile...';}
   try{
     await ensureFirebaseAuth();
-    const payload = {
-      userId: String(idVal),
-      name,
-      team,
-      ytelName: ytel,
-      shift: shift || '',
-      lunch: lunch || '',
-      brk: '',
-      status: status || 'Agent',
-      inactive: false,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    const ref=db.collection('roster').doc(String(idVal));
+    const existing=await ref.get();
+    if(existing.exists) throw new Error('Agent ID '+idVal+' already exists in Firebase.');
+
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const payload={
+      userId:String(idVal),name,team,ytelName:ytel,shift,lunch,brk,status,
+      inactive:false,teamOverride:true,teamSource:'admin-profile',teamUpdatedAt:now,
+      createdAt:now,updatedAt:now,profileUpdatedBy:currentUser?.name||currentUser?.username||'Admin'
     };
-    await db.collection('roster').doc(String(idVal)).set(payload);
-    ROSTER[String(idVal)] = {...payload, createdAt:null, updatedAt:null};
-    rosterLoaded = true;
-    rosterPollHash = getRosterFingerprint();
+    if(msgEl){msgEl.style.color='var(--gold)';msgEl.textContent='Saving new agent profile to Firebase...';}
+    await ref.set(payload,{merge:false});
 
-    msgEl.style.color='var(--green)';
-    msgEl.textContent='✅ '+name+' (ID: '+idVal+') added to Firebase successfully!';
-
-    setTimeout(async ()=>{
-      toggleAddRepForm();
-      await loadRoster();
-      renderProfileList();
-      renderAttTable();
-      if(typeof renderStatsTable === 'function') renderStatsTable();
-      const ovEl = document.getElementById('admin-overview');
-      if(ovEl && ovEl.style.display !== 'none') loadAdminOverview();
-      refreshBreakdownIfOpen();
-      if(weeklyTeam) loadWeeklyAttendance(weeklyTeam);
-      const monthlyEl = document.getElementById('admin-monthly');
-      if(monthlyEl && monthlyEl.style.display !== 'none') reRenderMonthly();
-    }, 500);
+    ROSTER[String(idVal)]={userId:String(idVal),name,team,ytelName:ytel,shift,lunch,brk,status};
+    rosterLoaded=true;
+    if(typeof getRosterFingerprint==='function') rosterPollHash=getRosterFingerprint();
+    if(msgEl){msgEl.style.color='var(--green)';msgEl.textContent='✅ '+name+' was added successfully.';}
+    renderProfileList();
+    updateProfileSummary();
+    setTimeout(()=>{toggleAddRepForm(false);selectProfile(String(idVal));},650);
   }catch(e){
-    msgEl.style.color='var(--red)';
-    msgEl.textContent='❌ Firebase save failed: '+(e.message || e);
+    fail('❌ '+(e.message||e));
+  }finally{
+    if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='💾 Create Agent Profile';}
   }
 }
 
-function loadAgentProfiles(){
-  if(!rosterLoaded){ loadRoster().then(()=>renderProfileList()); return; }
+async function loadAgentProfiles(){
+  const list=document.getElementById('profile-list');
+  if(list) list.innerHTML='<div class="profile-empty-list">⏳ Loading live Firebase roster...</div>';
+  await loadRoster();
   renderProfileList();
+  updateProfileSummary();
 }
-
+async function refreshAgentProfiles(){
+  const btn=document.querySelector('#admin-profiles .profile-toolbar .profile-mini-btn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ REFRESHING';}
+  await loadRoster();
+  renderProfileList();
+  updateProfileSummary();
+  if(selectedProfileId && ROSTER[selectedProfileId]) await selectProfile(selectedProfileId,{keepScroll:true});
+  if(btn){btn.disabled=false;btn.textContent='↻ REFRESH';}
+}
+function updateProfileSummary(){
+  const vals=Object.values(ROSTER||{});
+  const total=document.getElementById('profile-total-count');
+  const bb=document.getElementById('profile-bb-count');
+  const pr=document.getElementById('profile-pr-count');
+  const trainee=document.getElementById('profile-trainee-count');
+  if(total) total.textContent=vals.length;
+  if(bb) bb.textContent=vals.filter(a=>a.team==='BB').length;
+  if(pr) pr.textContent=vals.filter(a=>a.team==='PR').length;
+  if(trainee) trainee.textContent=vals.filter(a=>String(a.status||'').toLowerCase()==='trainee').length;
+}
 function renderProfileList(){
-  const search     = (document.getElementById('profile-search')||{value:''}).value.toLowerCase();
-  const teamFilter = (document.getElementById('profile-team-filter')||{value:'all'}).value;
-  const container  = document.getElementById('profile-list');
+  const search=(document.getElementById('profile-search')?.value||'').toLowerCase().trim();
+  const teamFilter=document.getElementById('profile-team-filter')?.value||'all';
+  const container=document.getElementById('profile-list');
   if(!container) return;
 
-  const agents = Object.values(ROSTER)
-    .filter(a => (teamFilter==='all'||a.team===teamFilter)
-              && (!search || a.name.toLowerCase().includes(search)))
-    .sort((a,b)=>a.name.localeCompare(b.name));
+  const agents=Object.values(ROSTER||{}).filter(a=>{
+    const blob=[a.name,a.userId,a.ytelName,a.shift,a.lunch,a.brk,a.status].join(' ').toLowerCase();
+    return (teamFilter==='all'||a.team===teamFilter) && (!search||blob.includes(search));
+  }).sort((a,b)=>String(a.name||'').localeCompare(String(b.name||'')));
 
-  if(!agents.length){
-    container.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:0.82rem;">No agents found.</div>';
-    return;
-  }
+  updateProfileSummary();
+  const countEl=document.getElementById('profile-result-count');
+  if(countEl) countEl.textContent=agents.length+' profile'+(agents.length===1?'':'s');
+  if(!agents.length){container.innerHTML='<div class="profile-empty-list">No agent profiles match your current search or team filter.</div>';return;}
 
-  container.innerHTML = agents.map(a=>{
-    const uid = a.userId || Object.keys(ROSTER).find(k=>ROSTER[k]===a) || '';
-    const teamColor = a.team==='BB'?'var(--accent)':'var(--purple)';
-    const isSelected = uid === selectedProfileId;
-    return `<div
-      style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #0f1e35;cursor:pointer;background:${isSelected?'#0d1a30':'transparent'};transition:background 0.12s;"
-      onmouseover="this.style.background='#0a1424'" onmouseout="this.style.background='${isSelected?'#0d1a30':'transparent'}'">
-      <div style="display:flex;align-items:center;gap:10px;flex:1;" onclick="openRepProfile('${uid}','${a.name.replace(/'/g,"\\'")}','${a.team}','${(a.shift||'').replace(/'/g,"\\'")}')">
-        <span style="font-size:0.65rem;font-weight:800;color:${teamColor};min-width:24px;">${a.team}</span>
-        <div>
-          <div style="font-weight:700;font-size:0.85rem;color:var(--text);">${a.name}</div>
-          <div style="font-size:0.65rem;color:var(--muted);">${a.shift||'No shift set'} ${a.lunch?'· '+a.lunch:''}</div>
+  container.innerHTML=agents.map(a=>{
+    const uid=String(a.userId||'');
+    const selected=uid===String(selectedProfileId||'');
+    const status=String(a.status||'Agent');
+    const statusLow=status.toLowerCase();
+    const statusCls=statusLow==='trainee'?'trainee':statusLow==='inactive'?'inactive':'agent';
+    const teamLabel=a.team==='PR'?'Providence':'Berbice';
+    const teamClass=a.team==='PR'?'pr':'bb';
+    return `<div class="profile-row ${selected?'selected':''}" data-profile-id="${profileSafe(uid)}" onclick="selectProfile(this.dataset.profileId)">
+      <div class="profile-agent-cell">
+        <div class="profile-avatar-sm">${profileSafe(profileInitials(a.name))}</div>
+        <div style="min-width:0;">
+          <div class="profile-row-name">${profileSafe(a.name)}</div>
+          <div class="profile-row-meta">ID ${profileSafe(uid)}${a.ytelName?' · '+profileSafe(a.ytelName):''}</div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-size:0.65rem;color:var(--muted);">ID: ${uid}</span>
-        <button onclick="event.stopPropagation();selectProfile('${uid}')"
-          style="padding:3px 10px;border-radius:6px;border:1px solid #2a3a5a;background:#0d1424;color:#64748b;font-size:0.6rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;letter-spacing:1px;">
-          ✏️ EDIT
-        </button>
-      </div>
+      <div class="profile-dir-center"><span class="profile-tag ${teamClass}">${profileSafe(teamLabel)}</span></div>
+      <div class="profile-dir-center"><div class="profile-dir-shift">${profileSafe(a.shift||'Not set')}</div></div>
+      <div class="profile-dir-center"><span class="profile-tag ${statusCls}">${profileSafe(status)}</span></div>
+      <button type="button" class="profile-dir-open" data-id="${profileSafe(uid)}" onclick="event.stopPropagation();selectProfile(this.dataset.id)" title="Edit profile">›</button>
     </div>`;
   }).join('');
 }
 
-function selectProfile(userId){
-  selectedProfileId = String(userId);
-  renderProfileList();
-
-  const agent = ROSTER[userId] || ROSTER[String(userId)];
-  if(!agent){ console.warn('Agent not found:', userId); return; }
-
-  const uid = agent.userId || userId;
-  document.getElementById('pe-name').textContent  = agent.name;
-  document.getElementById('pe-meta').textContent  = (agent.team==='BB'?'Berbice (BB)':'Providence (PR)')+' · ID: '+uid;
-
-  // Shift — fuzzy match to dropdown option
-  const shiftSel = document.getElementById('pe-shift');
-  const shiftVal = (agent.shift||'').toLowerCase().replace(/\s+/g,'');
-  let shiftMatched = '';
-  Array.from(shiftSel.options).forEach(opt=>{
-    if(opt.value && opt.value.toLowerCase().replace(/\s+/g,'') === shiftVal) shiftMatched = opt.value;
-  });
-  shiftSel.value = shiftMatched || agent.shift || '';
-
-  document.getElementById('pe-lunch').value       = agent.lunch  || '';
-  document.getElementById('pe-status').value      = agent.status || 'Agent';
-  document.getElementById('pe-save-status').textContent = '';
-
-  document.getElementById('pe-break').value = agent.brk || '';
-  db.collection('roster').doc(String(uid)).get().then(snap=>{
-    if(snap.exists && snap.data().brk)
-      document.getElementById('pe-break').value = snap.data().brk;
-  }).catch(()=>{});
-
-  document.getElementById('profile-edit-panel').style.display='';
-  document.getElementById('profile-edit-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
+function profileRenderHero(agent){
+  if(!agent) return;
+  const avatar=document.getElementById('pe-avatar');
+  const teamBadge=document.getElementById('pe-team-badge');
+  const statusBadge=document.getElementById('pe-status-badge');
+  const ytelBadge=document.getElementById('pe-ytel-display');
+  if(avatar) avatar.textContent=profileInitials(agent.name||'Agent');
+  if(teamBadge){
+    teamBadge.textContent=agent.team==='PR'?'🌴 Providence (PR)':'🏠 Berbice (BB)';
+    teamBadge.className='profile-hero-badge '+(agent.team==='PR'?'team-pr':'team-bb');
+  }
+  if(statusBadge){
+    const st=String(agent.status||'Agent');
+    const sl=st.toLowerCase();
+    statusBadge.textContent=(sl==='trainee'?'🎓 ':sl==='inactive'?'⛔ ':'● ')+st;
+    statusBadge.className='profile-hero-badge '+(sl==='trainee'?'status-trainee':sl==='inactive'?'status-inactive':'status-agent');
+  }
+  if(ytelBadge){
+    ytelBadge.textContent=agent.ytelName?('☎ '+agent.ytelName):'☎ Ytel not set';
+    ytelBadge.title=agent.ytelName||'Ytel name not set';
+  }
 }
 
-function filterProfileList(){
-  renderProfileList();
-  closeProfileEdit();
+function profileMarkDirty(){
+  if(!selectedProfileId || !selectedProfileSnapshot) return;
+  const el=document.getElementById('pe-save-status');
+  if(el){el.style.color='var(--gold)';el.textContent='● Unsaved changes — click Save Changes to update Firebase.';}
 }
 
+function resetProfileEditor(){
+  if(!selectedProfileId || !selectedProfileSnapshot) return;
+  const a=selectedProfileSnapshot;
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val||'';};
+  set('pe-full-name',a.name);set('pe-id',a.userId);set('pe-team',a.team);set('pe-ytel',a.ytelName);set('pe-shift',a.shift);set('pe-lunch',a.lunch);set('pe-break',a.brk);set('pe-status',a.status||'Agent');
+  const n=document.getElementById('pe-name');if(n)n.textContent=a.name||'Unnamed Agent';
+  const m=document.getElementById('pe-meta');if(m)m.textContent=(a.team==='PR'?'Providence (PR)':'Berbice (BB)')+' · ID '+a.userId+' · Firebase roster record';
+  profileRenderHero(a);
+  const el=document.getElementById('pe-save-status');if(el){el.style.color='var(--muted)';el.textContent='Changes reset to the last saved Firebase profile.';}
+}
+
+async function selectProfile(userId, options={}){
+  const uid=String(userId||'').trim();
+  if(!uid) return;
+  selectedProfileId=uid;
+  renderProfileList();
+
+  const panel=document.getElementById('profile-edit-panel');
+  const empty=document.getElementById('profile-edit-empty');
+  const statusEl=document.getElementById('pe-save-status');
+  if(empty) empty.style.display='none';
+  if(panel) panel.style.display='block';
+  if(statusEl){statusEl.style.color='var(--muted)';statusEl.textContent='Loading latest Firebase profile...';}
+
+  try{
+    await ensureFirebaseAuth();
+    const snap=await db.collection('roster').doc(uid).get();
+    if(!snap.exists) throw new Error('This profile no longer exists in Firebase.');
+    const raw=snap.data()||{};
+    const agent={
+      userId:uid,
+      name:String(raw.name||raw.Name||ROSTER[uid]?.name||'').trim(),
+      team:normalizeTeam(raw.team||ROSTER[uid]?.team||'BB'),
+      ytelName:String(raw.ytelName||raw.ytelname||ROSTER[uid]?.ytelName||'').trim(),
+      shift:String(raw.shift||ROSTER[uid]?.shift||'').trim(),
+      lunch:String(raw.lunch||ROSTER[uid]?.lunch||'').trim(),
+      brk:String(raw.brk||raw.break||ROSTER[uid]?.brk||'').trim(),
+      status:String(raw.status||ROSTER[uid]?.status||'Agent').trim()||'Agent'
+    };
+    selectedProfileSnapshot={...agent};
+    if(agent.status.toLowerCase()!=='inactive') ROSTER[uid]={...agent};
+
+    document.getElementById('pe-name').textContent=agent.name||'Unnamed Agent';
+    document.getElementById('pe-meta').textContent=(agent.team==='PR'?'Providence (PR)':'Berbice (BB)')+' · ID '+uid+' · Firebase roster record';
+    document.getElementById('pe-full-name').value=agent.name;
+    document.getElementById('pe-id').value=uid;
+    document.getElementById('pe-team').value=agent.team==='PR'?'PR':'BB';
+    document.getElementById('pe-ytel').value=agent.ytelName;
+    profileRenderHero(agent);
+    ['pe-full-name','pe-ytel'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.dataset.profileDirtyBound){el.addEventListener('input',profileMarkDirty);el.dataset.profileDirtyBound='1';}});
+
+    const shiftSel=document.getElementById('pe-shift');
+    const exact=Array.from(shiftSel.options).find(opt=>opt.value.toLowerCase().replace(/\s+/g,'')===agent.shift.toLowerCase().replace(/\s+/g,''));
+    if(agent.shift && !exact && !Array.from(shiftSel.options).some(o=>o.value===agent.shift)){
+      const opt=document.createElement('option');opt.value=agent.shift;opt.textContent=agent.shift+' (saved)';shiftSel.appendChild(opt);
+    }
+    shiftSel.value=exact?.value||agent.shift||'';
+    document.getElementById('pe-lunch').value=agent.lunch;
+    document.getElementById('pe-break').value=agent.brk;
+    const statusSel=document.getElementById('pe-status');
+    if(!Array.from(statusSel.options).some(o=>o.value===agent.status)){
+      const opt=document.createElement('option');opt.value=agent.status;opt.textContent=agent.status;statusSel.appendChild(opt);
+    }
+    statusSel.value=agent.status;
+    if(statusEl){statusEl.style.color='var(--muted)';statusEl.textContent='Profile loaded from Firebase — ready to edit.';}
+    renderProfileList();
+    if(!options.keepScroll) document.getElementById('profile-editor-card')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }catch(e){
+    if(statusEl){statusEl.style.color='var(--red)';statusEl.textContent='❌ '+(e.message||e);}
+  }
+}
+function filterProfileList(){renderProfileList();}
 function closeProfileEdit(){
-  selectedProfileId = null;
-  document.getElementById('profile-edit-panel').style.display='none';
+  selectedProfileId=null;selectedProfileSnapshot=null;
+  const panel=document.getElementById('profile-edit-panel');if(panel)panel.style.display='none';
+  const empty=document.getElementById('profile-edit-empty');if(empty)empty.style.display='grid';
   renderProfileList();
+}
+function openRepProfileById(userId){
+  const uid=String(userId||'').trim();
+  const a=ROSTER[uid];
+  if(a) openRepProfile(uid,a.name,a.team,a.shift||'');
+}
+function openSelectedProfile(){if(selectedProfileId) openRepProfileById(selectedProfileId);}
+
+async function syncProfileLiveViews(uid, previous, updated){
+  const now=firebase.firestore.FieldValue.serverTimestamp();
+  const today=getTodayGY();
+  const patchIfExists=async(collection,docId,payload)=>{
+    try{
+      const ref=db.collection(collection).doc(docId);
+      const snap=await ref.get();
+      if(snap.exists) await ref.set(payload,{merge:true});
+    }catch(e){ console.warn('Profile live-sync skipped for '+collection+':',e); }
+  };
+  await Promise.allSettled([
+    patchIfExists('attendance',uid+'_'+today,{name:updated.name,team:updated.team,shift:updated.shift,updatedAt:now}),
+    patchIfExists('sessions',uid+'_'+today,{name:updated.name,team:updated.team,updatedAt:now}),
+    patchIfExists('taps',uid+'_'+today,{name:updated.name,team:updated.team,updatedAt:now})
+  ]);
+
+  const oldName=String(previous?.name||'').toLowerCase().trim();
+  let reportChanged=false;
+  (statsData||[]).forEach(row=>{
+    const rowId=String(row.ytelId||row.userId||row.id||'').trim();
+    const rowName=String(row.name||'').toLowerCase().trim();
+    if(rowId===uid || (oldName && rowName===oldName)){
+      if(row.team!==updated.team || row.name!==updated.name) reportChanged=true;
+      row.team=updated.team;
+      row.name=updated.name;
+    }
+  });
+  if(reportChanged && statsDataDate===today){
+    const statsJSON=JSON.stringify(statsData);
+    await db.collection('reports').doc(today).set({statsJSON,profileAssignmentsUpdatedAt:now},{merge:true});
+    const hist=Array.isArray(reportHistory)?reportHistory.find(r=>r&&r.date===today):null;
+    if(hist) hist.statsJSON=statsJSON;
+  }
+
+  if(typeof updateGoalBars==='function') updateGoalBars();
+  if(typeof refreshBreakdownIfOpen==='function') refreshBreakdownIfOpen();
+  if(typeof renderStatsTable==='function') renderStatsTable();
+  if(typeof renderLeaderboard==='function') renderLeaderboard();
+  if(typeof renderAttTable==='function') renderAttTable();
+  if(typeof wpAllReports!=='undefined') wpAllReports=[];
+  if(typeof wpWeekRanges!=='undefined') wpWeekRanges=[];
+  const ov=document.getElementById('admin-overview');if(ov&&ov.style.display!=='none'&&typeof loadAdminOverview==='function') loadAdminOverview();
 }
 
 async function saveProfileEdits(){
   if(!selectedProfileId) return;
-  const agent = ROSTER[selectedProfileId];
-  const statusEl = document.getElementById('pe-save-status');
-  if(!agent){ statusEl.textContent='❌ Agent not found'; return; }
+  const uid=String(selectedProfileId);
+  const statusEl=document.getElementById('pe-save-status');
+  const saveBtn=document.getElementById('pe-save-btn');
+  const previous=selectedProfileSnapshot || ROSTER[uid] || {};
 
-  const uid       = String(agent.userId || selectedProfileId);
-  const newShift  = document.getElementById('pe-shift').value.trim();
-  const newLunch  = document.getElementById('pe-lunch').value.trim();
-  const newBreak  = document.getElementById('pe-break').value.trim();
-  const newStatus = document.getElementById('pe-status').value.trim() || 'Agent';
-  const saveBtn   = document.querySelector('#profile-edit-panel button[onclick="saveProfileEdits()"]');
+  const updated={
+    userId:uid,
+    name:document.getElementById('pe-full-name').value.trim(),
+    team:normalizeTeam(document.getElementById('pe-team').value),
+    ytelName:document.getElementById('pe-ytel').value.trim(),
+    shift:document.getElementById('pe-shift').value.trim(),
+    lunch:document.getElementById('pe-lunch').value.trim(),
+    brk:document.getElementById('pe-break').value.trim(),
+    status:document.getElementById('pe-status').value.trim()||'Agent'
+  };
+  if(!updated.name){statusEl.style.color='var(--red)';statusEl.textContent='⚠ Full name cannot be blank.';return;}
+  if(updated.team!=='BB'&&updated.team!=='PR'){statusEl.style.color='var(--red)';statusEl.textContent='⚠ Select a valid team.';return;}
+  updated.ytelName=profileNormalizeYtel(updated.name,updated.team,updated.ytelName);
+  document.getElementById('pe-ytel').value=updated.ytelName;
 
-  const updates = [];
-  if(newShift !== (agent.shift||'')) updates.push('Shift');
-  if(newLunch !== (agent.lunch||'')) updates.push('Lunch');
-  if(newBreak !== (agent.brk||'')) updates.push('Break');
-  if(newStatus !== (agent.status||'')) updates.push('Status');
+  const fields=[['name','Name'],['team','Team'],['ytelName','Ytel Name'],['shift','Shift'],['lunch','Lunch'],['brk','Break'],['status','Status']];
+  const changed=fields.filter(([k])=>String(updated[k]||'')!==String(previous[k]||'')).map(([,label])=>label);
+  if(!changed.length){statusEl.style.color='var(--muted)';statusEl.textContent='No changes detected — profile is already up to date.';setTimeout(()=>{if(statusEl)statusEl.textContent='';},2500);return;}
 
-  if(!updates.length){
-    statusEl.textContent='No changes detected.';
-    statusEl.style.color='#64748b';
-    setTimeout(()=>{ statusEl.textContent=''; },2000);
-    return;
+  if(updated.status.toLowerCase()==='inactive'){
+    const ok=confirm('Mark '+updated.name+' as Inactive?\n\nThe agent will be removed from the active roster list, but historical records will remain.');
+    if(!ok) return;
   }
 
-  if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ SAVING TO FIREBASE...'; saveBtn.style.opacity='0.7'; }
-  statusEl.textContent='Saving to Firebase...';
-  statusEl.style.color='#64748b';
-
+  if(saveBtn){saveBtn.disabled=true;saveBtn.textContent='⏳ Saving Profile...';}
+  statusEl.style.color='var(--muted)';statusEl.textContent='Saving '+changed.join(', ')+' to Firebase...';
   try{
     await ensureFirebaseAuth();
-    await db.collection('roster').doc(uid).set({
-      userId: uid,
-      shift: newShift,
-      lunch: newLunch,
-      brk: newBreak,
-      status: newStatus,
-      inactive: newStatus.toLowerCase()==='inactive',
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, {merge:true});
+    const now=firebase.firestore.FieldValue.serverTimestamp();
+    const payload={
+      ...updated,
+      inactive:updated.status.toLowerCase()==='inactive',
+      updatedAt:now,
+      profileUpdatedAt:now,
+      profileUpdatedBy:currentUser?.name||currentUser?.username||'Admin'
+    };
+    if(updated.team!==previous.team){
+      payload.teamOverride=true;payload.teamSource='admin-profile';payload.teamUpdatedAt=now;
+    }
+    await db.collection('roster').doc(uid).set(payload,{merge:true});
 
-    if(newStatus.toLowerCase()==='inactive'){
-      delete ROSTER[selectedProfileId];
-      statusEl.textContent='✅ Agent set to Inactive in Firebase';
-      statusEl.style.color='#34d399';
-      setTimeout(()=>closeProfileEdit(), 700);
-    } else {
-      ROSTER[selectedProfileId] = {...agent, shift:newShift, lunch:newLunch, brk:newBreak, status:newStatus};
-      statusEl.textContent='✅ '+updates.join(', ')+' saved to Firebase';
-      statusEl.style.color='#34d399';
-      renderProfileList();
-      setTimeout(()=>{ statusEl.textContent=''; },4000);
+    if(updated.status.toLowerCase()==='inactive') delete ROSTER[uid];
+    else ROSTER[uid]={...updated};
+    selectedProfileSnapshot={...updated};
+    if(typeof getRosterFingerprint==='function') rosterPollHash=getRosterFingerprint();
+
+    await syncProfileLiveViews(uid,previous,updated);
+
+    if(currentRepProfile && String(currentRepProfile.id)===uid){
+      Object.assign(currentRepProfile,{name:updated.name,team:updated.team,shift:updated.shift,lunch:updated.lunch,brk:updated.brk,status:updated.status,ytelName:updated.ytelName});
+    }
+    if(currentUser && String(currentUser.id)===uid){
+      Object.assign(currentUser,{name:updated.name,team:updated.team,shift:updated.shift,lunch:updated.lunch,brk:updated.brk,status:updated.status,ytelName:updated.ytelName});
+      sessionStorage.setItem('bds_user_'+getTodayGY(),JSON.stringify(currentUser));
+      showDashboard();
     }
 
-    if(saveBtn){
-      saveBtn.disabled=false;
-      saveBtn.style.opacity='1';
-      saveBtn.innerHTML='✅ DONE — SAVED TO FIREBASE';
-      setTimeout(()=>{ if(saveBtn) saveBtn.innerHTML='💾 SAVE ALL CHANGES TO FIREBASE'; },3000);
-    }
+    statusEl.style.color='var(--green)';statusEl.textContent='✅ Saved: '+changed.join(', ')+'. Firebase and live dashboard views are synchronized.';
+    renderProfileList();updateProfileSummary();
+    document.getElementById('pe-name').textContent=updated.name;
+    document.getElementById('pe-meta').textContent=(updated.team==='PR'?'Providence (PR)':'Berbice (BB)')+' · ID '+uid+' · Saved to Firebase';
+    profileRenderHero(updated);
+    if(updated.status.toLowerCase()==='inactive') setTimeout(()=>closeProfileEdit(),900);
   }catch(e){
-    statusEl.textContent='❌ Firebase save failed: '+(e.message || e);
-    statusEl.style.color='#f87171';
-    if(saveBtn){ saveBtn.disabled=false; saveBtn.style.opacity='1'; saveBtn.textContent='⚠️ RETRY SAVE'; }
+    console.error('Profile save failed:',e);
+    statusEl.style.color='var(--red)';statusEl.textContent='❌ Firebase save failed: '+(e.message||e);
+  }finally{
+    if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='💾 Save Changes';}
   }
 }
-
 
 // ══════════════════════════════════════════════
 //  ROSE-ONLY MISSING-STATS + RESTORABLE ARCHIVE MANAGER
@@ -8543,53 +8892,40 @@ async function confirmCSVUpload(){
 //  4. Fallback to saved team value
 function resolveAgentTeam(agent){
   const rosterAgents = Object.values(ROSTER);
+  const idStr = String(agent?.ytelId || agent?.userId || agent?.id || '').trim();
+  const nameLow = String(agent?.name || '').toLowerCase().trim();
 
-  // Helper: get team from a ytelName string
-  // GUYP = Providence (PR), GUYB = Berbice (BB)
-  // Plain GUY (no suffix) = ambiguous, return null so caller uses other signals
-  const teamFromYtel = (yn)=>{
-    const u = (yn||'').toUpperCase().replace(/[\s-]/g,'');
-    if(u.startsWith('GUYP')) return 'PR';
-    if(u.startsWith('GUYB')) return 'BB';
-    return null;
-  };
-
-  // 1. nameRaw prefix from saved CSV — HIGHEST PRIORITY
-  // GUYP = Providence (PR), GUYB = Berbice (BB)
-  // This is the most direct signal and must not be overridden by stale ROSTER data
-  if(agent.nameRaw){
-    const t = teamFromYtel(agent.nameRaw);
-    if(t) return t;
+  // 1. Current Firebase roster assignment ALWAYS wins.
+  // This lets an admin manually move an agent even when the CSV/Ytel name still
+  // starts with GUYB or GUYP from an older assignment.
+  let match = idStr ? (ROSTER[idStr] || rosterAgents.find(r=>String(r.userId||'').trim()===idStr)) : null;
+  if(!match && nameLow){
+    match = rosterAgents.find(r=>String(r.name||'').toLowerCase().trim()===nameLow) || null;
+    if(!match){
+      const parts = nameLow.split(' ').filter(p=>p.length>1);
+      const first = parts[0] || '';
+      const last  = parts[parts.length-1] || '';
+      if(first.length>=2 && last.length>=2 && first!==last){
+        match = rosterAgents.find(r=>{
+          const rp = String(r.name||'').toLowerCase().trim().split(' ').filter(p=>p.length>1);
+          return rp[0]===first && rp[rp.length-1]===last;
+        }) || null;
+      }
+    }
+  }
+  if(match){
+    const saved = normalizeTeam(match.team || '');
+    if(saved==='BB' || saved==='PR') return saved;
   }
 
-  // 2. ytelId → ROSTER lookup → use ytelName prefix
-  if(agent.ytelId){
-    const r = ROSTER[String(agent.ytelId).trim()];
-    if(r){ return teamFromYtel(r.ytelName) || r.team || 'BB'; }
-  }
+  // 2. No roster match: use CSV/Ytel prefix as a fallback.
+  const raw = String(agent?.nameRaw || agent?.ytelName || '').toUpperCase().replace(/[\s-]/g,'');
+  if(raw.startsWith('GUYP')) return 'PR';
+  if(raw.startsWith('GUYB')) return 'BB';
 
-  // 3. Match name in ROSTER → use that entry's ytelName
-  const nameLow = (agent.name||'').toLowerCase().trim();
-  const parts   = nameLow.split(' ').filter(p=>p.length>1);
-  const first   = parts[0]||'';
-  const last    = parts[parts.length-1]||'';
-
-  // Exact name match first
-  let match = rosterAgents.find(r=>r.name.toLowerCase()===nameLow);
-
-  // First + last name match (both must be 2+ chars)
-  if(!match && first.length>=2 && last.length>=2 && first!==last){
-    match = rosterAgents.find(r=>{
-      const rn = r.name.toLowerCase();
-      const rp = rn.split(' ').filter(p=>p.length>1);
-      return rp[0]===first && rp[rp.length-1]===last;
-    });
-  }
-
-  if(match){ return teamFromYtel(match.ytelName) || match.team || 'BB'; }
-
-  // 4. Keep saved value
-  return agent.team || 'BB';
+  // 3. Keep the row's already-saved team when available.
+  const existing = normalizeTeam(agent?.team || '');
+  return (existing==='PR' || existing==='BB') ? existing : 'BB';
 }
 
 // ── CHECK IF AN AGENT IS INACTIVE ──
@@ -8879,62 +9215,71 @@ function filterStatsTable(){ renderStatsTable(); }
 // ══════════════════════════════════════════════
 
 async function openRepProfile(id,name,team,shift){
-  // Always resolve full agent from ROSTER — id may be empty or stale (e.g. stats table)
-  const rAll = Object.values(ROSTER);
-  const rKeys = Object.keys(ROSTER);
-  let rAgent = (id && id!=='') ? ROSTER[String(id)] : null;
-  if(!rAgent && name){
-    const nl = name.toLowerCase();
-    rAgent = rAll.find(r=>r.name.toLowerCase()===nl)
-          || rAll.find(r=>r.name.toLowerCase().includes(nl.split(' ')[0]) && r.name.toLowerCase().includes(nl.split(' ').slice(-1)[0]));
+  // Resolve from the live in-memory roster first, then refresh the full profile from Firebase.
+  const rAll=Object.values(ROSTER||{});
+  const rKeys=Object.keys(ROSTER||{});
+  let rAgent=(id&&id!=='')?ROSTER[String(id)]:null;
+  if(!rAgent&&name){
+    const nl=String(name).toLowerCase().trim();
+    rAgent=rAll.find(r=>String(r.name||'').toLowerCase().trim()===nl)
+      || rAll.find(r=>{
+        const rn=String(r.name||'').toLowerCase();
+        const parts=nl.split(/\s+/).filter(Boolean);
+        return parts.length&&rn.includes(parts[0])&&rn.includes(parts[parts.length-1]);
+      });
   }
-  // Get the actual userId key from ROSTER map
-  const resolvedId = rAgent
-    ? String(rKeys.find(k=>ROSTER[k]===rAgent)||id||'')
-    : String(id||'');
+  const resolvedId=rAgent?String(rKeys.find(k=>ROSTER[k]===rAgent)||id||''):String(id||'');
 
-  // Pull break time from Firebase
-  let brk = '';
-  if(resolvedId && resolvedId!==''&&resolvedId!=='unknown'){
+  let fresh={};
+  if(resolvedId&&resolvedId!=='unknown'){
     try{
-      const bSnap = await db.collection('roster').doc(resolvedId).get();
-      if(bSnap.exists) brk = bSnap.data().brk||'';
-    }catch(e){}
+      await ensureFirebaseAuth();
+      const snap=await db.collection('roster').doc(resolvedId).get();
+      if(snap.exists) fresh=snap.data()||{};
+    }catch(e){console.warn('Could not refresh agent profile from Firebase:',e);}
   }
 
-  currentRepProfile = {
-    id:     resolvedId,
-    name:   rAgent ? rAgent.name   : name,
-    team:   rAgent ? rAgent.team   : (team||'BB'),
-    shift:  rAgent ? rAgent.shift  : (shift||''),
-    lunch:  rAgent ? rAgent.lunch  : '',
-    brk,
-    status: rAgent ? (rAgent.status||'Agent') : 'Agent'
+  const freshTeam=normalizeTeam(fresh.team||rAgent?.team||team||'BB');
+  currentRepProfile={
+    id:resolvedId,
+    name:String(fresh.name||rAgent?.name||name||'Agent').trim(),
+    team:freshTeam==='PR'?'PR':'BB',
+    ytelName:String(fresh.ytelName||fresh.ytelname||rAgent?.ytelName||'').trim(),
+    shift:String(fresh.shift||rAgent?.shift||shift||'').trim(),
+    lunch:String(fresh.lunch||rAgent?.lunch||'').trim(),
+    brk:String(fresh.brk||fresh.break||rAgent?.brk||'').trim(),
+    status:String(fresh.status||rAgent?.status||'Agent').trim()||'Agent'
   };
+  if(resolvedId && currentRepProfile.status.toLowerCase()!=='inactive') ROSTER[resolvedId]={...currentRepProfile,userId:resolvedId};
 
-  const p = currentRepProfile;
-  const teamFull = p.team==='BB'?'Berbice':p.team==='PR'?'Providence':(p.team||'—');
-  document.getElementById('rp-name').textContent          = p.name;
-  document.getElementById('ap-avatar').textContent        = p.name.split(' ').map(x=>x[0]||'').join('').substring(0,2).toUpperCase();
-  document.getElementById('rp-meta').textContent          = 'ID: '+(resolvedId||'—')+' · Lunch: '+(p.lunch||'—');
-  document.getElementById('ap-team-badge').textContent    = p.team+' · '+teamFull;
-  document.getElementById('ap-status-badge').textContent  = p.status;
-  document.getElementById('ap-shift-badge').textContent   = p.shift||'No shift';
+  const p=currentRepProfile;
+  const teamFull=p.team==='BB'?'Berbice':'Providence';
+  document.getElementById('rp-name').textContent=p.name;
+  document.getElementById('ap-avatar').textContent=profileInitials(p.name);
+  document.getElementById('rp-meta').textContent='ID: '+(resolvedId||'—')+' · Lunch: '+(p.lunch||'—')+(p.ytelName?' · '+p.ytelName:'');
+  document.getElementById('ap-team-badge').textContent=p.team+' · '+teamFull;
+  document.getElementById('ap-status-badge').textContent=p.status;
+  document.getElementById('ap-shift-badge').textContent=p.shift||'No shift';
+  const editBtn=document.getElementById('ap-edit-profile-btn');
+  if(editBtn) editBtn.style.display=currentUser?.isAdmin?'inline-flex':'none';
 
   document.getElementById('rep-profile-overlay').classList.add('open');
   document.body.style.overflow='hidden';
 
-  // Pre-load monthly cache if not yet populated (so attendance data shows immediately)
-  if(Object.keys(monthlyCache).length === 0){
+  if(Object.keys(monthlyCache).length===0){
     loadMonthlyAttendance().catch(()=>{}).then(()=>{
-      // Refresh overview after monthly loads if still on that tab
-      if(currentRepProfile && document.getElementById('apt-overview')?.classList.contains('active')){
-        apLoadOverview(currentRepProfile.id, currentRepProfile.name);
-      }
+      if(currentRepProfile&&document.getElementById('apt-overview')?.classList.contains('active')) apLoadOverview(currentRepProfile.id,currentRepProfile.name);
     });
   }
+  apTab('overview',document.getElementById('apt-overview'));
+}
 
-  apTab('overview', document.getElementById('apt-overview'));
+function editCurrentRepProfileFromOverlay(){
+  if(!currentUser?.isAdmin||!currentRepProfile?.id) return;
+  const uid=String(currentRepProfile.id);
+  closeRepProfile();
+  switchAdminTab('profiles',document.getElementById('atab-profiles'));
+  setTimeout(()=>selectProfile(uid),80);
 }
 
 function closeRepProfile(){
@@ -9387,16 +9732,31 @@ async function saveRosterField(field){
 
   try{
     await ensureFirebaseAuth();
+    const idStr   = String(r.id).trim();
     const dbField = field==='break' ? 'brk' : field;
-    const payload = {[dbField]: field==='team' ? normalizeTeam(value) : value};
-    payload.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('roster').doc(String(r.id)).set(payload,{merge:true});
+    const savedValue = field==='team' ? normalizeTeam(value) : value;
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+    const payload = {[dbField]: savedValue, updatedAt: now};
 
-    const savedValue = payload[dbField];
+    // A manual team selection is authoritative over an older GUYB/GUYP prefix.
+    if(field==='team'){
+      payload.teamOverride = true;
+      payload.teamSource = 'manual';
+      payload.teamUpdatedAt = now;
+    }
+
+    await db.collection('roster').doc(idStr).set(payload,{merge:true});
+
     if(field==='break') currentRepProfile.brk = savedValue;
     else currentRepProfile[field] = savedValue;
 
-    if(ROSTER[String(r.id)]) ROSTER[String(r.id)][dbField] = savedValue;
+    if(ROSTER[idStr]){
+      ROSTER[idStr][dbField] = savedValue;
+      if(field==='team'){
+        ROSTER[idStr].teamOverride = true;
+        ROSTER[idStr].teamSource = 'manual';
+      }
+    }
 
     if(field==='shift'){
       const badge=document.getElementById('ap-shift-badge');
@@ -9406,20 +9766,78 @@ async function saveRosterField(field){
       const meta=document.getElementById('rp-meta');
       if(meta) meta.textContent='ID: '+r.id+' · Lunch: '+savedValue;
     }
+
     if(field==='team'){
+      const teamFull = savedValue==='BB' ? 'Berbice' : 'Providence';
       const meta=document.getElementById('pe-meta');
-      if(meta) meta.textContent=(savedValue==='BB'?'Berbice (BB)':'Providence (PR)')+' · ID: '+r.id;
+      if(meta) meta.textContent=teamFull+' ('+savedValue+') · ID: '+r.id;
+      const badge=document.getElementById('ap-team-badge');
+      if(badge) badge.textContent=savedValue+' · '+teamFull;
+
+      // Move the agent in the CURRENT in-memory report immediately.
+      // Match by Ytel ID first; name is a safe fallback for older report rows.
+      const profileName = String(r.name||'').toLowerCase().trim();
+      let statsChanged = false;
+      statsData.forEach(row=>{
+        const rowId = String(row.ytelId || row.userId || row.id || '').trim();
+        const rowName = String(row.name || '').toLowerCase().trim();
+        const idMatch = rowId && rowId===idStr;
+        const nameMatch = profileName && rowName===profileName;
+        if(idMatch || nameMatch){
+          if(row.team !== savedValue) statsChanged = true;
+          row.team = savedValue;
+        }
+      });
+
+      // Keep today's Firebase records and today's saved report in sync so every
+      // open dashboard sees the move and a refresh does not put the agent back.
+      const today = getTodayGY();
+      const syncWrites = [
+        db.collection('attendance').doc(idStr+'_'+today).set({team:savedValue,updatedAt:now},{merge:true}),
+        db.collection('sessions').doc(idStr+'_'+today).set({team:savedValue,updatedAt:now},{merge:true}),
+        db.collection('taps').doc(idStr+'_'+today).set({team:savedValue,updatedAt:now},{merge:true})
+      ];
+
+      if(statsChanged && statsDataDate===today){
+        const statsJSON = JSON.stringify(statsData);
+        syncWrites.push(
+          db.collection('reports').doc(today).set({
+            statsJSON,
+            teamAssignmentsUpdatedAt: now
+          },{merge:true})
+        );
+        const hist = Array.isArray(reportHistory) ? reportHistory.find(x=>x && x.date===today) : null;
+        if(hist) hist.statsJSON = statsJSON;
+      }
+
+      await Promise.allSettled(syncWrites);
+
+      // Refresh every live view that groups/sorts by team.
+      if(typeof updateGoalBars==='function') updateGoalBars();
+      if(typeof refreshBreakdownIfOpen==='function') refreshBreakdownIfOpen();
+      if(typeof renderStatsTable==='function') renderStatsTable();
+      if(typeof renderLeaderboard==='function') renderLeaderboard();
+      if(typeof wpAllReports!=='undefined') wpAllReports = [];
+      if(typeof wpWeekRanges!=='undefined') wpWeekRanges = [];
+      const ovEl=document.getElementById('admin-overview');
+      if(ovEl && ovEl.style.display!=='none' && typeof loadAdminOverview==='function') loadAdminOverview();
     }
 
-    if(currentUser && String(currentUser.id)===String(r.id)){
+    if(currentUser && String(currentUser.id)===idStr){
       currentUser[dbField] = savedValue;
       sessionStorage.setItem('bds_user_'+getTodayGY(), JSON.stringify(currentUser));
       showDashboard();
     }
 
-    if(statusEl){ statusEl.textContent='✅ Saved to Firebase'; statusEl.style.color='#34d399'; }
-    setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },4000);
+    if(statusEl){
+      statusEl.textContent = field==='team'
+        ? '✅ Team moved to '+(savedValue==='BB'?'Berbice':'Providence')+' — live stats updated'
+        : '✅ Saved to Firebase';
+      statusEl.style.color='#34d399';
+    }
+    setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },5000);
   }catch(e){
+    console.error('Roster field save failed:', e);
     if(statusEl){ statusEl.textContent='❌ '+(e.message||e); statusEl.style.color='#f87171'; }
   }
 }
@@ -11597,235 +12015,168 @@ if(_origRenderStatsTable){
 }
 
 // ════════════════════════════════════════════
-//  LEADERBOARD
+//  LEADERBOARD — PROFESSIONAL PERFORMANCE BOARD
 // ════════════════════════════════════════════
-let lbFilter = 'all';
+let lbFilter   = 'all';
 let lbMode     = 'daily';   // 'daily' | 'weekly'
 let lbWeekView = 'current'; // 'current' | 'prev'
 
-function lbSetMode(mode, btn){
-  lbMode = mode;
-  const daily    = document.getElementById('lb-m-daily');
-  const weekly   = document.getElementById('lb-m-weekly');
-  const subtabs  = document.getElementById('lb-week-subtabs');
-  if(daily && weekly){
-    if(mode === 'daily'){
-      daily.style.background  = 'var(--gold)';
-      daily.style.color       = '#000';
-      weekly.style.background = 'transparent';
-      weekly.style.color      = 'var(--muted)';
-      if(subtabs) subtabs.style.display = 'none';
-    } else {
-      weekly.style.background = 'var(--purple)';
-      weekly.style.color      = '#fff';
-      daily.style.background  = 'transparent';
-      daily.style.color       = 'var(--muted)';
-      // Reset to current week view whenever switching to weekly
-      lbWeekView = 'current';
-      _lbSyncWeekSubtabs();
-      if(subtabs) subtabs.style.display = '';
-    }
-  }
-  renderLeaderboard();
+function lbEscape(value){
+  return String(value ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 }
-
-function lbSetWeekView(view){
-  lbWeekView = view;
-  _lbSyncWeekSubtabs();
-  renderLeaderboard();
+function lbInitials(name){
+  const parts=String(name||'').trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return '—';
+  return ((parts[0][0]||'')+(parts.length>1?(parts[parts.length-1][0]||''):'')).toUpperCase();
 }
-
-function _lbSyncWeekSubtabs(){
-  const cur  = document.getElementById('lb-wv-current');
-  const prev = document.getElementById('lb-wv-prev');
-  if(!cur || !prev) return;
-  if(lbWeekView === 'current'){
-    cur.style.background  = 'var(--purple)';
-    cur.style.color       = '#fff';
-    prev.style.background = 'transparent';
-    prev.style.color      = 'var(--muted)';
-  } else {
-    prev.style.background = 'var(--gold)';
-    prev.style.color      = '#000';
-    cur.style.background  = 'transparent';
-    cur.style.color       = 'var(--muted)';
-  }
+function lbFormatConv(value){
+  const n=Number(value)||0;
+  return (Math.round(n*10)/10).toFixed(1).replace(/\.0$/,'')+'%';
 }
-
-function lbSetFilter(f, btn){
-  lbFilter = f;
-  ['lb-f-all','lb-f-bb','lb-f-pr'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.style.border = '1px solid var(--border)';
-    el.style.background = 'transparent';
-    el.style.color = 'var(--muted)';
-  });
-  if(btn){
-    btn.style.border = '2px solid var(--accent)';
-    btn.style.background = '#0b1a38';
-    btn.style.color = 'var(--accent)';
-  }
-  renderLeaderboard();
+function lbCurrentTeam(row){
+  try{ if(typeof resolveAgentTeam==='function') return resolveAgentTeam(row); }catch(e){}
+  const t=typeof normalizeTeam==='function'?normalizeTeam(row?.team||''):String(row?.team||'').toUpperCase();
+  return t==='PR'?'PR':'BB';
 }
+function lbRosterInfo(agent){
+  if(typeof ROSTER==='undefined') return null;
+  const id=String(agent?.ytelId||agent?.userId||agent?.id||'').trim();
+  if(id&&ROSTER[id]) return ROSTER[id];
+  const nl=String(agent?.name||'').toLowerCase().trim();
+  return Object.values(ROSTER).find(r=>String(r.name||'').toLowerCase().trim()===nl)||null;
+}
+function lbSyncControls(){
+  document.querySelectorAll('#page-leaderboard [data-mode]').forEach(el=>el.classList.toggle('active',el.dataset.mode===lbMode));
+  document.querySelectorAll('#page-leaderboard [data-filter]').forEach(el=>el.classList.toggle('active',el.dataset.filter===lbFilter));
+  document.querySelectorAll('#page-leaderboard [data-week]').forEach(el=>el.classList.toggle('active',el.dataset.week===lbWeekView));
+  const subtabs=document.getElementById('lb-week-subtabs');
+  if(subtabs) subtabs.classList.toggle('show',lbMode==='weekly');
+}
+function lbSetMode(mode){
+  lbMode=mode==='weekly'?'weekly':'daily';
+  if(lbMode==='weekly') lbWeekView='current';
+  lbSyncControls(); renderLeaderboard();
+}
+function lbSetWeekView(view){ lbWeekView=view==='prev'?'prev':'current'; lbSyncControls(); renderLeaderboard(); }
+function _lbSyncWeekSubtabs(){ lbSyncControls(); }
+function lbSetFilter(filter){ lbFilter=['BB','PR'].includes(filter)?filter:'all'; lbSyncControls(); renderLeaderboard(); }
 
 function renderLeaderboard(){
-  // Update date label
-  const dateLbl = document.getElementById('lb-date-lbl');
-  const isWeekly = lbMode === 'weekly';
-  const isPrevWeek = isWeekly && lbWeekView === 'prev';
+  lbSyncControls();
+  const dateLbl=document.getElementById('lb-date-lbl');
+  const liveLbl=document.getElementById('lb-live-lbl');
+  const noData=document.getElementById('lb-no-data');
+  const summary=document.getElementById('lb-summary');
+  const podiumSec=document.getElementById('lb-podium-section');
+  const podium=document.getElementById('lb-podium');
+  const listPanel=document.getElementById('lb-ranking-panel');
+  const list=document.getElementById('lb-list');
+  const isWeekly=lbMode==='weekly';
+  const isPrevWeek=isWeekly&&lbWeekView==='prev';
 
-  // Calculate week boundaries
-  const nowGY     = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
-  const curWkStart = getWeekStartGY(nowGY);
+  const nowGY=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+  const curWkStart=getWeekStartGY(nowGY);
+  const prevWkStartDate=new Date(curWkStart+'T12:00:00');
+  prevWkStartDate.setDate(prevWkStartDate.getDate()-7);
+  const prevWkStart=prevWkStartDate.toISOString().slice(0,10);
+  const prevWkEnd=new Date(prevWkStartDate.getTime()+6*86400000).toISOString().slice(0,10);
 
-  // Previous week: subtract 7 days from current week start
-  const prevWkStartDate = new Date(curWkStart + 'T12:00:00');
-  prevWkStartDate.setDate(prevWkStartDate.getDate() - 7);
-  const prevWkStart = prevWkStartDate.toISOString().slice(0,10);
-  const prevWkEnd   = new Date(prevWkStartDate.getTime() + 6*86400000).toISOString().slice(0,10);
-
-  if(dateLbl){
-    if(isPrevWeek){
-      dateLbl.textContent = '📅 PREV WEEK — Week of ' +
-        new Date(prevWkStart + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) +
-        ' · Previous Week Rankings';
-    } else if(isWeekly){
-      dateLbl.textContent = 'Week of ' +
-        new Date(curWkStart + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) +
-        ' · Weekly Transfer Rankings';
-    } else {
-      dateLbl.textContent = new Date().toLocaleDateString('en-US',{
-        weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Guyana'
-      }) + ' · Transfer Rankings';
-    }
+  let periodText='';
+  if(isPrevWeek){
+    const from=new Date(prevWkStart+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const to=new Date(prevWkEnd+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    periodText=`Previous week · ${from} – ${to}`;
+  }else if(isWeekly){
+    const from=new Date(curWkStart+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    periodText=`Current week · Since ${from}`;
+  }else{
+    periodText=nowGY.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   }
+  if(dateLbl) dateLbl.textContent=periodText+' · Ranked by transfers';
+  if(liveLbl) liveLbl.textContent=isWeekly?'FIREBASE REPORT HISTORY':'LIVE DAILY PERFORMANCE';
 
-  const noData  = document.getElementById('lb-no-data');
-  const podium  = document.getElementById('lb-podium');
-  const list    = document.getElementById('lb-list');
-
-  let data = [];
-
+  let data=[];
+  let reportCount=0;
   if(isWeekly){
-    // Aggregate xfer per agent across reports in the selected week
-    const history = typeof reportHistory !== 'undefined' ? reportHistory : [];
-    const weekReports = isPrevWeek
-      ? history.filter(r => r.date && r.date >= prevWkStart && r.date <= prevWkEnd && r.statsJSON)
-      : history.filter(r => r.date && r.date >= curWkStart && r.statsJSON);
-    const agentMap = {};
-    weekReports.forEach(report => {
-      let rows = [];
-      try { rows = JSON.parse(report.statsJSON); } catch(e){}
-      rows.forEach(r => {
-        if(!r.name) return;
-        const key = r.name.toLowerCase().trim();
-        if(!agentMap[key]){
-          agentMap[key] = { name: r.name, team: r.team, xfer: 0 };
-        }
-        agentMap[key].xfer += (r.xfer || 0);
+    const history=typeof reportHistory!=='undefined'?reportHistory:[];
+    const weekReports=isPrevWeek
+      ?history.filter(r=>r.date&&r.date>=prevWkStart&&r.date<=prevWkEnd&&r.statsJSON)
+      :history.filter(r=>r.date&&r.date>=curWkStart&&r.statsJSON);
+    reportCount=weekReports.length;
+    const agentMap={};
+    weekReports.forEach(report=>{
+      let rows=[]; try{ rows=JSON.parse(report.statsJSON)||[]; }catch(e){ rows=[]; }
+      rows.forEach(r=>{
+        if(!r||!r.name) return;
+        const team=lbCurrentTeam(r);
+        const key=String(r.ytelId||'').trim()||String(r.name).toLowerCase().trim();
+        if(!agentMap[key]) agentMap[key]={name:r.name,ytelId:r.ytelId||'',team,xfer:0,calls:0,days:0,_days:new Set()};
+        const a=agentMap[key]; a.name=r.name||a.name; a.team=team; a.xfer+=Number(r.xfer)||0; a.calls+=Number(r.calls)||0;
+        if(report.date&&!a._days.has(report.date)){ a._days.add(report.date); a.days++; }
       });
     });
-    data = Object.values(agentMap);
-  } else {
-    // Daily — pull from today's statsData
-    data = typeof statsData !== 'undefined' ? [...statsData] : [];
+    data=Object.values(agentMap).map(a=>{ const conv=a.calls>0?(a.xfer/a.calls*100):0; delete a._days; return {...a,conv}; });
+  }else{
+    data=typeof statsData!=='undefined'?statsData.map(r=>({
+      ...r,team:lbCurrentTeam(r),calls:Number(r.calls)||0,xfer:Number(r.xfer)||0,
+      conv:Number(r.conv)||((Number(r.calls)||0)>0?(Number(r.xfer)||0)/(Number(r.calls)||1)*100:0),days:1
+    })):[];
   }
 
-  // Filter by team
-  if(lbFilter !== 'all') data = data.filter(r => r.team === lbFilter);
-
-  // Sort by transfers descending
-  data = data.sort((a,b) => b.xfer - a.xfer).filter(r => r.name);
+  data=data.filter(r=>r&&r.name);
+  if(lbFilter!=='all') data=data.filter(r=>r.team===lbFilter);
+  data.sort((a,b)=>(b.xfer-a.xfer)||((b.conv||0)-(a.conv||0))||((b.calls||0)-(a.calls||0))||String(a.name).localeCompare(String(b.name)));
 
   if(!data.length){
-    if(noData){
-      noData.style.display  = 'block';
-      const noDataMsg = noData.querySelector('div:last-child');
-      if(noDataMsg) noDataMsg.textContent = isPrevWeek
-        ? 'No reports found for the previous week.'
-        : isWeekly
-        ? 'No reports uploaded for this week yet. Admin uploads daily CSVs and they accumulate here.'
-        : 'Admin uploads the daily CSV and it will appear here automatically.';
-    }
-    if(podium)  podium.style.display  = 'none';
-    if(list)    list.innerHTML = '';
-    return;
+    if(noData){ noData.classList.add('show'); const note=noData.querySelector('.lb-empty-note'); if(note) note.textContent=isPrevWeek?'No saved reports were found for the previous week.':isWeekly?'No saved reports are available for this week yet.':'Admin uploads the daily CSV and the performance board will update automatically.'; }
+    if(summary) summary.style.display='none'; if(podiumSec) podiumSec.style.display='none'; if(listPanel) listPanel.style.display='none';
+    if(list) list.innerHTML=''; if(podium) podium.innerHTML=''; return;
   }
 
-  if(noData)  noData.style.display  = 'none';
+  if(noData) noData.classList.remove('show'); if(summary) summary.style.display='grid'; if(podiumSec) podiumSec.style.display='block'; if(listPanel) listPanel.style.display='block';
+  const totalXfer=data.reduce((sum,r)=>sum+(Number(r.xfer)||0),0);
+  const avgXfer=data.length?totalXfer/data.length:0;
+  const top=data[0];
+  const filterLabel=lbFilter==='BB'?'Berbice only':lbFilter==='PR'?'Providence only':'All teams';
+  const withXfers=data.filter(r=>(Number(r.xfer)||0)>0).length;
 
-  const maxXfer = data[0] ? data[0].xfer || 1 : 1;
-  const myName  = currentUser && !currentUser.isAdmin ? (currentUser.name||'').toLowerCase().trim() : '';
+  const totalEl=document.getElementById('lb-total-transfers'); if(totalEl) totalEl.textContent=totalXfer.toLocaleString();
+  const totalNote=document.getElementById('lb-total-note'); if(totalNote) totalNote.textContent=isWeekly?`${reportCount} report${reportCount===1?'':'s'} · ${filterLabel}`:`Today · ${filterLabel}`;
+  const countEl=document.getElementById('lb-agent-count'); if(countEl) countEl.textContent=data.length.toLocaleString();
+  const countNote=document.getElementById('lb-agent-note'); if(countNote) countNote.textContent=`${withXfers} with 1+ transfer${withXfers===1?'':'s'}`;
+  const topName=document.getElementById('lb-top-name'); if(topName) topName.textContent=top?.name||'—';
+  const topNote=document.getElementById('lb-top-note'); if(topNote) topNote.textContent=`${top?.xfer||0} transfers · ${top?.team==='PR'?'Providence':'Berbice'}`;
+  const avgEl=document.getElementById('lb-average-xfer'); if(avgEl) avgEl.textContent=avgXfer.toFixed(1);
+  const avgNote=document.getElementById('lb-average-note'); if(avgNote) avgNote.textContent=isWeekly?'Average for selected week':'Average for today';
+  const rankingCount=document.getElementById('lb-ranking-count'); if(rankingCount) rankingCount.textContent=`${data.length} agent${data.length===1?'':'s'} · ${filterLabel}`;
+  const podiumMeta=document.getElementById('lb-podium-meta'); if(podiumMeta) podiumMeta.textContent=`Top ${Math.min(3,data.length)} · ${isWeekly?'weekly':'daily'} performance`;
 
-  // ── PODIUM (top 3) ──
-  if(podium && data.length >= 2){
-    const top = data.slice(0,3);
-    const heights = [120,160,100]; // 2nd, 1st, 3rd
-    const colors  = ['#94a3b8','#fbbf24','#fb923c'];
-    const glow    = ['','0 0 20px rgba(251,191,36,0.5)',''];
-    const order   = data.length >= 3 ? [top[1], top[0], top[2]] : (data.length === 2 ? [top[1], top[0]] : [top[0]]);
-    const podiumIdx = data.length >= 3 ? [1,0,2] : (data.length === 2 ? [1,0] : [0]);
+  const myName=currentUser&&!currentUser.isAdmin?String(currentUser.name||'').toLowerCase().trim():'';
+  const maxXfer=Math.max(...data.map(r=>Number(r.xfer)||0),1);
 
-    podium.innerHTML = order.map((agent, i)=>{
-      const realIdx = podiumIdx[i];
-      const h = data.length >= 3 ? heights[i] : (i===1 ? 160 : 120);
-      const c = colors[realIdx] || '#94a3b8';
-      const g = glow[realIdx] || '';
-      const medal = realIdx===0 ? '🥇' : realIdx===1 ? '🥈' : '🥉';
-      return `<div class="lb-podium-slot">
-        <div class="lb-podium-name">${agent.name.split(' ')[0]}</div>
-        <div class="lb-podium-val" style="color:${c};">${agent.xfer} <span style="font-size:0.6rem;font-weight:400;">xfer</span></div>
-        <div class="lb-podium-block" style="height:${h}px;background:linear-gradient(180deg,${c}22,${c}11);border:1px solid ${c}44;box-shadow:${g};">
-          <span>${medal}</span>
-        </div>
-      </div>`;
+  if(podium){
+    const top3=data.slice(0,3);
+    const displayOrder=top3.length>=3?[top3[1],top3[0],top3[2]]:top3.length===2?[top3[1],top3[0]]:[top3[0]];
+    const rankFor=agent=>data.indexOf(agent)+1;
+    podium.innerHTML=displayOrder.map(agent=>{
+      const rank=rankFor(agent),medal=rank===1?'🥇':rank===2?'🥈':'🥉';
+      const teamClass=agent.team==='PR'?'lb-team-pr':'lb-team-bb';
+      const teamText=agent.team==='PR'?'🌴 Providence':'🏠 Berbice';
+      return `<div class="lb-podium-card rank-${rank}"><div class="lb-podium-rank">${rank}</div><div class="lb-podium-medal">${medal}</div><div class="lb-podium-avatar">${lbEscape(lbInitials(agent.name))}</div><div style="min-width:0;width:100%;"><div class="lb-podium-name" title="${lbEscape(agent.name)}">${lbEscape(agent.name)}</div><div class="lb-podium-team"><span class="lb-team-badge ${teamClass}">${teamText}</span></div></div><div class="lb-podium-score">${Number(agent.xfer)||0}<span>${isWeekly?'Week Transfers':'Transfers Today'}</span></div><div class="lb-podium-meta"><span>${(Number(agent.calls)||0).toLocaleString()} calls</span><span>${lbFormatConv(agent.conv)} conv.</span></div></div>`;
     }).join('');
-    podium.style.display = 'flex';
-  } else {
-    if(podium) podium.style.display = 'none';
   }
 
-  // ── FULL LIST — 3 per row grid ──
   if(list){
-    list.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:7px;';
-    list.innerHTML = data.map((agent, idx)=>{
-      const rank = idx + 1;
-      const isMe = myName && agent.name.toLowerCase().trim() === myName;
-      const rankClass = rank===1 ? 'gold' : rank===2 ? 'silver' : rank===3 ? 'bronze' : '';
-      const xferColor = rank===1 ? '#fbbf24' : rank===2 ? '#94a3b8' : rank===3 ? '#fb923c' : 'var(--text)';
-      const teamBadgeClass = agent.team === 'BB' ? 'lb-team-bb' : 'lb-team-pr';
-      const teamLabel = agent.team === 'BB' ? '🏠 BERB' : agent.team === 'PR' ? '🌴 PROV' : (agent.team||'');
-      const barPct = maxXfer > 0 ? Math.round(agent.xfer / maxXfer * 100) : 0;
-      const barColor = rank===1 ? '#fbbf24' : rank===2 ? '#94a3b8' : rank===3 ? '#fb923c' : 'var(--accent)';
-
-      // Get status from ROSTER if available
-      let agentStatus = '';
-      if(typeof ROSTER !== 'undefined'){
-        const rAgent = Object.values(ROSTER).find(r => r.name && agent.name &&
-          r.name.toLowerCase().trim() === agent.name.toLowerCase().trim());
-        if(rAgent) agentStatus = rAgent.status || '';
-      }
-
-      return `<div class="lb-card${isMe?' lb-me':''}" style="flex-direction:column;align-items:flex-start;gap:8px;padding:14px 16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;">
-          <div class="lb-rank ${rankClass}" style="font-size:1.2rem;min-width:auto;">${rank<=3 ? (rank===1?'🥇':rank===2?'🥈':'🥉') : String(rank).padStart(2,'0')}</div>
-          <span class="lb-team-badge ${teamBadgeClass}">${teamLabel}</span>
-        </div>
-        <div class="lb-name" style="font-size:1rem;">
-          ${agent.name}${isMe?' <span style="color:var(--gold);font-size:0.62rem;">· YOU</span>':''}
-          ${agentStatus ? `<span class="lb-status">${agentStatus}</span>` : ''}
-        </div>
-        <div style="width:100%;">
-          <div class="lb-bar-wrap" style="width:100%;margin-bottom:6px;">
-            <div class="lb-bar-fill" style="width:${barPct}%;background:${barColor};"></div>
-          </div>
-          <div class="lb-xfer" style="color:${xferColor};font-size:1.8rem;">
-            ${agent.xfer}
-            <span class="lb-xfer-lbl" style="font-size:0.5rem;">${isPrevWeek ? 'PREV WEEK' : isWeekly ? 'WEEK TOTAL' : 'XFERS'}</span>
-          </div>
-        </div>
-      </div>`;
+    list.innerHTML=data.map((agent,idx)=>{
+      const rank=idx+1,isMe=!!(myName&&String(agent.name).toLowerCase().trim()===myName),roster=lbRosterInfo(agent),status=roster?.status||'';
+      const teamClass=agent.team==='PR'?'lb-team-pr':'lb-team-bb',teamText=agent.team==='PR'?'🌴 PROV':'🏠 BERB';
+      const progress=Math.max(0,Math.min(100,Math.round((Number(agent.xfer)||0)/maxXfer*100)));
+      const rankClass=rank===1?'top-1':rank===2?'top-2':rank===3?'top-3':'';
+      const rankText=rank<=3?(rank===1?'🥇':rank===2?'🥈':'🥉'):String(rank).padStart(2,'0');
+      const sub=[]; if(status) sub.push(status); if(isMe) sub.push('You'); if(isWeekly&&agent.days) sub.push(`${agent.days} day${agent.days===1?'':'s'} reported`);
+      return `<div class="lb-ranking-row${isMe?' lb-me':''}"><div class="lb-rank-cell ${rankClass}">${rankText}</div><div class="lb-agent-cell"><div class="lb-mini-avatar">${lbEscape(lbInitials(agent.name))}</div><div class="lb-agent-info"><div class="lb-agent-name">${lbEscape(agent.name)}</div><div class="lb-agent-sub">${lbEscape(sub.join(' · ')||'Performance record')}</div></div></div><div class="lb-col-team"><span class="lb-team-badge ${teamClass}">${teamText}</span></div><div class="lb-col-transfer"><div class="lb-transfer-value">${Number(agent.xfer)||0}</div></div><div class="lb-col-calls lb-metric muted">${(Number(agent.calls)||0).toLocaleString()}</div><div class="lb-col-conv lb-conv">${lbFormatConv(agent.conv)}</div><div class="lb-col-progress"><div class="lb-progress-wrap" title="${progress}% of leader"><div class="lb-progress-bar" style="width:${progress}%"></div></div></div></div>`;
     }).join('');
   }
 }
