@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -1711,6 +1713,91 @@ input, textarea, select { color-scheme: dark; }
   .spanish-pro-handoff{display:grid;grid-template-columns:1fr;}
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   DISPO + SUNDAY PROTOCOL — PROFESSIONAL OPERATIONS UI
+══════════════════════════════════════════════════════════════ */
+#page-dispo{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(52,211,153,.065),transparent 27%),
+    radial-gradient(circle at 92% 3%,rgba(96,165,250,.055),transparent 25%),
+    var(--bg);
+}
+.dispo-pro-shell{width:100%;max-width:1180px;margin:0 auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.dispo-pro-hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:24px 26px;border:1px solid #29384f;border-radius:18px;background:linear-gradient(145deg,rgba(15,28,47,.98),rgba(7,13,25,.98));box-shadow:0 16px 40px rgba(0,0,0,.22);}
+.dispo-pro-hero::after{content:'';position:absolute;right:-100px;top:-120px;width:310px;height:310px;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,.13),transparent 68%);pointer-events:none;}
+.dispo-pro-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:5px 10px;border-radius:999px;border:1px solid rgba(52,211,153,.3);background:rgba(52,211,153,.07);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.66rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;}
+.dispo-pro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.35rem,4.5vw,4rem);line-height:.95;letter-spacing:4px;color:#f8fafc;text-transform:uppercase;}
+.dispo-pro-subtitle{max-width:720px;margin-top:10px;color:#91a0b5;font-size:.8rem;line-height:1.65;font-weight:650;}
+.dispo-pro-standard{position:relative;z-index:1;flex:0 0 auto;min-width:235px;padding:15px 16px;border:1px solid rgba(96,165,250,.28);border-radius:14px;background:rgba(96,165,250,.065);}
+.dispo-pro-standard-label{font-family:'Barlow Condensed',sans-serif;font-size:.57rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:var(--accent);}
+.dispo-pro-standard-main{margin-top:5px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;letter-spacing:1px;color:#edf4ff;text-transform:uppercase;}
+.dispo-pro-standard-copy{margin-top:4px;font-size:.61rem;line-height:1.45;color:#7f91aa;font-weight:700;}
+.dispo-pro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.dispo-pro-card{--tone:96,165,250;position:relative;overflow:hidden;min-height:225px;padding:18px;border:1px solid rgba(var(--tone),.25);border-top:4px solid rgb(var(--tone));border-radius:16px;background:linear-gradient(155deg,rgba(17,28,48,.97),rgba(7,13,25,.98));box-shadow:0 12px 30px rgba(0,0,0,.16);display:flex;flex-direction:column;}
+.dispo-pro-card.green{--tone:52,211,153}.dispo-pro-card.gold{--tone:251,191,36}.dispo-pro-card.purple{--tone:167,139,250}.dispo-pro-card.red{--tone:248,113,113}
+.dispo-pro-card::after{content:'';position:absolute;right:-55px;bottom:-75px;width:175px;height:175px;border-radius:50%;background:radial-gradient(circle,rgba(var(--tone),.11),transparent 70%);pointer-events:none;}
+.dispo-pro-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:1;}
+.dispo-pro-card-id{display:flex;align-items:center;gap:11px;min-width:0;}
+.dispo-pro-icon{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:grid;place-items:center;background:rgba(var(--tone),.09);border:1px solid rgba(var(--tone),.24);font-size:1.05rem;}
+.dispo-pro-label{font-family:'Barlow Condensed',sans-serif;font-size:1.02rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#eff4fa;}
+.dispo-pro-kicker{margin-top:2px;font-size:.58rem;color:#70819a;font-weight:700;}
+.dispo-pro-status{padding:5px 8px;border-radius:999px;border:1px solid rgba(var(--tone),.27);background:rgba(var(--tone),.07);color:rgb(var(--tone));font-family:'Barlow Condensed',sans-serif;font-size:.54rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.dispo-pro-purpose{position:relative;z-index:1;margin:17px 0 14px;padding:11px 12px;border:1px solid #25344c;border-radius:10px;background:rgba(5,10,21,.55);font-size:.68rem;line-height:1.55;color:#aab7c8;font-weight:650;}
+.dispo-pro-purpose strong{display:block;margin-bottom:2px;color:#eef4fb;font-family:'Barlow Condensed',sans-serif;font-size:.67rem;letter-spacing:1px;text-transform:uppercase;}
+.dispo-pro-btn{position:relative;z-index:1;margin-top:auto;width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(var(--tone),.48);background:rgba(var(--tone),.13);color:rgb(var(--tone));font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:.18s ease;}
+.dispo-pro-btn:hover{transform:translateY(-1px);background:rgba(var(--tone),.21);border-color:rgba(var(--tone),.68);box-shadow:0 9px 24px rgba(0,0,0,.2);}
+.dispo-pro-reminders{overflow:hidden;border:1px solid #26354d;border-radius:16px;background:linear-gradient(155deg,rgba(15,24,41,.96),rgba(7,13,25,.97));}
+.dispo-pro-reminder-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px 12px;border-bottom:1px solid #1c2940;}
+.dispo-pro-reminder-title{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#eef4fb;}
+.dispo-pro-reminder-tag{padding:5px 9px;border-radius:999px;border:1px solid rgba(34,211,238,.22);background:rgba(34,211,238,.055);color:var(--cyan);font-size:.54rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.dispo-pro-reminder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:14px 16px 16px;}
+.dispo-pro-reminder{display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center;padding:10px 11px;border:1px solid #24334b;border-radius:10px;background:rgba(6,11,24,.56);}
+.dispo-pro-reminder-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(56,189,248,.075);border:1px solid rgba(56,189,248,.18);font-size:.88rem;}
+.dispo-pro-reminder strong{display:block;font-size:.66rem;color:#eef4fb;}.dispo-pro-reminder span{display:block;margin-top:1px;font-size:.58rem;line-height:1.35;color:#73839b;font-weight:650;}
+
+/* top navigation treatment */
+.tab-btn.t-dispo{border-color:rgba(52,211,153,.26);color:#79b7a2;background:linear-gradient(145deg,rgba(52,211,153,.045),#0d1424);}
+.tab-btn.t-dispo:hover{border-color:rgba(52,211,153,.48);color:var(--green);}
+.tab-btn.t-dispo.active{background:linear-gradient(145deg,rgba(52,211,153,.14),rgba(6,26,14,.86));border-color:var(--green);color:var(--green);box-shadow:0 0 18px rgba(52,211,153,.16);}
+
+#page-sunday{background:radial-gradient(circle at 10% 0%,rgba(167,139,250,.085),transparent 28%),radial-gradient(circle at 94% 8%,rgba(251,191,36,.045),transparent 24%),var(--bg);}
+.sunday-pro-shell{width:100%;max-width:1180px;margin:0 auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.sunday-pro-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:22px;align-items:center;padding:25px 26px;border:1px solid #3a3153;border-radius:18px;background:linear-gradient(145deg,rgba(29,20,48,.98),rgba(8,14,27,.98));box-shadow:0 16px 40px rgba(0,0,0,.22);}
+.sunday-pro-hero::after{content:'';position:absolute;right:-95px;top:-115px;width:310px;height:310px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.17),transparent 68%);pointer-events:none;}
+.sunday-pro-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:5px 10px;border-radius:999px;border:1px solid rgba(167,139,250,.34);background:rgba(167,139,250,.08);color:var(--purple);font-family:'Barlow Condensed',sans-serif;font-size:.67rem;font-weight:900;letter-spacing:2.1px;text-transform:uppercase;}
+.sunday-pro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.35rem,4.5vw,4rem);line-height:.95;letter-spacing:4px;color:#f8fafc;text-transform:uppercase;}
+.sunday-pro-subtitle{max-width:700px;margin-top:10px;color:#988eab;font-size:.81rem;line-height:1.65;font-weight:650;}
+.sunday-pro-shift{position:relative;z-index:1;padding:17px;border:1px solid rgba(167,139,250,.31);border-radius:15px;background:linear-gradient(150deg,rgba(167,139,250,.11),rgba(6,11,24,.78));}
+.sunday-pro-shift-label{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#c4b5fd;}
+.sunday-pro-shift-time{margin:7px 0 3px;font-family:'Bebas Neue',sans-serif;font-size:2.4rem;line-height:1;letter-spacing:3px;color:#fff;}
+.sunday-pro-shift-copy{font-size:.6rem;line-height:1.45;color:#81768f;font-weight:700;}
+.sunday-pro-rule{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 17px;border:1px solid rgba(251,191,36,.25);border-left:5px solid var(--gold);border-radius:14px;background:linear-gradient(100deg,rgba(251,191,36,.065),rgba(9,15,29,.82));}
+.sunday-pro-rule-main{display:flex;align-items:center;gap:11px;min-width:0;}
+.sunday-pro-rule-mark{width:39px;height:39px;flex:0 0 39px;border-radius:10px;display:grid;place-items:center;background:rgba(251,191,36,.09);border:1px solid rgba(251,191,36,.22);color:var(--gold);font-weight:900;}
+.sunday-pro-rule-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#f7f2e7;}
+.sunday-pro-rule-copy{margin-top:2px;font-size:.66rem;line-height:1.5;color:#8f9bad;font-weight:650;}.sunday-pro-rule-copy strong{color:#f6dda1;}
+.sunday-pro-rule-tag{flex:0 0 auto;padding:6px 10px;border-radius:999px;border:1px solid rgba(251,191,36,.22);background:rgba(251,191,36,.055);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:.58rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;}
+.sunday-pro-step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.sunday-pro-step{position:relative;overflow:hidden;min-height:190px;padding:17px;border:1px solid #302c46;border-top:4px solid var(--purple);border-radius:15px;background:linear-gradient(155deg,rgba(22,24,43,.97),rgba(8,14,27,.97));box-shadow:0 10px 26px rgba(0,0,0,.15);}
+.sunday-pro-step:nth-child(2){border-top-color:var(--accent)}.sunday-pro-step:nth-child(3){border-top-color:var(--gold)}
+.sunday-pro-step-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}.sunday-pro-step-num{width:39px;height:39px;flex:0 0 39px;border-radius:11px;display:grid;place-items:center;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.27);color:var(--purple);font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:1px;}
+.sunday-pro-step:nth-child(2) .sunday-pro-step-num{background:rgba(96,165,250,.09);border-color:rgba(96,165,250,.25);color:var(--accent)}.sunday-pro-step:nth-child(3) .sunday-pro-step-num{background:rgba(251,191,36,.09);border-color:rgba(251,191,36,.25);color:var(--gold)}
+.sunday-pro-step-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:#eff4fa;}.sunday-pro-step-sub{font-size:.58rem;color:#73839b;font-weight:700;margin-top:2px;}
+.sunday-pro-step-copy{font-size:.69rem;line-height:1.58;color:#9ba8b9;font-weight:650;}.sunday-pro-step-copy strong{color:#eef4fb;}
+.sunday-pro-grid{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:16px;align-items:start;}
+.sunday-pro-script-card,.sunday-pro-check-card{overflow:hidden;border:1px solid #302d47;border-radius:16px;background:linear-gradient(155deg,rgba(18,25,44,.97),rgba(8,14,27,.97));box-shadow:0 12px 30px rgba(0,0,0,.16);}
+.sunday-pro-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 13px;border-bottom:1px solid #242943;}.sunday-pro-card-heading{display:flex;align-items:center;gap:10px;}.sunday-pro-card-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:var(--purple);font-size:.95rem;}.sunday-pro-card-title{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#eff4fa;}.sunday-pro-card-sub{margin-top:2px;font-size:.6rem;color:#72839c;font-weight:700;}.sunday-pro-card-badge{padding:5px 9px;border-radius:999px;border:1px solid rgba(167,139,250,.25);background:rgba(167,139,250,.065);color:var(--purple);font-size:.54rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.sunday-pro-card-body{padding:16px 18px 18px;}.sunday-pro-script-label{font-family:'Barlow Condensed',sans-serif;font-size:.59rem;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#b8a8ea;}.sunday-pro-script{margin-top:9px;padding:17px;border:1px solid rgba(167,139,250,.24);border-left:4px solid var(--purple);border-radius:11px;background:rgba(167,139,250,.055);font-size:.84rem;line-height:1.8;color:#d6dee9;font-weight:700;font-style:italic;}.sunday-pro-script strong{color:#ffe491;font-style:normal;}.sunday-pro-script-note{margin-top:10px;font-size:.62rem;line-height:1.45;color:#80758f;font-weight:700;}
+.sunday-pro-progress-wrap{padding:11px 18px;border-bottom:1px solid #242943;background:rgba(167,139,250,.035);}.sunday-pro-progress-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;font-family:'Barlow Condensed',sans-serif;font-size:.59rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#8f82a2;}.sunday-pro-progress-meta strong{color:var(--purple);}.sunday-pro-progress-track{height:6px;border-radius:999px;background:#0a1020;overflow:hidden;border:1px solid #242943;}.sunday-pro-progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--accent));transition:width .25s ease;}
+.sunday-pro-checklist{display:flex;flex-direction:column;gap:8px;}.sunday-pro-check{display:grid;grid-template-columns:31px minmax(0,1fr);gap:9px;align-items:center;padding:10px;border:1px solid #29354c;border-radius:10px;background:rgba(6,11,24,.56);cursor:pointer;transition:.15s ease;}.sunday-pro-check:hover{border-color:#3a4660;background:rgba(12,19,35,.72);}.sunday-pro-check.done{border-color:rgba(52,211,153,.23);background:rgba(52,211,153,.045);}.sunday-pro-check input{width:18px;height:18px;margin:0;accent-color:var(--purple);cursor:pointer;justify-self:center;}.sunday-pro-check span{font-size:.66rem;line-height:1.45;color:#c7d1df;font-weight:700;}.sunday-pro-check strong{color:#eef4fb;}
+.sunday-pro-tip{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border:1px dashed rgba(167,139,250,.34);border-radius:13px;background:rgba(167,139,250,.035);}.sunday-pro-tip-copy{font-size:.7rem;line-height:1.55;color:#91a1b7;font-weight:650;}.sunday-pro-tip-copy strong{color:#d9d0ff;}.sunday-pro-tip-tag{flex:0 0 auto;padding:7px 10px;border-radius:8px;background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.24);color:var(--purple);font-family:'Barlow Condensed',sans-serif;font-size:.61rem;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;}
+.tab-btn.t-sunday{border-color:rgba(167,139,250,.34);background:linear-gradient(145deg,rgba(167,139,250,.055),#0d1424);color:#a997d4;}
+.tab-btn.t-sunday:hover{border-color:rgba(167,139,250,.55);color:#c4b5fd;}.tab-btn.t-sunday.active{background:linear-gradient(145deg,rgba(167,139,250,.16),rgba(18,8,40,.88));border-color:#c084fc;color:#d8b4fe;box-shadow:0 0 18px rgba(192,132,252,.18);}
+@media(max-width:980px){.dispo-pro-reminder-grid{grid-template-columns:repeat(2,1fr)}.sunday-pro-hero{grid-template-columns:1fr}.sunday-pro-grid{grid-template-columns:1fr}.sunday-pro-step-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:760px){.dispo-pro-shell,.sunday-pro-shell{padding:14px;gap:12px}.dispo-pro-hero{padding:19px 17px;align-items:flex-start;flex-direction:column}.dispo-pro-standard{width:100%;min-width:0}.dispo-pro-grid{grid-template-columns:1fr}.dispo-pro-reminder-grid{grid-template-columns:1fr}.sunday-pro-hero{padding:19px 17px;border-radius:15px}.sunday-pro-rule{align-items:flex-start;flex-direction:column}.sunday-pro-step-grid{grid-template-columns:1fr}.sunday-pro-tip{align-items:flex-start;flex-direction:column}}
+@media(max-width:480px){.dispo-pro-reminder-tag,.sunday-pro-card-badge,.sunday-pro-rule-tag{display:none}.dispo-pro-card-head,.sunday-pro-card-head{align-items:flex-start}}
+
 </style>
 <body>
 <!-- Agent Profile + Leaderboard professional redesign merged into the 2026-09-08 Access Guide build. -->
@@ -3372,34 +3459,54 @@ input, textarea, select { color-scheme: dark; }
 
   <!-- DISPOSITION -->
   <div class="tab-page" id="page-dispo">
-    <div class="dispo-grid">
-      <div class="dsec" style="border-top:4px solid var(--green);">
-        <span class="dlabel" style="color:var(--green)">&#9989; TRANSFERRED</span>
-        <button class="dbtn" style="background:var(--green);color:#fff;" onclick="location.reload()">LIVE TRANSFER DONE<span>Client connected to specialist</span></button>
-      </div>
-      <div class="dsec" style="border-top:4px solid var(--gold);">
-        <span class="dlabel" style="color:var(--gold)">&#128197; CALLBACK</span>
-        <button class="dbtn" style="background:var(--gold);color:#fff;" onclick="location.reload()">SET CALLBACK<span>Client requested call back</span></button>
-      </div>
-      <div class="dsec" style="border-top:4px solid var(--purple);">
-        <span class="dlabel" style="color:var(--purple)">&#128245; NO ANSWER</span>
-        <button class="dbtn" style="background:var(--purple);color:#fff;" onclick="location.reload()">VOICEMAIL / NO ANSWER<span>Log attempt, move on</span></button>
-      </div>
-      <div class="dsec" style="border-top:4px solid var(--red);">
-        <span class="dlabel" style="color:var(--red)">&#10060; NOT QUALIFIED</span>
-        <button class="dbtn" style="background:var(--red);color:#fff;" onclick="location.reload()">DQ &mdash; END CALL<span>Does not meet criteria</span></button>
-      </div>
-      <div class="dsec" style="grid-column:1/-1;border-top:4px solid var(--accent2);">
-        <span class="dlabel" style="color:var(--accent2)">&#128204; QUICK REMINDERS</span>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px;font-size:0.78rem;line-height:1.6;color:#cbd5e1;">&#129496; <strong style="color:var(--text)">Stay calm</strong> &mdash; energy transfers</div>
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px;font-size:0.78rem;line-height:1.6;color:#cbd5e1;">&#9208;&#65039; <strong style="color:var(--text)">Pause</strong> after punch words</div>
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px;font-size:0.78rem;line-height:1.6;color:#cbd5e1;">&#127919; <strong style="color:var(--text)">Always pivot</strong> back to script</div>
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px;font-size:0.78rem;line-height:1.6;color:#cbd5e1;">&#129296; <strong style="color:var(--text)">Ask &amp; wait</strong> &mdash; silence wins</div>
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px;font-size:0.78rem;line-height:1.6;color:#cbd5e1;">&#128203; <strong style="color:var(--text)">Use their name</strong> to build trust</div>
-          <div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px;font-size:0.78rem;line-height:1.6;color:#cbd5e1;">&#128516; <strong style="color:var(--text)">Smile while you talk</strong> &mdash; they feel it</div>
+    <div class="dispo-pro-shell">
+      <section class="dispo-pro-hero" aria-labelledby="dispo-pro-title">
+        <div>
+          <div class="dispo-pro-eyebrow">● Call Completion Center</div>
+          <h1 class="dispo-pro-title" id="dispo-pro-title">Choose the Correct Disposition</h1>
+          <p class="dispo-pro-subtitle">Finish every call with a clean, accurate outcome. Select the disposition that matches what actually happened, complete the required note or handoff, then move confidently to the next call.</p>
         </div>
-      </div>
+        <div class="dispo-pro-standard">
+          <div class="dispo-pro-standard-label">Agent Standard</div>
+          <div class="dispo-pro-standard-main">Accurate · Clear · Complete</div>
+          <div class="dispo-pro-standard-copy">The disposition should tell the next person exactly where the customer stands.</div>
+        </div>
+      </section>
+
+      <section class="dispo-pro-grid" aria-label="Disposition options">
+        <article class="dispo-pro-card green">
+          <div class="dispo-pro-card-head"><div class="dispo-pro-card-id"><div class="dispo-pro-icon">✓</div><div><div class="dispo-pro-label">Transferred</div><div class="dispo-pro-kicker">Successful specialist handoff</div></div></div><div class="dispo-pro-status">Completed</div></div>
+          <div class="dispo-pro-purpose"><strong>Use when</strong>The client has been connected to the specialist and the live transfer is complete.</div>
+          <button class="dispo-pro-btn" onclick="location.reload()">Live Transfer Done</button>
+        </article>
+        <article class="dispo-pro-card gold">
+          <div class="dispo-pro-card-head"><div class="dispo-pro-card-id"><div class="dispo-pro-icon">↻</div><div><div class="dispo-pro-label">Callback</div><div class="dispo-pro-kicker">Customer requested another time</div></div></div><div class="dispo-pro-status">Follow Up</div></div>
+          <div class="dispo-pro-purpose"><strong>Use when</strong>The client requested a call back. Confirm the date or time window before ending the call.</div>
+          <button class="dispo-pro-btn" onclick="location.reload()">Set Callback</button>
+        </article>
+        <article class="dispo-pro-card purple">
+          <div class="dispo-pro-card-head"><div class="dispo-pro-card-id"><div class="dispo-pro-icon">☎</div><div><div class="dispo-pro-label">No Answer</div><div class="dispo-pro-kicker">Attempt made, customer unavailable</div></div></div><div class="dispo-pro-status">Attempted</div></div>
+          <div class="dispo-pro-purpose"><strong>Use when</strong>The call reached voicemail or there was no answer. Log the attempt and continue.</div>
+          <button class="dispo-pro-btn" onclick="location.reload()">Voicemail / No Answer</button>
+        </article>
+        <article class="dispo-pro-card red">
+          <div class="dispo-pro-card-head"><div class="dispo-pro-card-id"><div class="dispo-pro-icon">×</div><div><div class="dispo-pro-label">Not Qualified</div><div class="dispo-pro-kicker">Does not meet required criteria</div></div></div><div class="dispo-pro-status">DQ</div></div>
+          <div class="dispo-pro-purpose"><strong>Use when</strong>The customer does not meet the qualification criteria. End the call clearly and professionally.</div>
+          <button class="dispo-pro-btn" onclick="location.reload()">DQ — End Call</button>
+        </article>
+      </section>
+
+      <section class="dispo-pro-reminders">
+        <header class="dispo-pro-reminder-head"><div class="dispo-pro-reminder-title">Quick Call-Control Reminders</div><div class="dispo-pro-reminder-tag">Before You Submit</div></header>
+        <div class="dispo-pro-reminder-grid">
+          <div class="dispo-pro-reminder"><div class="dispo-pro-reminder-icon">🧘</div><div><strong>Stay calm</strong><span>Your energy carries through the call.</span></div></div>
+          <div class="dispo-pro-reminder"><div class="dispo-pro-reminder-icon">⏸</div><div><strong>Use the pause</strong><span>Pause after punch words and questions.</span></div></div>
+          <div class="dispo-pro-reminder"><div class="dispo-pro-reminder-icon">🎯</div><div><strong>Always pivot</strong><span>Bring the conversation back to the script.</span></div></div>
+          <div class="dispo-pro-reminder"><div class="dispo-pro-reminder-icon">🤫</div><div><strong>Ask &amp; wait</strong><span>Silence gives the customer room to answer.</span></div></div>
+          <div class="dispo-pro-reminder"><div class="dispo-pro-reminder-icon">👤</div><div><strong>Use their name</strong><span>Personal language builds trust and control.</span></div></div>
+          <div class="dispo-pro-reminder"><div class="dispo-pro-reminder-icon">🙂</div><div><strong>Smile while talking</strong><span>A warmer tone is easier to hear than you think.</span></div></div>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -3674,61 +3781,59 @@ input, textarea, select { color-scheme: dark; }
   </div>
   <!-- SUNDAY -->
   <div class="tab-page" id="page-sunday">
-    <div class="sunday-view">
-      <div style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.3);border-radius:16px;padding:20px;margin-bottom:16px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-          <span style="font-size:2rem;">&#128197;</span>
-          <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;color:var(--purple);letter-spacing:1px;">SUNDAY PROTOCOL</div>
-            <div style="font-size:0.72rem;color:var(--muted);font-weight:600;">Special instructions for Sunday operations</div>
-          </div>
+    <div class="sunday-pro-shell">
+      <section class="sunday-pro-hero" aria-labelledby="sunday-pro-title">
+        <div>
+          <div class="sunday-pro-eyebrow">● Sunday Operations</div>
+          <h1 class="sunday-pro-title" id="sunday-pro-title">Sunday Protocol</h1>
+          <p class="sunday-pro-subtitle">Use this workflow when a closer cannot be reached on Sunday. Protect the customer experience, document the attempt, and secure a clear Monday follow-up before ending the call.</p>
         </div>
-        <div style="background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(167,139,250,0.25);margin-bottom:12px;">
-          <div style="font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;">&#128680; NO CLOSER AVAILABLE</div>
-          <div style="font-size:1rem;line-height:1.7;color:var(--text);">If you <strong style="color:var(--red);">cannot get a closer on the phone</strong>:</div>
-          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
-            <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(167,139,250,0.08);border-radius:8px;padding:10px;">
-              <span style="font-size:1.1rem;">1&#65039;&#8419;</span>
-              <div style="font-size:0.9rem;color:#cbd5e1;line-height:1.5;"><strong style="color:var(--text)">Leave a note in the file</strong> &mdash; document the call attempt, client name, and reference number</div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(167,139,250,0.08);border-radius:8px;padding:10px;">
-              <span style="font-size:1.1rem;">2&#65039;&#8419;</span>
-              <div style="font-size:0.9rem;color:#cbd5e1;line-height:1.5;"><strong style="color:var(--text)">Schedule a callback</strong> for <strong style="color:var(--purple);">first thing Monday morning</strong></div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(167,139,250,0.08);border-radius:8px;padding:10px;">
-              <span style="font-size:1.1rem;">3&#65039;&#8419;</span>
-              <div style="font-size:0.9rem;color:#cbd5e1;line-height:1.5;"><strong style="color:var(--text)">Use the VIP script below</strong> with the client before ending the call</div>
-            </div>
-          </div>
+        <div class="sunday-pro-shift">
+          <div class="sunday-pro-shift-label">Sunday Shift Standard</div>
+          <div class="sunday-pro-shift-time">11:45 AM</div>
+          <div class="sunday-pro-shift-copy">All agents follow the Sunday shift protocol. Complete every step below whenever a closer is unavailable.</div>
         </div>
-      </div>
+      </section>
 
-      <div style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(124,58,237,0.3);">
-        <div style="font-size:0.55rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:10px;">&#127897;&#65039; SAY THIS TO THE CLIENT</div>
-        <div style="background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);border-radius:10px;padding:18px;">
-          <div style="font-size:1.1rem;line-height:1.9;color:#fff;font-weight:600;font-style:italic;">
-            "Our Sunday learning specialists are <strong style="color:#ffd700;">extremely busy</strong> today, but I will <strong style="color:#ffd700;">personally</strong> set you up with a <strong style="color:#ffd700;">VIP appointment</strong> first thing Monday morning so you receive the <strong style="color:#ffd700;">proper time and attention</strong>."
-          </div>
-        </div>
-        <div style="margin-top:10px;font-size:0.72rem;color:rgba(255,255,255,0.6);font-weight:600;">&#9888;&#65039; Deliver this confidently &mdash; it reframes the wait as a benefit, not a failure.</div>
-      </div>
+      <section class="sunday-pro-rule">
+        <div class="sunday-pro-rule-main"><div class="sunday-pro-rule-mark">!</div><div><div class="sunday-pro-rule-title">No closer available?</div><div class="sunday-pro-rule-copy">Do not leave the customer without a next step. <strong>Document, schedule and position the Monday follow-up as a VIP appointment.</strong></div></div></div>
+        <div class="sunday-pro-rule-tag">Required Workflow</div>
+      </section>
 
-      <div class="rb" style="border-left:4px solid var(--purple);">
-        <div class="rblabel" style="color:var(--purple);">&#128203; SUNDAY CHECKLIST</div>
-        <div style="display:flex;flex-direction:column;gap:9px;margin-top:6px;">
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--purple);cursor:pointer;"> Attempted to reach closer &mdash; confirmed unavailable</label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--purple);cursor:pointer;"> Left a detailed note in the client's file</label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--purple);cursor:pointer;"> Scheduled callback for <strong style="color:var(--purple);margin-left:4px;">Monday morning</strong></label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--purple);cursor:pointer;"> Delivered VIP script to client</label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.9rem;"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--purple);cursor:pointer;"> Client confirmed appointment / callback time</label>
-        </div>
-      </div>
-      <div class="tip" style="margin-top:10px;background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.4);color:#cbd5e1;">
-        <strong style="color:var(--purple);">&#128161; PRO TIP:</strong> When scheduling the Monday callback, get a specific time window. "Would Monday at 9AM or 10AM work better for you?" &mdash; two options, both move forward.
-      </div>
+      <section class="sunday-pro-step-grid" aria-label="Sunday no-closer workflow">
+        <article class="sunday-pro-step"><div class="sunday-pro-step-top"><div class="sunday-pro-step-num">01</div><div><div class="sunday-pro-step-title">Document the Attempt</div><div class="sunday-pro-step-sub">Leave a complete file note</div></div></div><div class="sunday-pro-step-copy">Record the call attempt, <strong>client name and reference number</strong> so Monday follow-up has full context.</div></article>
+        <article class="sunday-pro-step"><div class="sunday-pro-step-top"><div class="sunday-pro-step-num">02</div><div><div class="sunday-pro-step-title">Set Monday Callback</div><div class="sunday-pro-step-sub">Secure a specific time window</div></div></div><div class="sunday-pro-step-copy">Schedule the callback for <strong>first thing Monday morning</strong> and confirm the time with the customer.</div></article>
+        <article class="sunday-pro-step"><div class="sunday-pro-step-top"><div class="sunday-pro-step-num">03</div><div><div class="sunday-pro-step-title">Deliver the VIP Script</div><div class="sunday-pro-step-sub">Reframe the wait professionally</div></div></div><div class="sunday-pro-step-copy">Use the approved language below before ending the call so the customer understands the value of the scheduled follow-up.</div></article>
+      </section>
+
+      <section class="sunday-pro-grid">
+        <article class="sunday-pro-script-card">
+          <header class="sunday-pro-card-head"><div class="sunday-pro-card-heading"><div class="sunday-pro-card-icon">🎙</div><div><div class="sunday-pro-card-title">Approved VIP Script</div><div class="sunday-pro-card-sub">Deliver confidently and naturally</div></div></div><div class="sunday-pro-card-badge">Say This</div></header>
+          <div class="sunday-pro-card-body">
+            <div class="sunday-pro-script-label">Customer-facing language</div>
+            <div class="sunday-pro-script">“Our Sunday learning specialists are <strong>extremely busy</strong> today, but I will <strong>personally</strong> set you up with a <strong>VIP appointment</strong> first thing Monday morning so you receive the <strong>proper time and attention</strong>.”</div>
+            <div class="sunday-pro-script-note">Deliver this with certainty. The purpose is to position the wait as a scheduled service benefit, not a failed handoff.</div>
+          </div>
+        </article>
+
+        <article class="sunday-pro-check-card">
+          <header class="sunday-pro-card-head"><div class="sunday-pro-card-heading"><div class="sunday-pro-card-icon">✓</div><div><div class="sunday-pro-card-title">Sunday Checklist</div><div class="sunday-pro-card-sub">Complete all five before disconnecting</div></div></div><div class="sunday-pro-card-badge">5 Checks</div></header>
+          <div class="sunday-pro-progress-wrap"><div class="sunday-pro-progress-meta"><span>Completion</span><strong id="sunday-pro-progress-text">0 / 5</strong></div><div class="sunday-pro-progress-track"><div class="sunday-pro-progress-fill" id="sunday-pro-progress-fill"></div></div></div>
+          <div class="sunday-pro-card-body">
+            <div class="sunday-pro-checklist" id="sunday-pro-checklist">
+              <label class="sunday-pro-check"><input type="checkbox" onchange="updateSundayProtocolProgress()"><span>Attempted to reach the closer and <strong>confirmed unavailable</strong>.</span></label>
+              <label class="sunday-pro-check"><input type="checkbox" onchange="updateSundayProtocolProgress()"><span>Left a detailed note in the <strong>client's file</strong>.</span></label>
+              <label class="sunday-pro-check"><input type="checkbox" onchange="updateSundayProtocolProgress()"><span>Scheduled the callback for <strong>Monday morning</strong>.</span></label>
+              <label class="sunday-pro-check"><input type="checkbox" onchange="updateSundayProtocolProgress()"><span>Delivered the <strong>VIP script</strong> to the client.</span></label>
+              <label class="sunday-pro-check"><input type="checkbox" onchange="updateSundayProtocolProgress()"><span>Client confirmed the <strong>appointment / callback time</strong>.</span></label>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="sunday-pro-tip"><div class="sunday-pro-tip-copy"><strong>Scheduling tip:</strong> Get a specific time window instead of asking an open-ended question. Try: “Would Monday at 9AM or 10AM work better for you?” Both choices move the follow-up forward.</div><div class="sunday-pro-tip-tag">Confirm · Note · Schedule · Verify</div></section>
     </div>
   </div>
-
 
   <!-- ACCESS GUIDE -->
   <div class="tab-page" id="page-dbs">
@@ -13007,5 +13112,19 @@ auth.onAuthStateChanged(user => {
 });
 </script>
 <input type="file" id="stats-csv-upload" accept=".csv" style="display:none;" onchange="handleStatsCSV(this)">
+
+<script>
+function updateSundayProtocolProgress(){
+  const list=document.getElementById('sunday-pro-checklist');
+  if(!list) return;
+  const checks=[...list.querySelectorAll('input[type="checkbox"]')];
+  const done=checks.filter(c=>c.checked).length;
+  checks.forEach(c=>{ const row=c.closest('.sunday-pro-check'); if(row) row.classList.toggle('done',c.checked); });
+  const text=document.getElementById('sunday-pro-progress-text');
+  const fill=document.getElementById('sunday-pro-progress-fill');
+  if(text) text.textContent=done+' / '+checks.length;
+  if(fill) fill.style.width=(checks.length?(done/checks.length)*100:0)+'%';
+}
+</script>
 </body>
 </html>
