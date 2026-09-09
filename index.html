@@ -4124,7 +4124,7 @@ input, textarea, select { color-scheme: dark; }
         <div class="lb-summary-card primary"><div class="lb-summary-kicker">Total Transfers</div><div class="lb-summary-value" id="lb-total-transfers">0</div><div class="lb-summary-note" id="lb-total-note">Current view</div></div>
         <div class="lb-summary-card"><div class="lb-summary-kicker">Agents Ranked</div><div class="lb-summary-value" id="lb-agent-count">0</div><div class="lb-summary-note" id="lb-agent-note">Active performance rows</div></div>
         <div class="lb-summary-card leader"><div class="lb-summary-kicker">Top Performer</div><div class="lb-summary-value" id="lb-top-name">—</div><div class="lb-summary-note" id="lb-top-note">Waiting for report data</div></div>
-        <div class="lb-summary-card"><div class="lb-summary-kicker">Average / Agent</div><div class="lb-summary-value" id="lb-average-xfer">0.0</div><div class="lb-summary-note" id="lb-average-note">Transfers per ranked agent</div></div>
+        <div class="lb-summary-card"><div class="lb-summary-kicker">Average</div><div class="lb-summary-value" id="lb-average-xfer">0.0</div><div class="lb-summary-note" id="lb-average-note">Total leads ÷ agents</div></div>
       </div>
 
       <div id="lb-no-data" class="lb-empty"><div class="lb-empty-icon">📊</div><div class="lb-empty-title">No leaderboard data yet</div><div class="lb-empty-note">Admin uploads the daily CSV and the performance board will update automatically.</div></div>
@@ -12149,7 +12149,7 @@ function renderLeaderboard(){
   const topName=document.getElementById('lb-top-name'); if(topName) topName.textContent=top?.name||'—';
   const topNote=document.getElementById('lb-top-note'); if(topNote) topNote.textContent=`${top?.xfer||0} transfers · ${top?.team==='PR'?'Providence':'Berbice'}`;
   const avgEl=document.getElementById('lb-average-xfer'); if(avgEl) avgEl.textContent=avgXfer.toFixed(1);
-  const avgNote=document.getElementById('lb-average-note'); if(avgNote) avgNote.textContent=isWeekly?'Average for selected week':'Average for today';
+  const avgNote=document.getElementById('lb-average-note'); if(avgNote) avgNote.textContent=`${totalXfer.toLocaleString()} lead${totalXfer===1?'':'s'} ÷ ${data.length.toLocaleString()} agent${data.length===1?'':'s'}`;
   const rankingCount=document.getElementById('lb-ranking-count'); if(rankingCount) rankingCount.textContent=`${data.length} agent${data.length===1?'':'s'} · ${filterLabel}`;
   const podiumMeta=document.getElementById('lb-podium-meta'); if(podiumMeta) podiumMeta.textContent=`Top ${Math.min(3,data.length)} · ${isWeekly?'weekly':'daily'} performance`;
 
