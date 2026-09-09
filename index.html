@@ -627,6 +627,27 @@ body.lead-alert-open{overflow:hidden;}
 .lb-week-btn{border:1px solid transparent;background:transparent;color:#71839d;padding:7px 15px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:1.2px;cursor:pointer;}
 .lb-week-btn.active{color:#fff;background:rgba(167,139,250,.18);border-color:rgba(167,139,250,.36);}
 .lb-week-btn[data-week="prev"].active{color:#fde68a;background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.30);}
+.lb-day-history{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:10px 12px;border:1px solid rgba(30,45,74,.82);border-radius:14px;background:linear-gradient(135deg,rgba(9,18,34,.92),rgba(6,13,26,.82));box-shadow:0 8px 24px rgba(0,0,0,.10);}
+.lb-day-history.hidden{display:none;}
+.lb-day-history-label{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding-right:10px;border-right:1px solid rgba(30,45,74,.78);}
+.lb-day-history-icon{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);font-size:.9rem;}
+.lb-day-history-title{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#a7b6ca;white-space:nowrap;}
+.lb-day-history-sub{margin-top:2px;font-size:.54rem;color:#53657e;white-space:nowrap;}
+.lb-day-pills{display:flex;gap:7px;align-items:center;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:thin;flex:1;}
+.lb-day-pill{appearance:none;min-width:105px;border:1px solid rgba(30,45,74,.92);border-radius:10px;background:#081225;color:#7f90a9;padding:8px 10px;cursor:pointer;text-align:left;transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease;flex:0 0 auto;}
+.lb-day-pill:hover{transform:translateY(-1px);border-color:rgba(96,165,250,.34);color:#d7e2f0;background:#0b172a;}
+.lb-day-pill.active{border-color:rgba(251,191,36,.52);background:linear-gradient(145deg,rgba(251,191,36,.12),rgba(251,146,60,.055));box-shadow:0 7px 18px rgba(251,191,36,.08);}
+.lb-day-pill.today{border-color:rgba(52,211,153,.28);}
+.lb-day-pill.today.active{border-color:rgba(52,211,153,.52);background:linear-gradient(145deg,rgba(52,211,153,.11),rgba(56,189,248,.05));box-shadow:0 7px 18px rgba(52,211,153,.07);}
+.lb-day-pill.no-report{opacity:.58;}
+.lb-day-pill-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.lb-day-name{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:#cbd5e1;}
+.lb-day-pill.active .lb-day-name{color:#fff;}
+.lb-day-tag{font-family:'Barlow Condensed',sans-serif;font-size:.48rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--green);}
+.lb-day-leads{margin-top:4px;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.5px;line-height:1;color:#f1f5f9;}
+.lb-day-leads span{font-family:'Barlow Condensed',sans-serif;font-size:.48rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#60718a;margin-left:3px;}
+.lb-day-date{margin-top:3px;font-size:.52rem;color:#566981;}
+@media(max-width:720px){.lb-day-history{align-items:flex-start;flex-direction:column;gap:8px}.lb-day-history-label{width:100%;border-right:none;border-bottom:1px solid rgba(30,45,74,.65);padding:0 0 8px}.lb-day-pills{width:100%}.lb-day-pill{min-width:96px;}}
 .lb-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
 .lb-summary-card{position:relative;overflow:hidden;min-height:106px;padding:14px 15px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(145deg,rgba(17,28,48,.92),rgba(9,17,31,.92));box-shadow:0 8px 24px rgba(0,0,0,.14);}
 .lb-summary-card::after{content:'';position:absolute;right:-25px;bottom:-35px;width:90px;height:90px;border-radius:50%;background:rgba(96,165,250,.035);}
@@ -4112,6 +4133,14 @@ input, textarea, select { color-scheme: dark; }
           </div>
         </div>
       </section>
+
+      <div id="lb-day-history" class="lb-day-history">
+        <div class="lb-day-history-label">
+          <div class="lb-day-history-icon">↩</div>
+          <div><div class="lb-day-history-title">Daily History</div><div class="lb-day-history-sub">Current day stays live · select an earlier day to look back</div></div>
+        </div>
+        <div id="lb-day-pills" class="lb-day-pills"></div>
+      </div>
 
       <div id="lb-week-subtabs" class="lb-week-subtabs">
         <div class="lb-week-toggle">
@@ -12020,6 +12049,10 @@ if(_origRenderStatsTable){
 let lbFilter   = 'all';
 let lbMode     = 'daily';   // 'daily' | 'weekly'
 let lbWeekView = 'current'; // 'current' | 'prev'
+let lbDailyDate = null;     // selected YYYY-MM-DD in Daily view; defaults to today
+let lbDailyReportCache = {};
+let lbDailyHistoryLoadedWeek = '';
+let lbDailyHistoryLoading = false;
 
 function lbEscape(value){
   return String(value ?? '')
@@ -12047,16 +12080,107 @@ function lbRosterInfo(agent){
   const nl=String(agent?.name||'').toLowerCase().trim();
   return Object.values(ROSTER).find(r=>String(r.name||'').toLowerCase().trim()===nl)||null;
 }
+function lbTodayKey(){
+  try{ return getTodayGY(); }catch(e){}
+  return new Date().toLocaleDateString('en-CA',{timeZone:'America/Guyana'});
+}
+function lbWeekDatesToToday(){
+  const today=lbTodayKey();
+  const nowGY=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+  const start=getWeekStartGY(nowGY);
+  const out=[];
+  const d=new Date(start+'T12:00:00');
+  const end=new Date(today+'T12:00:00');
+  while(d<=end){ out.push(d.toLocaleDateString('en-CA',{timeZone:'America/Guyana'})); d.setDate(d.getDate()+1); }
+  return out;
+}
+function lbParseReportRows(report){
+  if(!report) return [];
+  if(Array.isArray(report)) return report;
+  if(Array.isArray(report.stats)) return report.stats;
+  if(report.statsJSON){ try{ const rows=JSON.parse(report.statsJSON); return Array.isArray(rows)?rows:[]; }catch(e){} }
+  return [];
+}
+function lbDayTotal(date){
+  const today=lbTodayKey();
+  let rows=[];
+  if(date===today && typeof statsData!=='undefined' && statsData.length) rows=statsData;
+  else rows=lbParseReportRows(lbDailyReportCache[date]);
+  return rows.reduce((sum,r)=>sum+(Number(r?.xfer)||0),0);
+}
+function lbRenderDayHistory(){
+  const wrap=document.getElementById('lb-day-history');
+  const pills=document.getElementById('lb-day-pills');
+  if(!wrap||!pills) return;
+  wrap.classList.toggle('hidden',lbMode!=='daily');
+  if(lbMode!=='daily') return;
+  const today=lbTodayKey();
+  if(!lbDailyDate) lbDailyDate=today;
+  const dates=lbWeekDatesToToday();
+  const fmtDay=new Intl.DateTimeFormat('en-US',{weekday:'short',timeZone:'America/Guyana'});
+  const fmtDate=new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',timeZone:'America/Guyana'});
+  pills.innerHTML=dates.map(date=>{
+    const d=new Date(date+'T12:00:00');
+    const isToday=date===today, active=date===lbDailyDate;
+    const hasReport=isToday?(typeof statsData!=='undefined'&&statsData.length>0):!!lbDailyReportCache[date];
+    const total=lbDayTotal(date);
+    const cls=['lb-day-pill',isToday?'today':'',active?'active':'',!hasReport?'no-report':''].filter(Boolean).join(' ');
+    const tag=isToday?'<span class="lb-day-tag">TODAY</span>':(hasReport?'<span class="lb-day-tag" style="color:#71839d;">SAVED</span>':'');
+    const leadText=hasReport?`${total.toLocaleString()}<span>lead${total===1?'':'s'}</span>`:`—<span>no report</span>`;
+    return `<button class="${cls}" onclick="lbSelectDailyDate('${date}')" title="${isToday?'Live performance':hasReport?'Open saved report for '+fmtDate.format(d):'No saved report for '+fmtDate.format(d)}"><div class="lb-day-pill-top"><span class="lb-day-name">${fmtDay.format(d)}</span>${tag}</div><div class="lb-day-leads">${leadText}</div><div class="lb-day-date">${fmtDate.format(d)}</div></button>`;
+  }).join('');
+}
+async function lbSelectDailyDate(date){
+  lbMode='daily';
+  lbDailyDate=date||lbTodayKey();
+  lbSyncControls();
+  const today=lbTodayKey();
+  if(lbDailyDate!==today && !lbDailyReportCache[lbDailyDate]){
+    try{
+      const snap=await db.collection('reports').doc(lbDailyDate).get();
+      if(snap.exists) lbDailyReportCache[lbDailyDate]={date:lbDailyDate,...snap.data()};
+      else lbDailyReportCache[lbDailyDate]=null;
+    }catch(e){ console.warn('Could not load leaderboard day',lbDailyDate,e); }
+  }
+  renderLeaderboard();
+}
+async function lbLoadDailyHistory(force=false){
+  const today=lbTodayKey();
+  const nowGY=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
+  const weekStart=getWeekStartGY(nowGY);
+  if(lbDailyHistoryLoading) return;
+  if(!force && lbDailyHistoryLoadedWeek===weekStart){ lbRenderDayHistory(); return; }
+  lbDailyHistoryLoading=true;
+  try{
+    if(typeof reportHistory!=='undefined' && Array.isArray(reportHistory)){
+      reportHistory.forEach(r=>{ if(r&&r.date) lbDailyReportCache[r.date]=r; });
+    }
+    const dates=lbWeekDatesToToday().filter(d=>d!==today && !(d in lbDailyReportCache));
+    await Promise.all(dates.map(async date=>{
+      try{ const snap=await db.collection('reports').doc(date).get(); lbDailyReportCache[date]=snap.exists?{date,...snap.data()}:null; }
+      catch(e){ console.warn('Daily history load failed for',date,e); }
+    }));
+    lbDailyHistoryLoadedWeek=weekStart;
+  }finally{
+    lbDailyHistoryLoading=false;
+    lbRenderDayHistory();
+    const page=document.getElementById('page-leaderboard');
+    if(page&&page.classList.contains('active')&&lbMode==='daily') renderLeaderboard();
+  }
+}
 function lbSyncControls(){
   document.querySelectorAll('#page-leaderboard [data-mode]').forEach(el=>el.classList.toggle('active',el.dataset.mode===lbMode));
   document.querySelectorAll('#page-leaderboard [data-filter]').forEach(el=>el.classList.toggle('active',el.dataset.filter===lbFilter));
   document.querySelectorAll('#page-leaderboard [data-week]').forEach(el=>el.classList.toggle('active',el.dataset.week===lbWeekView));
   const subtabs=document.getElementById('lb-week-subtabs');
   if(subtabs) subtabs.classList.toggle('show',lbMode==='weekly');
+  const dayHistory=document.getElementById('lb-day-history');
+  if(dayHistory) dayHistory.classList.toggle('hidden',lbMode!=='daily');
 }
 function lbSetMode(mode){
   lbMode=mode==='weekly'?'weekly':'daily';
   if(lbMode==='weekly') lbWeekView='current';
+  else { lbDailyDate=lbTodayKey(); lbLoadDailyHistory(); }
   lbSyncControls(); renderLeaderboard();
 }
 function lbSetWeekView(view){ lbWeekView=view==='prev'?'prev':'current'; lbSyncControls(); renderLeaderboard(); }
@@ -12075,6 +12199,10 @@ function renderLeaderboard(){
   const list=document.getElementById('lb-list');
   const isWeekly=lbMode==='weekly';
   const isPrevWeek=isWeekly&&lbWeekView==='prev';
+  const todayKey=lbTodayKey();
+  if(!lbDailyDate) lbDailyDate=todayKey;
+  const selectedDailyDate=lbDailyDate||todayKey;
+  const viewingToday=!isWeekly&&selectedDailyDate===todayKey;
 
   const nowGY=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Guyana'}));
   const curWkStart=getWeekStartGY(nowGY);
@@ -12092,10 +12220,12 @@ function renderLeaderboard(){
     const from=new Date(curWkStart+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
     periodText=`Current week · Since ${from}`;
   }else{
-    periodText=nowGY.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const dailyObj=new Date(selectedDailyDate+'T12:00:00');
+    periodText=dailyObj.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   }
   if(dateLbl) dateLbl.textContent=periodText+' · Ranked by transfers';
-  if(liveLbl) liveLbl.textContent=isWeekly?'FIREBASE REPORT HISTORY':'LIVE DAILY PERFORMANCE';
+  if(liveLbl) liveLbl.textContent=isWeekly?'FIREBASE REPORT HISTORY':viewingToday?'LIVE DAILY PERFORMANCE':'SAVED DAILY REPORT';
+  lbRenderDayHistory();
 
   let data=[];
   let reportCount=0;
@@ -12119,10 +12249,13 @@ function renderLeaderboard(){
     });
     data=Object.values(agentMap).map(a=>{ const conv=a.calls>0?(a.xfer/a.calls*100):0; delete a._days; return {...a,conv}; });
   }else{
-    data=typeof statsData!=='undefined'?statsData.map(r=>({
+    const sourceRows=viewingToday
+      ?(typeof statsData!=='undefined'?statsData:[])
+      :lbParseReportRows(lbDailyReportCache[selectedDailyDate]);
+    data=sourceRows.map(r=>({
       ...r,team:lbCurrentTeam(r),calls:Number(r.calls)||0,xfer:Number(r.xfer)||0,
       conv:Number(r.conv)||((Number(r.calls)||0)>0?(Number(r.xfer)||0)/(Number(r.calls)||1)*100:0),days:1
-    })):[];
+    }));
   }
 
   data=data.filter(r=>r&&r.name);
@@ -12130,7 +12263,7 @@ function renderLeaderboard(){
   data.sort((a,b)=>(b.xfer-a.xfer)||((b.conv||0)-(a.conv||0))||((b.calls||0)-(a.calls||0))||String(a.name).localeCompare(String(b.name)));
 
   if(!data.length){
-    if(noData){ noData.classList.add('show'); const note=noData.querySelector('.lb-empty-note'); if(note) note.textContent=isPrevWeek?'No saved reports were found for the previous week.':isWeekly?'No saved reports are available for this week yet.':'Admin uploads the daily CSV and the performance board will update automatically.'; }
+    if(noData){ noData.classList.add('show'); const note=noData.querySelector('.lb-empty-note'); if(note) note.textContent=isPrevWeek?'No saved reports were found for the previous week.':isWeekly?'No saved reports are available for this week yet.':viewingToday?'Admin uploads the daily CSV and the performance board will update automatically.':`No saved leaderboard report was found for ${new Date(selectedDailyDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}.`; }
     if(summary) summary.style.display='none'; if(podiumSec) podiumSec.style.display='none'; if(listPanel) listPanel.style.display='none';
     if(list) list.innerHTML=''; if(podium) podium.innerHTML=''; return;
   }
@@ -12143,7 +12276,7 @@ function renderLeaderboard(){
   const withXfers=data.filter(r=>(Number(r.xfer)||0)>0).length;
 
   const totalEl=document.getElementById('lb-total-transfers'); if(totalEl) totalEl.textContent=totalXfer.toLocaleString();
-  const totalNote=document.getElementById('lb-total-note'); if(totalNote) totalNote.textContent=isWeekly?`${reportCount} report${reportCount===1?'':'s'} · ${filterLabel}`:`Today · ${filterLabel}`;
+  const totalNote=document.getElementById('lb-total-note'); if(totalNote) totalNote.textContent=isWeekly?`${reportCount} report${reportCount===1?'':'s'} · ${filterLabel}`:`${viewingToday?'Today':new Date(selectedDailyDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${filterLabel}`;
   const countEl=document.getElementById('lb-agent-count'); if(countEl) countEl.textContent=data.length.toLocaleString();
   const countNote=document.getElementById('lb-agent-note'); if(countNote) countNote.textContent=`${withXfers} with 1+ transfer${withXfers===1?'':'s'}`;
   const topName=document.getElementById('lb-top-name'); if(topName) topName.textContent=top?.name||'—';
@@ -12151,7 +12284,7 @@ function renderLeaderboard(){
   const avgEl=document.getElementById('lb-average-xfer'); if(avgEl) avgEl.textContent=avgXfer.toFixed(1);
   const avgNote=document.getElementById('lb-average-note'); if(avgNote) avgNote.textContent=`${totalXfer.toLocaleString()} lead${totalXfer===1?'':'s'} ÷ ${data.length.toLocaleString()} agent${data.length===1?'':'s'}`;
   const rankingCount=document.getElementById('lb-ranking-count'); if(rankingCount) rankingCount.textContent=`${data.length} agent${data.length===1?'':'s'} · ${filterLabel}`;
-  const podiumMeta=document.getElementById('lb-podium-meta'); if(podiumMeta) podiumMeta.textContent=`Top ${Math.min(3,data.length)} · ${isWeekly?'weekly':'daily'} performance`;
+  const podiumMeta=document.getElementById('lb-podium-meta'); if(podiumMeta) podiumMeta.textContent=`Top ${Math.min(3,data.length)} · ${isWeekly?'weekly':viewingToday?'today':new Date(selectedDailyDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long'})} performance`;
 
   const myName=currentUser&&!currentUser.isAdmin?String(currentUser.name||'').toLowerCase().trim():'';
   const maxXfer=Math.max(...data.map(r=>Number(r.xfer)||0),1);
@@ -12164,7 +12297,7 @@ function renderLeaderboard(){
       const rank=rankFor(agent),medal=rank===1?'🥇':rank===2?'🥈':'🥉';
       const teamClass=agent.team==='PR'?'lb-team-pr':'lb-team-bb';
       const teamText=agent.team==='PR'?'🌴 Providence':'🏠 Berbice';
-      return `<div class="lb-podium-card rank-${rank}"><div class="lb-podium-rank">${rank}</div><div class="lb-podium-medal">${medal}</div><div class="lb-podium-avatar">${lbEscape(lbInitials(agent.name))}</div><div style="min-width:0;width:100%;"><div class="lb-podium-name" title="${lbEscape(agent.name)}">${lbEscape(agent.name)}</div><div class="lb-podium-team"><span class="lb-team-badge ${teamClass}">${teamText}</span></div></div><div class="lb-podium-score">${Number(agent.xfer)||0}<span>${isWeekly?'Week Transfers':'Transfers Today'}</span></div><div class="lb-podium-meta"><span>${(Number(agent.calls)||0).toLocaleString()} calls</span><span>${lbFormatConv(agent.conv)} conv.</span></div></div>`;
+      return `<div class="lb-podium-card rank-${rank}"><div class="lb-podium-rank">${rank}</div><div class="lb-podium-medal">${medal}</div><div class="lb-podium-avatar">${lbEscape(lbInitials(agent.name))}</div><div style="min-width:0;width:100%;"><div class="lb-podium-name" title="${lbEscape(agent.name)}">${lbEscape(agent.name)}</div><div class="lb-podium-team"><span class="lb-team-badge ${teamClass}">${teamText}</span></div></div><div class="lb-podium-score">${Number(agent.xfer)||0}<span>${isWeekly?'Week Transfers':viewingToday?'Transfers Today':'Day Transfers'}</span></div><div class="lb-podium-meta"><span>${(Number(agent.calls)||0).toLocaleString()} calls</span><span>${lbFormatConv(agent.conv)} conv.</span></div></div>`;
     }).join('');
   }
 
@@ -12187,6 +12320,9 @@ function renderLeaderboard(){
   switchTab = function(tab){
     _origSwitch(tab);
     if(tab === 'leaderboard'){
+      // Daily view always opens on the current Guyana day. Older days remain available in the compact history strip.
+      if(lbMode==='daily') lbDailyDate=lbTodayKey();
+      lbLoadDailyHistory();
       // Render from cached data
       renderLeaderboard();
       // Also try to load from Firebase if no data is cached
